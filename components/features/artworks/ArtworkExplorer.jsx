@@ -9,7 +9,6 @@ import ChipRow from '@/components/ui/Chip';
 import CircularGallery from '@/components/effects/CircularGallery';
 import EmptyState from '@/components/ui/EmptyState';
 import { useMotion } from '@/components/effects/MotionContext';
-import Pagination from '@/components/ui/Pagination';
 import SearchBar from '@/components/ui/SearchBar';
 import { ArtworkGridSkeleton } from '@/components/ui/Skeleton';
 import { apiFetch } from '@/lib/shared/api-client';
@@ -17,7 +16,6 @@ import { formatDateId } from '@/lib/shared/format';
 
 export default function ArtworkExplorer({
   initialArtworks = [],
-  initialMeta = { page: 1, limit: 12, total: 0 },
   categories = [],
   initialQuery = '',
   initialCategory = 'all',
@@ -25,7 +23,6 @@ export default function ArtworkExplorer({
   const router = useRouter();
   const { isMotionActive } = useMotion();
   const [artworks, setArtworks] = useState(initialArtworks);
-  const [meta, setMeta] = useState(initialMeta);
   const [q, setQ] = useState(initialQuery);
   const [category, setCategory] = useState(initialCategory || 'all');
   const [loading, setLoading] = useState(false);
@@ -69,7 +66,6 @@ export default function ArtworkExplorer({
   const fetchArtworks = async ({
     nextQ = q,
     nextCat = category,
-    nextPage = 1,
   }) => {
     setLoading(true);
     setErrorMsg('');
@@ -77,7 +73,6 @@ export default function ArtworkExplorer({
     const params = new URLSearchParams();
     if (nextQ.trim()) params.set('q', nextQ.trim());
     if (nextCat && nextCat !== 'all') params.set('category', nextCat);
-    if (nextPage > 1) params.set('page', String(nextPage));
 
     const urlQuery = params.toString();
     router.replace(urlQuery ? `/artworks?${urlQuery}` : '/artworks', {
@@ -85,10 +80,9 @@ export default function ArtworkExplorer({
     });
 
     try {
-      params.set('limit', '12');
+      params.set('all', '1');
       const res = await apiFetch(`/api/artworks?${params.toString()}`);
       setArtworks(res.data.artworks || []);
-      setMeta(res.meta || { page: nextPage, limit: 12, total: 0 });
       setActiveIndex(0);
     } catch (err) {
       setErrorMsg(err.message);
@@ -104,7 +98,7 @@ export default function ArtworkExplorer({
         onChange={setQ}
         onSubmit={(val) => {
           setQ(val);
-          fetchArtworks({ nextQ: val, nextCat: category, nextPage: 1 });
+          fetchArtworks({ nextQ: val, nextCat: category });
         }}
       />
 
@@ -117,7 +111,7 @@ export default function ArtworkExplorer({
           activeValue={category}
           onSelect={(slug) => {
             setCategory(slug);
-            fetchArtworks({ nextQ: q, nextCat: slug, nextPage: 1 });
+            fetchArtworks({ nextQ: q, nextCat: slug });
           }}
         />
       </div>
@@ -138,7 +132,7 @@ export default function ArtworkExplorer({
           onAction={() => {
             setQ('');
             setCategory('all');
-            fetchArtworks({ nextQ: '', nextCat: 'all', nextPage: 1 });
+            fetchArtworks({ nextQ: '', nextCat: 'all' });
           }}
         />
       ) : (
@@ -230,15 +224,6 @@ export default function ArtworkExplorer({
               </div>
             </article>
           ) : null}
-
-          <Pagination
-            page={meta.page}
-            limit={meta.limit}
-            total={meta.total}
-            onPageChange={(nextPage) =>
-              fetchArtworks({ nextQ: q, nextCat: category, nextPage })
-            }
-          />
         </div>
       )}
     </div>

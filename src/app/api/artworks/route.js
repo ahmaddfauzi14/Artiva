@@ -6,7 +6,13 @@ export const runtime = 'nodejs';
 
 export const GET = withHandler(async (request) => {
   const { searchParams } = new URL(request.url);
-  const { page, limit } = parsePagination(searchParams, 12, 48);
+  const includeAll =
+    searchParams.get('all') === '1' ||
+    searchParams.get('all') === 'true' ||
+    searchParams.get('limit') === 'all';
+  const { page, limit } = includeAll
+    ? { page: 1, limit: null }
+    : parsePagination(searchParams, 12, 48);
   const q = searchParams.get('q') || '';
   const category = searchParams.get('category') || '';
   const sort = searchParams.get('sort') || 'newest';

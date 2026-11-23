@@ -16,12 +16,11 @@ export default async function ArtworksPage({ searchParams }) {
   const sp = await searchParams;
   const q = sp?.q || '';
   const category = sp?.category || 'all';
-  const page = Math.max(1, Number(sp?.page || '1') || 1);
 
   const [user, categories, result] = await Promise.all([
     getCurrentUser(),
     listActiveCategories(),
-    listPublicArtworks({ q, category, page, limit: 12 }),
+    listPublicArtworks({ q, category, limit: null }),
   ]);
 
   return (
@@ -45,7 +44,6 @@ export default async function ArtworksPage({ searchParams }) {
 
         <ArtworkExplorer
           initialArtworks={result.items}
-          initialMeta={result.meta}
           categories={categories}
           initialQuery={q}
           initialCategory={category}
