@@ -117,32 +117,32 @@ function MenuGlyph({ name }) {
 export function getSidebarMenu(role) {
   if (role === 'member') {
     return [
-      { num: '01', key: 'dashboard', label: 'Dashboard', href: '/dashboard/member', icon: 'grid' },
-      { num: '02', key: 'artworks', label: 'Karya saya', href: '/dashboard/member?tab=artworks', icon: 'frame' },
-      { num: '03', key: 'challenges', label: 'Tantangan', href: '/challenges', icon: 'trophy' },
-      { num: '04', key: 'submissions', label: 'Submission saya', href: '/dashboard/member?tab=submissions', icon: 'send' },
-      { num: '05', key: 'favorites', label: 'Favorit', href: '/dashboard/member?tab=favorites', icon: 'heart' },
-      { num: '06', key: 'profile', label: 'Profil', href: '/dashboard/member/profile', icon: 'user' },
+      { key: 'dashboard', label: 'Dashboard', href: '/dashboard/member', icon: 'grid' },
+      { key: 'artworks', label: 'Karya saya', href: '/dashboard/member?tab=artworks', icon: 'frame' },
+      { key: 'challenges', label: 'Tantangan', href: '/challenges', icon: 'trophy' },
+      { key: 'submissions', label: 'Submission saya', href: '/dashboard/member?tab=submissions', icon: 'send' },
+      { key: 'favorites', label: 'Favorit', href: '/dashboard/member?tab=favorites', icon: 'heart' },
+      { key: 'profile', label: 'Profil', href: '/dashboard/member/profile', icon: 'user' },
     ];
   }
 
   if (role === 'curator') {
     return [
-      { num: '01', key: 'dashboard', label: 'Dashboard', href: '/dashboard/curator', icon: 'grid' },
-      { num: '02', key: 'challenges', label: 'Tantangan saya', href: '/dashboard/curator?view=challenges', icon: 'trophy' },
-      { num: '03', key: 'submissions', label: 'Submission aktif', href: '/dashboard/curator?view=submissions', icon: 'send' },
-      { num: '04', key: 'winners', label: 'Tentukan pemenang', href: '/dashboard/curator?view=winners', icon: 'shield' },
-      { num: '05', key: 'announcements', label: 'Pengumuman', href: '/dashboard/curator?view=announcements', icon: 'frame' },
+      { key: 'dashboard', label: 'Dashboard', href: '/dashboard/curator', icon: 'grid' },
+      { key: 'challenges', label: 'Tantangan saya', href: '/dashboard/curator?view=challenges', icon: 'trophy' },
+      { key: 'submissions', label: 'Submission aktif', href: '/dashboard/curator?view=submissions', icon: 'send' },
+      { key: 'winners', label: 'Tentukan pemenang', href: '/dashboard/curator?view=winners', icon: 'shield' },
+      { key: 'announcements', label: 'Pengumuman', href: '/dashboard/curator?view=announcements', icon: 'frame' },
     ];
   }
 
   if (role === 'admin') {
     return [
-      { num: '01', key: 'dashboard', label: 'Dashboard', href: '/dashboard/admin', icon: 'grid' },
-      { num: '02', key: 'curators', label: 'Verifikasi kurator', href: '/dashboard/admin/curators', icon: 'shield' },
-      { num: '03', key: 'users', label: 'Pengguna', href: '/dashboard/admin/users', icon: 'users' },
-      { num: '04', key: 'categories', label: 'Kategori', href: '/dashboard/admin/categories', icon: 'tag' },
-      { num: '05', key: 'reports', label: 'Moderasi laporan', href: '/dashboard/admin/reports', icon: 'flag' },
+      { key: 'dashboard', label: 'Dashboard', href: '/dashboard/admin', icon: 'grid' },
+      { key: 'curators', label: 'Verifikasi kurator', href: '/dashboard/admin/curators', icon: 'shield' },
+      { key: 'users', label: 'Pengguna', href: '/dashboard/admin/users', icon: 'users' },
+      { key: 'categories', label: 'Kategori', href: '/dashboard/admin/categories', icon: 'tag' },
+      { key: 'reports', label: 'Moderasi laporan', href: '/dashboard/admin/reports', icon: 'flag' },
     ];
   }
 
@@ -347,7 +347,7 @@ export default function Sidebar({
             )}
           </div>
 
-          {/* Menu Bernomor */}
+          {/* Menu Navigasi */}
           <div className="space-y-2">
             {!isCompact ? (
               <p className="px-2 text-xs font-semibold uppercase tracking-[0.08em] text-ink-soft">
@@ -363,7 +363,7 @@ export default function Sidebar({
                     key={item.key}
                     href={item.href}
                     aria-current={active ? 'page' : undefined}
-                    aria-label={isCompact ? `${item.num} ${item.label}` : undefined}
+                    aria-label={isCompact ? item.label : undefined}
                     title={isCompact ? item.label : undefined}
                     onClick={isMobileDrawer ? onCloseMobile : undefined}
                     className={`group relative flex min-h-[44px] items-center gap-3 rounded-[18px] px-3 py-2 text-sm transition-all duration-150 ${
@@ -380,16 +380,7 @@ export default function Sidebar({
                     ) : null}
                     <MenuGlyph name={item.icon} />
                     {!isCompact ? (
-                      <>
-                        <span
-                          className={`tabular-nums text-xs font-semibold ${
-                            active ? 'text-brand-700' : 'text-ink-soft'
-                          }`}
-                        >
-                          {item.num}
-                        </span>
-                        <span className="truncate">{item.label}</span>
-                      </>
+                      <span className="truncate">{item.label}</span>
                     ) : (
                       <span className="sr-only">{item.label}</span>
                     )}
