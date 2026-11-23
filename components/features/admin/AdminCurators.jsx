@@ -1,0 +1,156 @@
+'use client';
+
+import Link from 'next/link';
+import Alert from '@/components/ui/Alert';
+import ChipRow from '@/components/ui/Chip';
+import DataTable from '@/components/ui/DataTable';
+import Pagination from '@/components/ui/Pagination';
+import SearchBar from '@/components/ui/SearchBar';
+import StatusBadge from '@/components/ui/StatusBadge';
+import { useAdminList } from '@/components/features/admin/useAdminList';
+import { formatDateTimeId } from '@/lib/shared/format';
+
+export default function AdminCurators({
+  initialItems = [],
+  initialCounts = { pending: 0, approved: 0, rejected: 0 },
+  initialMeta = { page: 1, limit: 12, total: 0 },
+}) {
+  const {
+    items,
+    counts,
+    meta,
+    filter: status,
+    setFilter: setStatus,
+    q,
+    setQ,
+    loading,
+    errorMsg,
+    fetchList,
+  } = useAdminList({
+    endpoint: '/api/admin/curator-verifications',
+    dataKey: 'verifications',
+    initialItems,
+    initialCounts,
+    initialMeta,
+    initialFilter: 'pending',
+    filterParam: 'status',
+    limit: 12,
+  });
+
+  const tabs = [
+    { label: 'Menunggu', value: 'pending', count: counts.pending },
+    { label: 'Disetujui', value: 'approved', count: counts.approved },
+    { label: 'Ditolak', value: 'rejected', count: counts.rejected },
+  ];
+
+  const columns = [
+    {
+      key: 'id',
+      label: 'Kode',
+      colWidth: '80px',
+      render: (row) => (
+        <span className="font-semibold text-ink tabular-nums whitespace-nowrap">
+          RG-{String(row.verification_id).padStart(3, '0')}
+        </span>
+      ),
+    },
+    {
+      key: 'candidate',
+      label: 'Calon Kurator',
+      colWidth: 'minmax(180px, 1.5fr)',
+      render: (row) => (
+        <div className="min-w-0">
+          <p className="font-semibold text-ink truncate">
+            {row.display_name || row.username}
+          </p>
+          <p className="text-xs text-ink-mute truncate">
+            @{row.username} · {row.email}
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: 'submitted_at',
+      label: 'Diajukan',
+      colWidth: 'minmax(125px, 1fr)',
+      render: (row) => (
+        <span className="text-ink-soft">
+          {formatDateTimeId(row.submitted_at)}
+        </span>
+      ),
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      colWidth: '116px',
+      render: (row) => (
+        <StatusBadge domain="verification" status={row.status} />
+      ),
+    },
+    {
+      key: 'actions',
+      label: 'Tindakan',
+      colWidth: 'max-content',
+      className: 'text-right',
+      cellClassName: 'text-right',
+      render: (row) => (
+        <Link
+          href={`/dashboard/admin/curators/${row.verification_id}`}
+          className="text-sm font-semibold text-brand-700 hover:underline whitespace-nowrap"
+        >
+          Tinjau pengajuan →
+        </Link>
+      ),
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <ChipRow
+          items={tabs}
+          activeValue={status}
+          onSelect={(val) => {
+            setStatus(val);
+            fetchList({ nextFilter: val, nextQ: q, nextPage: 1 });
+          }}
+        />
+        <SearchBar
+          compact
+          value={q}
+          onChange={setQ}
+          placeholder="Cari nama, username, email…"
+          onSubmit={(val) => {
+            setQ(val);
+            fetchList({ nextFilter: status, nextQ: val, nextPage: 1 });
+          }}
+        />
+      </div>
+
+      {errorMsg ? (
+        <Alert tone="danger" title="Gagal memuat daftar verifikasi">
+          {errorMsg}
+        </Alert>
+      ) : null}
+
+      <DataTable
+        columns={columns}
+        rows={items}
+        rowKey="verification_id"
+        loading={loading}
+        emptyTitle="Tidak ada pengajuan pada status ini"
+        emptyDescription="Semua pengajuan kurator yang sesuai filter akan tampil di sini."
+        authorityNote="Akses Admin: persetujuan mengaktifkan peran Kurator secara langsung; penolakan wajib disertai catatan minimal 5 karakter."
+      />
+
+      <Pagination
+        page={meta.page}
+        limit={meta.limit}
+        total={meta.total}
+        onPageChange={(nextPage) =>
+          fetchList({ nextFilter: status, nextQ: q, nextPage })
+        }
+      />
+    </div>
+  );
+}
