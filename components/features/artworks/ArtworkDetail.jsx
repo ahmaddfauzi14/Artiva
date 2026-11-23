@@ -232,10 +232,10 @@ export default function ArtworkDetail({
   };
 
   return (
-    <div className="space-y-10">
-      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
-        {/* Kiri: Bingkai Polaroid Besar + Inspektur Zoom & Geser Interaktif (sticky agar seimbang dengan komentar panjang) */}
-        <div className="space-y-3 rounded-[28px] border border-line bg-surface p-4 shadow-card lg:sticky lg:top-24 lg:col-span-7">
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-12">
+        {/* Kiri: Bingkai Karya + Inspektur Zoom & Geser Interaktif */}
+        <div className="flex flex-col justify-between gap-3 rounded-[28px] border border-line bg-surface p-4 shadow-card lg:col-span-7">
           <div
             tabIndex={zoom > 1 ? 0 : undefined}
             aria-label={
@@ -248,7 +248,7 @@ export default function ArtworkDetail({
             onPointerUp={handleImagePointerUp}
             onPointerCancel={handleImagePointerUp}
             onKeyDown={handleImageKeyDown}
-            className={`relative flex min-h-[280px] items-center justify-center overflow-hidden rounded-[14px] bg-canvas sm:min-h-[380px] ${
+            className={`relative flex flex-1 min-h-[280px] items-center justify-center overflow-hidden rounded-[14px] bg-canvas sm:min-h-[380px] ${
               zoom > 1
                 ? panning
                   ? 'cursor-grabbing touch-none'
@@ -308,8 +308,8 @@ export default function ArtworkDetail({
           </div>
         </div>
 
-        {/* Kanan: Kartu Info & Interaksi */}
-        <div className="space-y-6 rounded-[28px] border border-line bg-surface p-6 shadow-card sm:p-8 lg:col-span-5">
+        {/* Kanan: Kartu Info & Deskripsi Karya */}
+        <div className="flex flex-col space-y-6 rounded-[28px] border border-line bg-surface p-6 shadow-card sm:p-8 lg:col-span-5">
           {/* Kreator */}
           <Link
             href={`/creators/${initialArtwork.creator.username}`}
@@ -361,10 +361,15 @@ export default function ArtworkDetail({
               Kreator tidak menambahkan deskripsi tambahan.
             </p>
           )}
+        </div>
+      </div>
 
-          {/* Tombol Interaksi */}
-          {canInteract ? (
-            <div className="flex flex-wrap items-center gap-3 border-t border-line pt-5">
+      {/* Bawah: Interaksi (Suka, Favorit, Laporkan) & Percakapan di Balik Karya */}
+      <div className="space-y-6 rounded-[28px] border border-line bg-surface p-6 shadow-card sm:p-8">
+        {/* Tombol Interaksi */}
+        {canInteract ? (
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <Button
                 variant={liked ? 'primary' : 'tonal'}
                 size="sm"
@@ -387,116 +392,116 @@ export default function ArtworkDetail({
                   {favorited ? 'Tersimpan' : 'Simpan favorit'} · {favoriteCount}
                 </span>
               </Button>
-              {canReport && !isOwnArtwork ? (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setReportOpen(true)}
-                  className="text-[#FCA5A5]"
-                >
-                  Laporkan karya
-                </Button>
-              ) : null}
             </div>
-          ) : (
-            <div className="space-y-3 border-t border-line pt-5">
-              <p className="tabular-nums text-sm text-ink-soft">
-                <span className="font-semibold text-ink">{likeCount}</span> suka ·{' '}
-                <span className="font-semibold text-ink">{favoriteCount}</span> favorit ·{' '}
-                <span className="font-semibold text-ink">
-                  {commentsMeta.total || comments.length}
-                </span>{' '}
-                komentar
-              </p>
-              {!viewer ? (
-                <Alert tone="info">
-                  <span>
-                    Ingin menyukai, menyimpan favorit, atau memberi komentar?{' '}
-                    <Link
-                      href={`/login?next=/artworks/${initialArtwork.artwork_id}`}
-                      className="font-semibold underline"
-                    >
-                      Masuk sebagai Member →
-                    </Link>
-                  </span>
-                </Alert>
-              ) : null}
-            </div>
-          )}
-
-          {/* Percakapan di balik karya */}
-          <section className="space-y-4 border-t border-line pt-6">
-            <h2 className="tabular-nums text-xl font-semibold text-ink">
-              Percakapan di balik karya ({commentsMeta.total || comments.length})
-            </h2>
-
-            {canInteract ? (
-              <form onSubmit={handleAddComment} className="space-y-3">
-                <FormField
-                  label="Tulis komentar"
-                  name="comment_content"
-                  as="textarea"
-                  rows={3}
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  placeholder="Bagikan apresiasi atau masukan yang membangun..."
-                  helperText="Maksimal 1000 karakter."
-                />
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="sm"
-                  loading={commentLoading}
-                  disabled={!commentText.trim()}
-                >
-                  Kirim komentar
-                </Button>
-              </form>
+            {canReport && !isOwnArtwork ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setReportOpen(true)}
+                className="text-[#FCA5A5]"
+              >
+                Laporkan karya
+              </Button>
             ) : null}
-
-            {comments.length === 0 ? (
-              <p className="rounded-[18px] bg-brand-50/75 p-4 text-sm text-ink-soft">
-                Belum ada komentar pada karya ini.
-              </p>
-            ) : (
-              <ul className="space-y-3">
-                {comments.map((c) => (
-                  <li
-                    key={c.comment_id}
-                    className="rounded-[18px] border border-line bg-canvas p-4"
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <p className="tabular-nums text-sm text-ink-soft">
+              <span className="font-semibold text-ink">{likeCount}</span> suka ·{' '}
+              <span className="font-semibold text-ink">{favoriteCount}</span> favorit ·{' '}
+              <span className="font-semibold text-ink">
+                {commentsMeta.total || comments.length}
+              </span>{' '}
+              komentar
+            </p>
+            {!viewer ? (
+              <Alert tone="info">
+                <span>
+                  Ingin menyukai, menyimpan favorit, atau memberi komentar?{' '}
+                  <Link
+                    href={`/login?next=/artworks/${initialArtwork.artwork_id}`}
+                    className="font-semibold underline"
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <Link
-                          href={`/creators/${c.author.username}`}
-                          className="text-sm font-semibold text-ink hover:text-brand-700"
-                        >
-                          {c.author.display_name}
-                        </Link>
-                        <span className="ml-2 text-xs text-ink-mute">
-                          {formatDateTimeId(c.created_at)}
-                        </span>
-                      </div>
-                      {viewer && viewer.user_id === c.author.user_id ? (
-                        <button
-                          type="button"
-                          disabled={deletingCommentId === c.comment_id}
-                          onClick={() => handleDeleteComment(c.comment_id)}
-                          className="text-xs font-semibold text-[#FCA5A5] hover:underline disabled:opacity-50"
-                        >
-                          {deletingCommentId === c.comment_id ? 'Menghapus…' : 'Hapus'}
-                        </button>
-                      ) : null}
+                    Masuk sebagai Member →
+                  </Link>
+                </span>
+              </Alert>
+            ) : null}
+          </div>
+        )}
+
+        {/* Percakapan di balik karya */}
+        <section className="space-y-4 border-t border-line pt-6">
+          <h2 className="tabular-nums text-xl font-semibold text-ink">
+            Percakapan di balik karya ({commentsMeta.total || comments.length})
+          </h2>
+
+          {canInteract ? (
+            <form onSubmit={handleAddComment} className="space-y-3">
+              <FormField
+                label="Tulis komentar"
+                name="comment_content"
+                as="textarea"
+                rows={3}
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                placeholder="Bagikan apresiasi atau masukan yang membangun..."
+                helperText="Maksimal 1000 karakter."
+              />
+              <Button
+                type="submit"
+                variant="primary"
+                size="sm"
+                loading={commentLoading}
+                disabled={!commentText.trim()}
+              >
+                Kirim komentar
+              </Button>
+            </form>
+          ) : null}
+
+          {comments.length === 0 ? (
+            <p className="rounded-[18px] bg-brand-50/75 p-4 text-sm text-ink-soft">
+              Belum ada komentar pada karya ini.
+            </p>
+          ) : (
+            <ul className="space-y-3">
+              {comments.map((c) => (
+                <li
+                  key={c.comment_id}
+                  className="rounded-[18px] border border-line bg-canvas p-4"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <Link
+                        href={`/creators/${c.author.username}`}
+                        className="text-sm font-semibold text-ink hover:text-brand-700"
+                      >
+                        {c.author.display_name}
+                      </Link>
+                      <span className="ml-2 text-xs text-ink-mute">
+                        {formatDateTimeId(c.created_at)}
+                      </span>
                     </div>
-                    <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink-soft">
-                      {c.content}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        </div>
+                    {viewer && viewer.user_id === c.author.user_id ? (
+                      <button
+                        type="button"
+                        disabled={deletingCommentId === c.comment_id}
+                        onClick={() => handleDeleteComment(c.comment_id)}
+                        className="text-xs font-semibold text-[#FCA5A5] hover:underline disabled:opacity-50"
+                      >
+                        {deletingCommentId === c.comment_id ? 'Menghapus…' : 'Hapus'}
+                      </button>
+                    ) : null}
+                  </div>
+                  <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink-soft">
+                    {c.content}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
 
       {/* Modal Layar Penuh */}
