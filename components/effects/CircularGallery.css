@@ -35,8 +35,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  line-height: 1.2;
+  line-height: 1.25;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
   will-change: transform, opacity;
 }
 

@@ -538,7 +538,8 @@ const CircularGallery = ({
 
     const measure = () => {
       const s = settingsRef.current;
-      const height = 0.6 * view.height * s.itemSize;
+      const titleReserve = s.showTitles ? Math.max(40, view.height * 0.1) : 0;
+      const height = 0.6 * Math.max(120, view.height - titleReserve) * s.itemSize;
       const width = height * s.itemAspect;
       const scale = Math.min(1, (view.width * 0.82) / width);
       return {
@@ -584,7 +585,12 @@ const CircularGallery = ({
       const introEase = 1 - Math.pow(1 - state.intro, 3);
       const scroll = state.scroll + (1 - introEase) * spacing * 1.6;
       const margin = Math.max(20, Math.min(view.width, view.height) * 0.06);
-      const baseLabel = h * 0.072 * fontScale(fontRef.current);
+      const baseY = s.showTitles ? Math.min(view.height * 0.065, 32) : 0;
+      const baseLabel = clamp(
+        h * 0.058 * fontScale(fontRef.current),
+        13,
+        18
+      );
       const openFrame = (item) => {
         const aspect = textureFor(item.image).aspect || w / h;
         const titleSpace =
@@ -631,7 +637,7 @@ const CircularGallery = ({
           item,
           entry,
           x: mix(x, 0, focus),
-          y: mix(arc.y, frame.y, focus) - (1 - shown) * h * 0.18,
+          y: mix(arc.y + baseY, frame.y, focus) - (1 - shown) * h * 0.18,
           angle: arc.angle * (1 - focus),
           w: mix(w, frame.width, focus) * lift,
           h: mix(h, frame.height, focus) * lift,
@@ -757,13 +763,19 @@ const CircularGallery = ({
             entry.el.style.font = fontName;
           }
           const size = card.labelSize;
-          const offset = card.h / 2 + size * 1.1;
+          const offset = card.h / 2 + size * 1.25;
+          const maxLabelWidth = mix(
+            card.w * 0.94,
+            Math.min(view.width - 32, Math.max(card.w, 600)),
+            card.focus
+          );
           const x = card.x + Math.sin(card.angle) * offset;
           const y = card.y - Math.cos(card.angle) * offset;
           const cssX = view.width / 2 + x;
           const cssY = view.height / 2 - y;
           const edge = fade(cssX / view.width) * fade(1 - cssX / view.width);
           entry.el.style.fontSize = `${size}px`;
+          entry.el.style.maxInlineSize = `${Math.max(80, Math.round(maxLabelWidth))}px`;
           entry.el.style.color = s.textColor;
           entry.el.style.transform = `translate(${cssX}px, ${cssY}px) translate(-50%, -50%) rotate(${-card.angle}rad)`;
           entry.el.style.opacity = String(
