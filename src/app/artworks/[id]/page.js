@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import ArtworkDetail from '@/components/features/artworks/ArtworkDetail';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
-import { getCurrentUser } from '@/lib/auth/session';
+import { getPublicViewer } from '@/lib/auth/page-guards';
 import { canInteract, canReport } from '@/lib/shared/permissions';
 import { findPublicArtworkById } from '@/lib/repositories/artworks';
 import { listArtworkComments } from '@/lib/repositories/interactions';
@@ -23,13 +23,14 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ArtworkDetailPage({ params }) {
+  const viewer = await getPublicViewer();
+
   const { id } = await params;
   const artworkId = Number(id);
   if (!Number.isInteger(artworkId) || artworkId <= 0) {
     notFound();
   }
 
-  const viewer = await getCurrentUser();
   const artwork = await findPublicArtworkById(
     artworkId,
     viewer?.status === 'active' ? viewer.user_id : null

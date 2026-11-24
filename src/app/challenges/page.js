@@ -4,7 +4,7 @@ import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import StepCard from '@/components/cards/StepCard';
 import WinnerPodium from '@/components/cards/WinnerPodium';
-import { getCurrentUser } from '@/lib/auth/session';
+import { getPublicViewer } from '@/lib/auth/page-guards';
 import {
   listLatestAnnouncedWinners,
   listPublicChallenges,
@@ -17,13 +17,14 @@ export const metadata = {
 };
 
 export default async function ChallengesPage({ searchParams }) {
+  const user = await getPublicViewer();
+
   const sp = await searchParams;
   const status = sp?.status || '';
   const q = sp?.q || '';
   const page = Math.max(1, Number(sp?.page || '1') || 1);
 
-  const [user, result, openChallengesData, latestWinnersData] = await Promise.all([
-    getCurrentUser(),
+  const [result, openChallengesData, latestWinnersData] = await Promise.all([
     listPublicChallenges({ status, q, page, limit: 12 }),
     listPublicChallenges({ status: 'open', limit: 1 }),
     listLatestAnnouncedWinners(),

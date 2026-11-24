@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import CreatorProfile from '@/components/features/creators/CreatorProfile';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
-import { getCurrentUser } from '@/lib/auth/session';
+import { getPublicViewer } from '@/lib/auth/page-guards';
 import { findPublicCreatorByUsername } from '@/lib/repositories/artworks';
 
 export const dynamic = 'force-dynamic';
@@ -18,14 +18,13 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CreatorProfilePage({ params, searchParams }) {
+  const viewer = await getPublicViewer();
+
   const { username } = await params;
   const sp = await searchParams;
   const page = Math.max(1, Number(sp?.page || '1') || 1);
 
-  const [viewer, data] = await Promise.all([
-    getCurrentUser(),
-    findPublicCreatorByUsername(username, { page, limit: 12 }),
-  ]);
+  const data = await findPublicCreatorByUsername(username, { page, limit: 12 });
 
   if (!data) {
     notFound();

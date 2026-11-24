@@ -106,7 +106,6 @@ export default function AdminDashboardBento({ stats }) {
       title: `${stats.challenges.open} Terbuka · ${stats.challenges.closed} Ditutup`,
       description: `${stats.challenges.announced} tantangan telah diumumkan pemenangnya.`,
       icon: <HugeiconsIcon icon={Award01Icon} size={16} strokeWidth={1.8} />,
-      href: '/challenges',
       colSpan: 2,
       visual: (
         <div className="flex items-center justify-between gap-3 rounded-[12px] border border-[#233B69] bg-[#0B1730]/60 px-3.5 py-2.5">
@@ -128,7 +127,6 @@ export default function AdminDashboardBento({ stats }) {
       title: `${formatNumberId(stats.submissions.active_submissions)} Submission Aktif`,
       description: `Dari ${formatNumberId(stats.submissions.total_submissions)} total riwayat pengiriman karya.`,
       icon: <HugeiconsIcon icon={SentIcon} size={16} strokeWidth={1.8} />,
-      href: '/artworks',
       colSpan: 2,
       visual: (
         <div className="flex items-baseline justify-between gap-2 rounded-[12px] border border-[#233B69] bg-[#0B1730]/60 px-3.5 py-2.5">

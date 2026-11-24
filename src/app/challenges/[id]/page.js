@@ -8,7 +8,7 @@ import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import WinnerPodium from '@/components/cards/WinnerPodium';
-import { getCurrentUser } from '@/lib/auth/session';
+import { getPublicViewer } from '@/lib/auth/page-guards';
 import { todayInTz } from '@/lib/server/challenge-status';
 import { formatDateRangeId } from '@/lib/shared/format';
 import {
@@ -32,16 +32,15 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ChallengeDetailPage({ params }) {
+  const viewer = await getPublicViewer();
+
   const { id } = await params;
   const challengeId = Number(id);
   if (!Number.isInteger(challengeId) || challengeId <= 0) {
     notFound();
   }
 
-  const [viewer, challenge] = await Promise.all([
-    getCurrentUser(),
-    findPublicChallengeById(challengeId),
-  ]);
+  const challenge = await findPublicChallengeById(challengeId);
 
   if (!challenge) {
     notFound();

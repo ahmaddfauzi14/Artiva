@@ -42,13 +42,7 @@ function resolveRedirectTarget(user, nextParam) {
     ) {
       return nextParam;
     }
-    if (
-      user.role === 'admin' &&
-      (nextParam.startsWith('/dashboard/admin') ||
-        (!nextParam.startsWith('/dashboard') &&
-          !nextParam.startsWith('/me') &&
-          !nextParam.startsWith('/curator')))
-    ) {
+    if (user.role === 'admin' && nextParam.startsWith('/dashboard/admin')) {
       return nextParam;
     }
   }

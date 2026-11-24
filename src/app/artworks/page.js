@@ -2,7 +2,7 @@ import ArtworkExplorer from '@/components/features/artworks/ArtworkExplorer';
 import Button from '@/components/ui/Button';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
-import { getCurrentUser } from '@/lib/auth/session';
+import { getPublicViewer } from '@/lib/auth/page-guards';
 import { listPublicArtworks } from '@/lib/repositories/artworks';
 import { listActiveCategories } from '@/lib/repositories/categories';
 
@@ -13,12 +13,13 @@ export const metadata = {
 };
 
 export default async function ArtworksPage({ searchParams }) {
+  const user = await getPublicViewer();
+
   const sp = await searchParams;
   const q = sp?.q || '';
   const category = sp?.category || 'all';
 
-  const [user, categories, result] = await Promise.all([
-    getCurrentUser(),
+  const [categories, result] = await Promise.all([
     listActiveCategories(),
     listPublicArtworks({ q, category, limit: null }),
   ]);

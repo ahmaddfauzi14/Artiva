@@ -8,7 +8,7 @@ import HomeSearchBox from '@/components/features/home/HomeSearchBox';
 import Navbar from '@/components/layout/Navbar';
 import StepCard from '@/components/cards/StepCard';
 import WinnerPodium from '@/components/cards/WinnerPodium';
-import { getCurrentUser } from '@/lib/auth/session';
+import { getPublicViewer } from '@/lib/auth/page-guards';
 import { listPublicArtworks } from '@/lib/repositories/artworks';
 import { listActiveCategories } from '@/lib/repositories/categories';
 import {
@@ -18,15 +18,11 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-function getWorkspacePath(user) {
-  if (!user || user.role !== 'admin') return null;
-  return '/dashboard/admin';
-}
-
 export default async function HomePage() {
-  const [user, categories, artworksData, openChallengesData, latestWinnersData] =
+  const user = await getPublicViewer();
+
+  const [categories, artworksData, openChallengesData, latestWinnersData] =
     await Promise.all([
-      getCurrentUser(),
       listActiveCategories(),
       listPublicArtworks({ limit: 4 }),
       listPublicChallenges({ status: 'open', limit: 1 }),
@@ -42,7 +38,6 @@ export default async function HomePage() {
   const latestArtworks = artworksData.items || [];
   const heroArtwork = latestArtworks.find((item) => Boolean(item.image_url)) || null;
   const winners = latestWinnersData.winners || [];
-  const workspaceHref = getWorkspacePath(user);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -66,11 +61,7 @@ export default async function HomePage() {
               <Button variant="primary" size="lg" href="/artworks">
                 Jelajahi karya →
               </Button>
-              {workspaceHref ? (
-                <Button variant="secondary" size="lg" href={workspaceHref}>
-                  Buka ruang saya →
-                </Button>
-              ) : user?.role === 'member' ? (
+              {user?.role === 'member' ? (
                 <Button variant="secondary" size="lg" href="/me/artworks">
                   Karya saya →
                 </Button>
@@ -343,9 +334,7 @@ export default async function HomePage() {
                     ? user.status === 'active'
                       ? 'Lengkapi profil kurator'
                       : 'Status verifikasi kurator'
-                    : user
-                      ? 'Lengkapi portofoliomu'
-                      : 'Buat akun Member'
+                    : 'Buat akun Member'
               }
               description={
                 user?.role === 'member'
@@ -354,9 +343,7 @@ export default async function HomePage() {
                     ? user.status === 'active'
                       ? 'Perbarui nama penyelenggara, bio kurasi, dan tautan portofolio kuratormu.'
                       : 'Pantau status peninjauan pengajuan akun Kurator oleh tim Admin.'
-                    : user
-                      ? 'Kelola ruang karyamu dan perbarui profil kreator sesuai gaya visualmu.'
-                      : 'Siapkan profil kreator pribadimu dalam beberapa detik tanpa biaya.'
+                    : 'Siapkan profil kreator pribadimu dalam beberapa detik tanpa biaya.'
               }
               href={
                 user?.role === 'member'
@@ -365,7 +352,7 @@ export default async function HomePage() {
                     ? user.status === 'active'
                       ? '/curator/profile'
                       : '/curator/verification'
-                    : workspaceHref || '/register/member'
+                    : '/register/member'
               }
               ctaLabel={
                 user?.role === 'member'
@@ -374,9 +361,7 @@ export default async function HomePage() {
                     ? user.status === 'active'
                       ? 'Atur profil →'
                       : 'Lihat status →'
-                    : workspaceHref
-                      ? 'Buka ruang saya →'
-                      : 'Daftar Member →'
+                    : 'Daftar Member →'
               }
             />
             <StepCard
@@ -410,7 +395,7 @@ export default async function HomePage() {
 
         {/* 6. Panel CTA */}
         <section>
-          {user ? (
+          {user && (user.role === 'member' || user.role === 'curator') ? (
             <div className="edge-glow grid grid-cols-1 items-center gap-6 rounded-[28px] bg-grad-hero p-6 shadow-glass sm:p-8 lg:grid-cols-12">
               <div className="space-y-3 lg:col-span-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
@@ -419,9 +404,7 @@ export default async function HomePage() {
                 <h2 className="text-[28px] font-semibold leading-tight text-ink sm:text-[34px]">
                   {user.role === 'member'
                     ? 'Lanjutkan kreativitasmu di ARTIVA.'
-                    : user.role === 'curator'
-                      ? 'Lanjutkan kurasi tantangan di ARTIVA.'
-                      : 'Lanjutkan kreativitasmu di ruang ARTIVA.'}
+                    : 'Lanjutkan kurasi tantangan di ARTIVA.'}
                 </h2>
                 <p className="text-base text-ink-soft">
                   {user.role === 'curator'
@@ -436,20 +419,16 @@ export default async function HomePage() {
                   href={
                     user.role === 'member'
                       ? '/me/artworks'
-                      : user.role === 'curator'
-                        ? user.status === 'active'
-                          ? '/curator/challenges'
-                          : '/curator/verification'
-                        : workspaceHref
+                      : user.status === 'active'
+                        ? '/curator/challenges'
+                        : '/curator/verification'
                   }
                 >
                   {user.role === 'member'
                     ? 'Karya saya →'
-                    : user.role === 'curator'
-                      ? user.status === 'active'
-                        ? 'Kelola tantangan →'
-                        : 'Status verifikasi →'
-                      : 'Buka ruang saya →'}
+                    : user.status === 'active'
+                      ? 'Kelola tantangan →'
+                      : 'Status verifikasi →'}
                 </Button>
                 <Button variant="secondary" size="lg" href="/challenges">
                   Lihat tantangan →

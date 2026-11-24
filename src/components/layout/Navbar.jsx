@@ -15,10 +15,6 @@ import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/shared/api-client';
 import { getStatusMeta } from '@/lib/shared/status-styles';
 
-const DASHBOARD_HOME = {
-  admin: '/dashboard/admin',
-};
-
 const CURATOR_VERIFICATION_ITEMS = [
   {
     key: 'verification',
@@ -32,7 +28,6 @@ const CURATOR_VERIFICATION_ITEMS = [
 const ROLE_TITLE = {
   member: 'Member',
   curator: 'Kurator',
-  admin: 'Admin',
 };
 
 const PUBLIC_ITEMS = [
@@ -42,14 +37,6 @@ const PUBLIC_ITEMS = [
 ];
 
 const GOOEY_COLORS = ['#F2C94C', '#79A0E8', '#2856B8'];
-
-function getDashboardDestination(user) {
-  if (!user) return '/login';
-  if (user.role === 'curator' && user.status !== 'active') {
-    return '/curator/verification';
-  }
-  return DASHBOARD_HOME[user.role] || '/';
-}
 
 function getProfileNavItems(user) {
   if (!user) return null;
@@ -221,7 +208,6 @@ export default function Navbar({ user = null }) {
 
   const displayName = user?.display_name || user?.username || 'Pengguna';
   const statusMeta = user ? getStatusMeta('user', user.status) : null;
-  const workspaceHref = getDashboardDestination(user);
 
   const sharedGooeyProps = {
     items: PUBLIC_ITEMS,
@@ -348,47 +334,35 @@ export default function Navbar({ user = null }) {
                   </div>
 
                   <div className="mt-1.5 space-y-1">
-                    {profileNavItems ? (
-                      profileNavItems.map((item) => {
-                        const active = item.match(pathname);
-                        return (
-                          <Link
-                            key={item.key}
-                            role="menuitem"
-                            href={item.href}
-                            aria-current={active ? 'page' : undefined}
-                            onClick={() => setAccountMenuOpen(false)}
-                            className={`flex min-h-[44px] items-center gap-2.5 rounded-[12px] px-3 text-sm font-semibold transition-colors ${
-                              active
-                                ? 'border border-brand-200 bg-brand-100 text-brand-700'
-                                : 'text-ink hover:bg-brand-50 hover:text-brand-700'
-                            }`}
+                    {profileNavItems?.map((item) => {
+                      const active = item.match(pathname);
+                      return (
+                        <Link
+                          key={item.key}
+                          role="menuitem"
+                          href={item.href}
+                          aria-current={active ? 'page' : undefined}
+                          onClick={() => setAccountMenuOpen(false)}
+                          className={`flex min-h-[44px] items-center gap-2.5 rounded-[12px] px-3 text-sm font-semibold transition-colors ${
+                            active
+                              ? 'border border-brand-200 bg-brand-100 text-brand-700'
+                              : 'text-ink hover:bg-brand-50 hover:text-brand-700'
+                          }`}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="inline-flex h-5 w-5 shrink-0 items-center justify-center"
                           >
-                            <span
-                              aria-hidden="true"
-                              className="inline-flex h-5 w-5 shrink-0 items-center justify-center"
-                            >
-                              <HugeiconsIcon
-                                icon={item.icon}
-                                size={17}
-                                strokeWidth={1.85}
-                              />
-                            </span>
-                            <span className="truncate">{item.label}</span>
-                          </Link>
-                        );
-                      })
-                    ) : (
-                      <Link
-                        role="menuitem"
-                        href={workspaceHref}
-                        onClick={() => setAccountMenuOpen(false)}
-                        className="flex min-h-[44px] items-center justify-between rounded-[12px] px-3 text-sm font-semibold text-ink hover:bg-brand-50 hover:text-brand-700"
-                      >
-                        <span>Ruang saya</span>
-                        <span aria-hidden="true">→</span>
-                      </Link>
-                    )}
+                            <HugeiconsIcon
+                              icon={item.icon}
+                              size={17}
+                              strokeWidth={1.85}
+                            />
+                          </span>
+                          <span className="truncate">{item.label}</span>
+                        </Link>
+                      );
+                    })}
 
                     <hr className="my-1.5 border-line" />
 

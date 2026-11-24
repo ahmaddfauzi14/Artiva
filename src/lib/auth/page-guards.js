@@ -15,6 +15,14 @@ export function getHomeForUser(user) {
   return DASHBOARD_HOME_BY_ROLE[user.role] || '/';
 }
 
+export async function getPublicViewer() {
+  const user = await getCurrentUser();
+  if (user && user.role === 'admin' && user.status !== 'suspended') {
+    redirect(DASHBOARD_HOME_BY_ROLE.admin);
+  }
+  return user;
+}
+
 export async function requirePageRole(allowedRoles, nextPath = '/dashboard') {
   const user = await getCurrentUser();
   if (!user) {

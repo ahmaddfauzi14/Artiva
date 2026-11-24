@@ -31,7 +31,10 @@ function resolveCurrentSection(role, pathname) {
 function DashboardTopbar({ user, triggerRef, mobileOpen, onOpenMobile }) {
   const pathname = usePathname();
 
-  const space = ROLE_SPACE[user.role] || { label: 'Ruang', href: '/' };
+  const space = ROLE_SPACE[user.role] || {
+    label: 'Ruang Admin',
+    href: '/dashboard/admin',
+  };
   const sectionLabel = resolveCurrentSection(user.role, pathname);
 
   return (
@@ -59,24 +62,16 @@ function DashboardTopbar({ user, triggerRef, mobileOpen, onOpenMobile }) {
             <span>Menu</span>
           </button>
 
-          <div>
-            <nav
-              aria-label="Breadcrumb ruang"
-              className="flex items-center gap-2 text-sm text-ink-soft"
-            >
-              <Link href={space.href} className="hover:text-brand-700">
-                {space.label}
-              </Link>
-              <span aria-hidden="true">/</span>
-              <span className="font-semibold text-ink">{sectionLabel}</span>
-            </nav>
-            <Link
-              href="/"
-              className="mt-0.5 inline-flex items-center gap-1 text-xs font-semibold text-brand-700 hover:underline"
-            >
-              <span aria-hidden="true">←</span> Kembali ke situs
+          <nav
+            aria-label="Breadcrumb ruang"
+            className="flex items-center gap-2 text-sm text-ink-soft"
+          >
+            <Link href={space.href} className="hover:text-brand-700">
+              {space.label}
             </Link>
-          </div>
+            <span aria-hidden="true">/</span>
+            <span className="font-semibold text-ink">{sectionLabel}</span>
+          </nav>
         </div>
 
         <p className="text-sm font-semibold text-brand-700">
