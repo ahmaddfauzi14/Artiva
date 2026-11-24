@@ -753,7 +753,7 @@
 /* ========================================================================
    GERAK OPT-IN (modern-web-guidance: motion)
    Default statis. Animasi compositor-only (opacity + transform) hanya aktif
-   saat prefers-reduced-motion: no-preference DAN MotionToggle aktif.
+   saat prefers-reduced-motion: no-preference aktif.
    ======================================================================== */
 @keyframes wpPodiumRise {
   from {
@@ -810,7 +810,7 @@
   }
 }
 
-/* Saat MotionToggle dijeda, seluruh gerak podium berhenti di state akhir */
+/* Saat prefers-reduced-motion aktif, seluruh gerak podium berhenti di state akhir */
 html[data-motion='paused'] .wp-slot,
 html[data-motion='paused'] .wp-beam-cone,
 .wp-stage[data-motion-active='false'] .wp-slot,

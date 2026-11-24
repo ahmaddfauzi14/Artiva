@@ -2,51 +2,17 @@
 
 import {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useSyncExternalStore,
 } from 'react';
 
 const MotionContext = createContext({
-  motionPaused: false,
   reducedMotion: false,
   isMotionActive: true,
-  toggleMotion: () => {},
 });
 
-const STORAGE_KEY = 'artiva_motion_paused';
-const listeners = new Set();
-
-function notifyListeners() {
-  for (const listener of listeners) {
-    listener();
-  }
-}
-
-function subscribeStorage(callback) {
-  listeners.add(callback);
-  const onStorage = (e) => {
-    if (e.key === STORAGE_KEY) callback();
-  };
-  window.addEventListener('storage', onStorage);
-  return () => {
-    listeners.delete(callback);
-    window.removeEventListener('storage', onStorage);
-  };
-}
-
-function getPausedSnapshot() {
-  try {
-    return window.localStorage.getItem(STORAGE_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
-function getServerPausedSnapshot() {
-  return false;
-}
+const LEGACY_STORAGE_KEY = 'artiva_motion_paused';
 
 function subscribeReducedMotion(callback) {
   const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -63,12 +29,6 @@ function getServerReducedSnapshot() {
 }
 
 export function MotionProvider({ children }) {
-  const motionPaused = useSyncExternalStore(
-    subscribeStorage,
-    getPausedSnapshot,
-    getServerPausedSnapshot
-  );
-
   const reducedMotion = useSyncExternalStore(
     subscribeReducedMotion,
     getReducedSnapshot,
@@ -76,26 +36,23 @@ export function MotionProvider({ children }) {
   );
 
   useEffect(() => {
-    const paused = motionPaused || reducedMotion;
-    document.documentElement.dataset.motion = paused ? 'paused' : 'active';
-  }, [motionPaused, reducedMotion]);
-
-  const toggleMotion = useCallback(() => {
-    const current = getPausedSnapshot();
     try {
-      window.localStorage.setItem(STORAGE_KEY, current ? '0' : '1');
+      window.localStorage.removeItem(LEGACY_STORAGE_KEY);
     } catch {
       // Ignore storage failures in restricted contexts.
     }
-    notifyListeners();
   }, []);
 
-  const isMotionActive = !motionPaused && !reducedMotion;
+  useEffect(() => {
+    document.documentElement.dataset.motion = reducedMotion
+      ? 'paused'
+      : 'active';
+  }, [reducedMotion]);
+
+  const isMotionActive = !reducedMotion;
 
   return (
-    <MotionContext.Provider
-      value={{ motionPaused, reducedMotion, isMotionActive, toggleMotion }}
-    >
+    <MotionContext.Provider value={{ reducedMotion, isMotionActive }}>
       {children}
     </MotionContext.Provider>
   );

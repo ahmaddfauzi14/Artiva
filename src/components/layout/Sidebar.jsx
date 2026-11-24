@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 import ArtivaLogo from '@/components/layout/ArtivaLogo';
 import Avatar from '@/components/ui/Avatar';
 import Button from '@/components/ui/Button';
-import MotionToggle from '@/components/effects/MotionToggle';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/shared/api-client';
 import { getStatusMeta } from '@/lib/shared/status-styles';
@@ -361,8 +360,6 @@ export default function Sidebar({
               </div>
             ) : null}
           </div>
-
-          {!isCompact ? <MotionToggle fullWidth /> : null}
 
           <Button
             variant="secondary"

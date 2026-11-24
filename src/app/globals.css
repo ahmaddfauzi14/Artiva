@@ -287,7 +287,9 @@ dialog::backdrop {
   left: -160px;
   top: -200px;
   background: var(--color-aurora-violet);
-  animation: drift-a 28s ease-in-out infinite alternate;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: drift-a 28s ease-in-out infinite alternate;
+  }
 }
 
 .aurora-blob.b2 {
@@ -297,7 +299,9 @@ dialog::backdrop {
   top: 120px;
   background: var(--color-aurora-sky);
   opacity: 0.32;
-  animation: drift-b 34s ease-in-out infinite alternate;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: drift-b 34s ease-in-out infinite alternate;
+  }
 }
 
 .aurora-blob.b3 {
@@ -307,7 +311,9 @@ dialog::backdrop {
   bottom: -240px;
   background: var(--color-aurora-mint);
   opacity: 0.28;
-  animation: drift-a 40s ease-in-out infinite alternate-reverse;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: drift-a 40s ease-in-out infinite alternate-reverse;
+  }
 }
 
 .aurora-blob.b4 {
@@ -317,7 +323,9 @@ dialog::backdrop {
   top: 4%;
   background: var(--color-aurora-peach);
   opacity: 0.16;
-  animation: drift-b 46s ease-in-out infinite alternate;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: drift-b 46s ease-in-out infinite alternate;
+  }
 }
 
 @media (max-width: 640px) {
