@@ -7,6 +7,7 @@ import Avatar from '@/components/ui/Avatar';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import FormField from '@/components/ui/FormField';
+import PulseHeart from '@/components/effects/PulseHeart';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/shared/api-client';
 import { formatDateId, formatDateTimeId } from '@/lib/shared/format';
@@ -370,28 +371,36 @@ export default function ArtworkDetail({
         {canInteract ? (
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3">
-              <Button
-                variant={liked ? 'primary' : 'tonal'}
-                size="sm"
-                loading={likeBusy}
-                onClick={toggleLike}
-                aria-pressed={liked}
-              >
-                <span className="tabular-nums">
-                  {liked ? 'Disukai' : 'Suka'} · {likeCount}
-                </span>
-              </Button>
-              <Button
-                variant={favorited ? 'primary' : 'tonal'}
-                size="sm"
-                loading={favBusy}
-                onClick={toggleFavorite}
-                aria-pressed={favorited}
-              >
-                <span className="tabular-nums">
-                  {favorited ? 'Tersimpan' : 'Simpan favorit'} · {favoriteCount}
-                </span>
-              </Button>
+              <PulseHeart
+                liked={liked}
+                count={likeCount}
+                onChange={toggleLike}
+                icon="heart"
+                size={28}
+                corner={999}
+                likedColor="#ff4d6d"
+                idleColor="#8FA4C7"
+                pillColor="#162950"
+                textColor="#F7F3E6"
+                idleText="Suka"
+                likedText="Disukai"
+                label={liked ? 'Batal sukai karya' : 'Sukai karya'}
+              />
+              <PulseHeart
+                liked={favorited}
+                count={favoriteCount}
+                onChange={toggleFavorite}
+                icon="bookmark"
+                size={28}
+                corner={999}
+                likedColor="#F2C94C"
+                idleColor="#8FA4C7"
+                pillColor="#162950"
+                textColor="#F7F3E6"
+                idleText="Favorit"
+                likedText="Disimpan"
+                label={favorited ? 'Hapus dari simpanan' : 'Simpan karya'}
+              />
             </div>
             {canReport && !isOwnArtwork ? (
               <Button
