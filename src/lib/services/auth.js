@@ -40,6 +40,7 @@ function toPublicSessionUser(row) {
             verification_id: row.verification_id,
             status: row.verification_status,
             note: row.verification_note || null,
+            appeal_note: row.verification_appeal_note || null,
             submitted_at: row.verification_submitted_at,
             reviewed_at: row.verification_reviewed_at,
           }

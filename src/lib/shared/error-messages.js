@@ -21,6 +21,7 @@ export const ERROR_MESSAGES = {
   CATEGORY_IN_USE: 'Kategori masih dipakai oleh karya atau tantangan. Nonaktifkan kategori alih-alih menghapusnya.',
   HAS_RELATIONS: 'Akun memiliki riwayat aktivitas sehingga tidak dapat dihapus permanen. Nonaktifkan akun sebagai gantinya.',
   INVALID_STATE: 'Tindakan belum dapat dilakukan pada status saat ini.',
+  APPEAL_LIMIT_REACHED: 'Batas maksimal aju banding (3 kali) telah tercapai. Kamu dapat menghapus akun ini bila ingin mendaftar ulang.',
   RATE_LIMITED: 'Terlalu banyak percobaan. Coba lagi beberapa saat lagi.',
   INTERNAL_ERROR: 'Terjadi kesalahan pada server. Silakan coba lagi.',
 };

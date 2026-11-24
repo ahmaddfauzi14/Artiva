@@ -18,12 +18,13 @@ export async function findUserForLogin(identifier, client = null) {
        cv.verification_id,
        cv.status AS verification_status,
        cv.note AS verification_note,
+       cv.appeal_note AS verification_appeal_note,
        cv.submitted_at AS verification_submitted_at,
        cv.reviewed_at AS verification_reviewed_at
      FROM users u
      LEFT JOIN profiles p ON p.user_id = u.user_id
      LEFT JOIN LATERAL (
-       SELECT verification_id, status, note, submitted_at, reviewed_at
+       SELECT verification_id, status, note, appeal_note, submitted_at, reviewed_at
        FROM curator_verifications
        WHERE user_id = u.user_id
        ORDER BY submitted_at DESC, verification_id DESC
@@ -87,7 +88,7 @@ export async function createUserWithProfile(
     const verRes = await query(
       `INSERT INTO curator_verifications (user_id, status)
        VALUES ($1, 'pending')
-       RETURNING verification_id, status, note, submitted_at, reviewed_at`,
+       RETURNING verification_id, status, note, appeal_note, submitted_at, reviewed_at`,
       [user.user_id],
       client
     );

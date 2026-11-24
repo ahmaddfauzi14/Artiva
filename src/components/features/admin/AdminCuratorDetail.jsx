@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
@@ -15,6 +15,7 @@ import { formatDateTimeId, getInitials } from '@/lib/shared/format';
 export default function AdminCuratorDetail({ initialVerification }) {
   const router = useRouter();
   const { showToast } = useToast();
+  const historyListId = useId();
 
   const [verification, setVerification] = useState(initialVerification);
   const [rejectNote, setRejectNote] = useState('');
@@ -22,6 +23,7 @@ export default function AdminCuratorDetail({ initialVerification }) {
   const [approveOpen, setApproveOpen] = useState(false);
   const [rejectOpen, setRejectOpen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   const isPending = verification.status === 'pending';
 
@@ -82,6 +84,11 @@ export default function AdminCuratorDetail({ initialVerification }) {
       ? verification.website
       : null;
 
+  const maxAppeals = verification.max_appeals ?? 3;
+  const appealNumber = verification.appeal_number ?? 0;
+  const remainingAfterReject = Math.max(0, maxAppeals - appealNumber);
+  const history = Array.isArray(verification.history) ? verification.history : [];
+
   return (
     <div className="space-y-6">
       <div>
@@ -99,14 +106,25 @@ export default function AdminCuratorDetail({ initialVerification }) {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-600">
-                RG-{String(verification.verification_id).padStart(3, '0')} · Diajukan{' '}
+                RG-{String(verification.verification_id).padStart(3, '0')}
+                {appealNumber > 0
+                  ? ` · Banding ke-${appealNumber} dari ${maxAppeals}`
+                  : ' · Pengajuan awal'}
+                {' · Diajukan '}
                 {formatDateTimeId(verification.submitted_at)}
               </p>
               <h2 className="mt-1 text-2xl font-semibold text-ink">
-                Detail pengajuan kurator
+                {appealNumber > 0
+                  ? `Detail banding kurator ke-${appealNumber}`
+                  : 'Detail pengajuan kurator'}
               </h2>
             </div>
-            <StatusBadge domain="verification" status={verification.status} />
+            <div className="flex flex-wrap items-center gap-2">
+              {appealNumber > 0 ? (
+                <StatusBadge tone="info" label={`Banding ke-${appealNumber}`} />
+              ) : null}
+              <StatusBadge domain="verification" status={verification.status} />
+            </div>
           </div>
 
           <div className="flex items-center gap-4 rounded-[18px] bg-brand-50/70 p-4">
@@ -115,6 +133,8 @@ export default function AdminCuratorDetail({ initialVerification }) {
                 <img
                   src={verification.avatar_url}
                   alt={verification.display_name}
+                  width={64}
+                  height={64}
                   className="h-full w-full object-cover"
                 />
               ) : (
@@ -131,10 +151,21 @@ export default function AdminCuratorDetail({ initialVerification }) {
             </div>
           </div>
 
+          {verification.appeal_note ? (
+            <div className="rounded-[18px] border border-[#264E91] bg-[#142B52]/70 p-4 space-y-1.5">
+              <p className="text-xs font-semibold uppercase tracking-[0.06em] text-[#9BC4FF]">
+                Catatan Banding dari Calon Kurator
+              </p>
+              <p className="whitespace-pre-line text-sm leading-relaxed text-ink">
+                {verification.appeal_note}
+              </p>
+            </div>
+          ) : null}
+
           <div className="space-y-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.06em] text-ink-mute">
-                Profil & Latar Belakang
+                Profil &amp; Latar Belakang
               </p>
               <p className="mt-1 whitespace-pre-line text-base text-ink-soft">
                 {verification.bio || 'Tidak ada bio.'}
@@ -150,13 +181,110 @@ export default function AdminCuratorDetail({ initialVerification }) {
                   href={safeWebsite}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-1 inline-block text-sm font-semibold text-brand-700 hover:underline"
+                  className="mt-1 inline-block break-all text-sm font-semibold text-brand-700 hover:underline"
                 >
-                  {safeWebsite} ↗
+                  {safeWebsite}
                 </a>
               </div>
             ) : null}
           </div>
+
+          {history.length > 1 ? (
+            <div className="space-y-3 border-t border-line pt-5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-ink-mute">
+                  Riwayat Pengajuan &amp; Peninjauan ({history.length})
+                </p>
+                <button
+                  type="button"
+                  aria-expanded={showHistory}
+                  aria-controls={historyListId}
+                  onClick={() => setShowHistory((prev) => !prev)}
+                  className="inline-flex min-h-[44px] -my-2 cursor-pointer items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-brand-700 hover:bg-brand-50/50 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60"
+                >
+                  <span>{showHistory ? 'Sembunyikan' : 'Lihat semua'}</span>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className={`h-4 w-4 motion-safe:transition-transform ${
+                      showHistory ? 'rotate-180' : ''
+                    }`}
+                  >
+                    <path d="M5 7.5l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
+              {showHistory ? (
+                <ol id={historyListId} className="space-y-3">
+                  {history.map((item) => {
+                    const isCurrent =
+                      item.verification_id === verification.verification_id;
+                    return (
+                      <li
+                        key={item.verification_id}
+                        className={`rounded-[16px] border p-4 text-sm space-y-2 ${
+                          isCurrent
+                            ? 'border-brand-700 bg-brand-50/40'
+                            : 'border-line bg-canvas'
+                        }`}
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-semibold text-ink">
+                              RG-{String(item.verification_id).padStart(3, '0')} ·{' '}
+                              {item.is_appeal
+                                ? `Banding ke-${item.appeal_number}`
+                                : 'Pengajuan awal'}
+                            </span>
+                            {isCurrent ? (
+                              <span className="text-xs font-semibold text-brand-700">
+                                (Sedang dilihat)
+                              </span>
+                            ) : (
+                              <Link
+                                href={`/dashboard/admin/curators/${item.verification_id}`}
+                                className="text-xs font-semibold text-brand-700 hover:underline"
+                              >
+                                Buka detail
+                              </Link>
+                            )}
+                          </div>
+                          <StatusBadge domain="verification" status={item.status} />
+                        </div>
+
+                        <p className="text-xs text-ink-mute">
+                          Diajukan {formatDateTimeId(item.submitted_at)}
+                          {item.reviewed_at
+                            ? ` · Diputuskan ${formatDateTimeId(item.reviewed_at)}`
+                            : ''}
+                          {item.reviewer_display_name || item.reviewer_username
+                            ? ` oleh ${item.reviewer_display_name || item.reviewer_username}`
+                            : ''}
+                        </p>
+
+                        {item.appeal_note ? (
+                          <p className="text-ink-soft">
+                            <span className="font-semibold text-ink">Catatan banding:</span>{' '}
+                            {item.appeal_note}
+                          </p>
+                        ) : null}
+
+                        {item.note ? (
+                          <p className="text-ink-soft">
+                            <span className="font-semibold text-ink">Catatan Admin:</span>{' '}
+                            {item.note}
+                          </p>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+                </ol>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
         {/* Kanan: Panel Keputusan */}
@@ -223,6 +351,14 @@ export default function AdminCuratorDetail({ initialVerification }) {
 
               <div className="rounded-[18px] bg-canvas p-4 text-sm text-ink-soft space-y-1">
                 <p>
+                  Tahap pengajuan:{' '}
+                  <strong className="text-ink">
+                    {appealNumber > 0
+                      ? `Banding ke-${appealNumber} dari ${maxAppeals}`
+                      : 'Pengajuan awal'}
+                  </strong>
+                </p>
+                <p>
                   Ditinjau oleh:{' '}
                   <strong className="text-ink">
                     {verification.reviewer_display_name ||
@@ -233,6 +369,14 @@ export default function AdminCuratorDetail({ initialVerification }) {
                 <p>
                   Waktu keputusan: {formatDateTimeId(verification.reviewed_at)}
                 </p>
+                {verification.status === 'rejected' ? (
+                  <p>
+                    Sisa kuota banding akun:{' '}
+                    <strong className="tabular-nums text-ink">
+                      {verification.remaining_appeals ?? 0} dari {maxAppeals}
+                    </strong>
+                  </p>
+                ) : null}
               </div>
             </div>
           )}
@@ -254,7 +398,11 @@ export default function AdminCuratorDetail({ initialVerification }) {
       <ConfirmModal
         open={rejectOpen}
         title="Tolak pengajuan Kurator?"
-        description="Calon Kurator akan melihat catatan penolakan ini dan dapat menghapus akunnya sendiri."
+        description={
+          remainingAfterReject > 0
+            ? `Calon Kurator akan melihat catatan penolakan ini dan masih memiliki ${remainingAfterReject} kesempatan aju banding (atau dapat menghapus akunnya sendiri).`
+            : `Ini adalah kesempatan banding terakhir (ke-${maxAppeals}). Setelah ditolak, calon Kurator tidak dapat mengajukan banding lagi dan hanya dapat menghapus akunnya sendiri.`
+        }
         infoBox={rejectNote}
         confirmLabel="Ya, tolak pengajuan"
         cancelLabel="Batal"

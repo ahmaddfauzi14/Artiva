@@ -60,9 +60,16 @@ export default function AdminCurators({
       colWidth: 'minmax(180px, 1.5fr)',
       render: (row) => (
         <div className="min-w-0">
-          <p className="font-semibold text-ink truncate">
-            {row.display_name || row.username}
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-semibold text-ink truncate">
+              {row.display_name || row.username}
+            </p>
+            {row.appeal_number > 0 ? (
+              <span className="inline-flex items-center rounded-full border border-[#264E91] bg-[#142B52] px-2 py-0.5 text-[11px] font-semibold text-[#9BC4FF] whitespace-nowrap">
+                Banding ke-{row.appeal_number}
+              </span>
+            ) : null}
+          </div>
           <p className="text-xs text-ink-mute truncate">
             @{row.username} · {row.email}
           </p>
@@ -140,7 +147,7 @@ export default function AdminCurators({
         loading={loading}
         emptyTitle="Tidak ada pengajuan pada status ini"
         emptyDescription="Semua pengajuan kurator yang sesuai filter akan tampil di sini."
-        authorityNote="Akses Admin: persetujuan mengaktifkan peran Kurator secara langsung; penolakan wajib disertai catatan minimal 5 karakter."
+        authorityNote="Akses Admin: persetujuan mengaktifkan peran Kurator secara langsung; penolakan wajib disertai catatan minimal 5 karakter. Calon Kurator dapat mengajukan banding maksimal 3 kali."
       />
 
       <Pagination

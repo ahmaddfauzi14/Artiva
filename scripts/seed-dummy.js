@@ -516,15 +516,26 @@ const REAL_USERS = [
     role: 'curator',
     status: 'pending',
     display_name: 'Dimas Pratama',
-    bio: 'Seniman media baru dan penggerak pameran instalasi arsitektur digital di Bandung.',
+    bio: 'Seniman media baru dan penggerak pameran instalasi arsitektur digital di Bandung. Telah mengkurasi 4 pameran kolektif media interaktif sejak 2022.',
     avatar_path: 'avatars/georges-seurat.jpg',
     website: 'https://artiva.local/portofolio/dimas',
-    verification: {
-      status: 'pending',
-      note: null,
-      submittedHoursAgo: 5,
-      reviewedHoursAgo: null,
-    },
+    verifications: [
+      {
+        status: 'rejected',
+        note: 'Mohon lengkapi ringkasan pengalaman pameran dan sertakan tautan portofolio kurasi yang bisa ditinjau.',
+        appeal_note: null,
+        submittedHoursAgo: 48,
+        reviewedHoursAgo: 30,
+      },
+      {
+        status: 'pending',
+        note: null,
+        appeal_note:
+          'Bio telah dilengkapi dengan rekam jejak 4 pameran kolektif media interaktif serta tautan portofolio kurasi aktif.',
+        submittedHoursAgo: 5,
+        reviewedHoursAgo: null,
+      },
+    ],
   },
   // Kurator ditolak (rejected — sesuai aturan sistem: users.status='pending' & curator_verifications.status='rejected')
   {
@@ -536,12 +547,15 @@ const REAL_USERS = [
     bio: 'Tertarik menyelenggarakan lomba desain di ARTIVA.',
     avatar_path: 'avatars/toulouse-lautrec.jpg',
     website: null,
-    verification: {
-      status: 'rejected',
-      note: 'Portofolio kurasi belum menyertakan tautan rekam jejak pameran, publikasi, atau katalog yang dapat diverifikasi.',
-      submittedHoursAgo: 96,
-      reviewedHoursAgo: 72,
-    },
+    verifications: [
+      {
+        status: 'rejected',
+        note: 'Portofolio kurasi belum menyertakan tautan rekam jejak pameran, publikasi, atau katalog yang dapat diverifikasi.',
+        appeal_note: null,
+        submittedHoursAgo: 96,
+        reviewedHoursAgo: 72,
+      },
+    ],
   },
   {
     username: 'kurator_ditolak_2',
@@ -549,15 +563,42 @@ const REAL_USERS = [
     role: 'curator',
     status: 'pending',
     display_name: 'Citra Pramesti',
-    bio: 'Kolektor seni digital pemula.',
+    bio: 'Kolektor seni digital pemula yang ingin mencoba membuat kompetisi ilustrasi.',
     avatar_path: 'avatars/claude-monet.jpg',
     website: null,
-    verification: {
-      status: 'rejected',
-      note: 'Profil dan bio pengajuan terlalu singkat dan belum mencantumkan bidang spesialisasi kurasi secara spesifik.',
-      submittedHoursAgo: 140,
-      reviewedHoursAgo: 110,
-    },
+    verifications: [
+      {
+        status: 'rejected',
+        note: 'Profil dan bio pengajuan terlalu singkat dan belum mencantumkan bidang spesialisasi kurasi secara spesifik.',
+        appeal_note: null,
+        submittedHoursAgo: 210,
+        reviewedHoursAgo: 196,
+      },
+      {
+        status: 'rejected',
+        note: 'Banding ke-1 belum menyertakan tautan situs, katalog, atau bukti pengalaman penyelenggaraan kegiatan seni.',
+        appeal_note:
+          'Saya sudah memperjelas minat di bidang ilustrasi digital dan siap menyelenggarakan tantangan komunitas.',
+        submittedHoursAgo: 170,
+        reviewedHoursAgo: 156,
+      },
+      {
+        status: 'rejected',
+        note: 'Banding ke-2 masih belum melampirkan referensi komunitas atau portofolio kurasi yang dapat diverifikasi.',
+        appeal_note:
+          'Saya berencana mengadakan tantangan bulanan kecil untuk ilustrator pemula dengan penilaian transparan.',
+        submittedHoursAgo: 130,
+        reviewedHoursAgo: 118,
+      },
+      {
+        status: 'rejected',
+        note: 'Banding ke-3 belum memenuhi kriteria verifikasi kurator karena belum ada rekam jejak kurasi maupun tautan portofolio terverifikasi.',
+        appeal_note:
+          'Mohon dipertimbangkan kembali, saya berkomitmen mengikuti seluruh pedoman penyelenggaraan tantangan ARTIVA.',
+        submittedHoursAgo: 92,
+        reviewedHoursAgo: 80,
+      },
+    ],
   },
   // Kurator ditangguhkan (suspended)
   {
@@ -1274,30 +1315,79 @@ async function runDummySeed() {
         [userId, u.display_name, u.bio, u.avatar_path, u.website]
       );
 
-      if (u.role === 'curator' && u.verification) {
-        const v = u.verification;
-        const existingVerif = await client.query(
-          `SELECT verification_id FROM curator_verifications WHERE user_id = $1 ORDER BY verification_id DESC LIMIT 1`,
+      const verifList = Array.isArray(u.verifications)
+        ? u.verifications
+        : u.verification
+          ? [u.verification]
+          : [];
+
+      if (u.role === 'curator' && verifList.length > 0) {
+        const existingVerifRes = await client.query(
+          `SELECT verification_id, status
+           FROM curator_verifications
+           WHERE user_id = $1
+           ORDER BY submitted_at ASC, verification_id ASC`,
           [userId]
         );
-        const submittedAt = new Date(nowMs - (v.submittedHoursAgo || 24) * 3600 * 1000);
-        const reviewedAt =
-          v.reviewedHoursAgo != null ? new Date(nowMs - v.reviewedHoursAgo * 3600 * 1000) : null;
-        const reviewer = v.status === 'pending' ? null : adminId;
+        const existingRows = existingVerifRes.rows;
+        const canUpdateInPlace =
+          existingRows.length === verifList.length &&
+          existingRows.every((row, idx) => row.status === verifList[idx].status);
 
-        if (existingVerif.rowCount === 0) {
+        if (!canUpdateInPlace && existingRows.length > 0) {
           await client.query(
-            `INSERT INTO curator_verifications (user_id, reviewed_by, status, note, submitted_at, reviewed_at)
-             VALUES ($1, $2, $3::verification_status, $4, $5, $6)`,
-            [userId, reviewer, v.status, v.note, submittedAt, reviewedAt]
+            `DELETE FROM curator_verifications WHERE user_id = $1`,
+            [userId]
           );
-        } else {
-          await client.query(
-            `UPDATE curator_verifications
-             SET reviewed_by = $1, status = $2::verification_status, note = $3, submitted_at = $4, reviewed_at = $5
-             WHERE verification_id = $6`,
-            [reviewer, v.status, v.note, submittedAt, reviewedAt, existingVerif.rows[0].verification_id]
+        }
+
+        for (let idx = 0; idx < verifList.length; idx++) {
+          const v = verifList[idx];
+          const submittedAt = new Date(
+            nowMs - (v.submittedHoursAgo || 24) * 3600 * 1000
           );
+          const reviewedAt =
+            v.reviewedHoursAgo != null
+              ? new Date(nowMs - v.reviewedHoursAgo * 3600 * 1000)
+              : null;
+          const reviewer = v.status === 'pending' ? null : adminId;
+          const appealNote = v.appeal_note ?? null;
+
+          if (canUpdateInPlace) {
+            await client.query(
+              `UPDATE curator_verifications
+               SET reviewed_by = $1,
+                   status = $2::verification_status,
+                   note = $3,
+                   appeal_note = $4,
+                   submitted_at = $5,
+                   reviewed_at = $6
+               WHERE verification_id = $7`,
+              [
+                reviewer,
+                v.status,
+                v.note ?? null,
+                appealNote,
+                submittedAt,
+                reviewedAt,
+                existingRows[idx].verification_id,
+              ]
+            );
+          } else {
+            await client.query(
+              `INSERT INTO curator_verifications (user_id, reviewed_by, status, note, appeal_note, submitted_at, reviewed_at)
+               VALUES ($1, $2, $3::verification_status, $4, $5, $6, $7)`,
+              [
+                userId,
+                reviewer,
+                v.status,
+                v.note ?? null,
+                appealNote,
+                submittedAt,
+                reviewedAt,
+              ]
+            );
+          }
         }
       }
     }

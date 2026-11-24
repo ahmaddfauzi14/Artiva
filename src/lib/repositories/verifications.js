@@ -1,5 +1,36 @@
 import { query } from '@/lib/server/db';
 import { toUploadUrl } from '@/lib/shared/format';
+import { MAX_CURATOR_APPEALS } from '@/lib/validators/verifications';
+
+export async function findVerificationHistoryByUserId(userId, client = null) {
+  const { rows } = await query(
+    `SELECT
+       cv.verification_id,
+       cv.user_id,
+       cv.reviewed_by,
+       cv.status,
+       cv.note,
+       cv.appeal_note,
+       cv.submitted_at,
+       cv.reviewed_at,
+       ru.username AS reviewer_username,
+       rp.display_name AS reviewer_display_name
+     FROM curator_verifications cv
+     LEFT JOIN users ru ON ru.user_id = cv.reviewed_by
+     LEFT JOIN profiles rp ON rp.user_id = ru.user_id
+     WHERE cv.user_id = $1
+     ORDER BY cv.submitted_at ASC, cv.verification_id ASC`,
+    [userId],
+    client
+  );
+
+  return rows.map((row, idx) => ({
+    ...row,
+    attempt_number: idx + 1,
+    appeal_number: idx,
+    is_appeal: idx > 0,
+  }));
+}
 
 export async function findLatestVerificationByUserId(userId, client = null) {
   const { rows } = await query(
@@ -9,6 +40,7 @@ export async function findLatestVerificationByUserId(userId, client = null) {
        cv.reviewed_by,
        cv.status,
        cv.note,
+       cv.appeal_note,
        cv.submitted_at,
        cv.reviewed_at,
        u.username,
@@ -29,9 +61,29 @@ export async function findLatestVerificationByUserId(userId, client = null) {
   );
   const row = rows[0];
   if (!row) return null;
+
+  const historyAsc = await findVerificationHistoryByUserId(userId, client);
+  const totalAttempts = historyAsc.length;
+  const appealCount = Math.max(0, totalAttempts - 1);
+  const remainingAppeals = Math.max(0, MAX_CURATOR_APPEALS - appealCount);
+  const currentAttempt =
+    historyAsc.find((item) => item.verification_id === row.verification_id)
+      ?.attempt_number ?? totalAttempts;
+
   return {
     ...row,
     avatar_url: toUploadUrl(row.avatar_path),
+    attempt_number: currentAttempt,
+    appeal_number: Math.max(0, currentAttempt - 1),
+    total_attempts: totalAttempts,
+    appeal_count: appealCount,
+    max_appeals: MAX_CURATOR_APPEALS,
+    remaining_appeals: remainingAppeals,
+    can_appeal:
+      row.status === 'rejected' &&
+      row.user_status === 'pending' &&
+      remainingAppeals > 0,
+    history: [...historyAsc].reverse(),
   };
 }
 
@@ -74,6 +126,7 @@ export async function listAdminVerifications({
          cv.user_id,
          cv.status,
          cv.note,
+         cv.appeal_note,
          cv.submitted_at,
          cv.reviewed_at,
          u.username,
@@ -81,6 +134,15 @@ export async function listAdminVerifications({
          u.status AS user_status,
          p.display_name,
          p.website,
+         (
+           SELECT COUNT(*)::int
+           FROM curator_verifications cv2
+           WHERE cv2.user_id = cv.user_id
+             AND (
+               cv2.submitted_at < cv.submitted_at
+               OR (cv2.submitted_at = cv.submitted_at AND cv2.verification_id <= cv.verification_id)
+             )
+         ) AS attempt_number,
          COUNT(*) OVER()::int AS total_count
        FROM curator_verifications cv
        JOIN users u ON u.user_id = cv.user_id
@@ -88,8 +150,10 @@ export async function listAdminVerifications({
        ${whereClause}
        ORDER BY
          CASE WHEN cv.status = 'pending' THEN 0 ELSE 1 END,
-         cv.submitted_at ASC,
-         cv.verification_id ASC
+         CASE WHEN cv.status = 'pending' THEN cv.submitted_at END ASC,
+         CASE WHEN cv.status = 'pending' THEN cv.verification_id END ASC,
+         cv.submitted_at DESC,
+         cv.verification_id DESC
        LIMIT ${limitParam} OFFSET ${offsetParam}`,
       params
     ),
@@ -104,7 +168,10 @@ export async function listAdminVerifications({
 
   const total = listRes.rows[0]?.total_count ?? 0;
   return {
-    items: listRes.rows,
+    items: listRes.rows.map((row) => ({
+      ...row,
+      appeal_number: Math.max(0, (row.attempt_number ?? 1) - 1),
+    })),
     counts: countsRes.rows[0] || { pending: 0, approved: 0, rejected: 0 },
     meta: { page, limit, total },
   };
@@ -118,6 +185,7 @@ export async function findAdminVerificationById(verificationId, client = null) {
        cv.reviewed_by,
        cv.status,
        cv.note,
+       cv.appeal_note,
        cv.submitted_at,
        cv.reviewed_at,
        u.username,
@@ -143,10 +211,48 @@ export async function findAdminVerificationById(verificationId, client = null) {
 
   const row = rows[0];
   if (!row) return null;
+
+  const historyAsc = await findVerificationHistoryByUserId(row.user_id, client);
+  const totalAttempts = historyAsc.length;
+  const appealCount = Math.max(0, totalAttempts - 1);
+  const attemptNumber =
+    historyAsc.find((item) => item.verification_id === row.verification_id)
+      ?.attempt_number ?? totalAttempts;
+
   return {
     ...row,
     avatar_url: toUploadUrl(row.avatar_path),
+    attempt_number: attemptNumber,
+    appeal_number: Math.max(0, attemptNumber - 1),
+    total_attempts: totalAttempts,
+    appeal_count: appealCount,
+    max_appeals: MAX_CURATOR_APPEALS,
+    remaining_appeals: Math.max(0, MAX_CURATOR_APPEALS - appealCount),
+    history: [...historyAsc].reverse(),
   };
+}
+
+export async function lockCuratorUserRow(userId, client) {
+  const { rows } = await query(
+    `SELECT user_id, role, status
+     FROM users
+     WHERE user_id = $1
+     FOR UPDATE`,
+    [userId],
+    client
+  );
+  return rows[0] || null;
+}
+
+export async function createCuratorAppealRow(userId, appealNote, client) {
+  const { rows } = await query(
+    `INSERT INTO curator_verifications (user_id, status, appeal_note)
+     VALUES ($1, 'pending', $2)
+     RETURNING verification_id, user_id, reviewed_by, status, note, appeal_note, submitted_at, reviewed_at`,
+    [userId, appealNote],
+    client
+  );
+  return rows[0];
 }
 
 export async function lockVerificationRow(verificationId, client) {
@@ -179,7 +285,7 @@ export async function activateCuratorUser(userId, client) {
   await query(
     `UPDATE users
      SET status = 'active'
-     WHERE user_id = $1 AND role = 'curator'`,
+     WHERE user_id = $1 AND role = 'curator' AND status = 'pending'`,
     [userId],
     client
   );

@@ -118,6 +118,13 @@ function mapPgError(err) {
     if (constraint === 'uq_report') {
       return fail('ALREADY_REPORTED', getErrorMessage('ALREADY_REPORTED'), 409);
     }
+    if (constraint === 'uq_cv_one_pending') {
+      return fail(
+        'INVALID_STATE',
+        'Pengajuan verifikasi atau banding kamu masih dalam antrean peninjauan Admin.',
+        409
+      );
+    }
     if (constraint.includes('categories')) {
       return fail('INVALID_STATE', 'Nama atau slug kategori sudah digunakan.', 409);
     }

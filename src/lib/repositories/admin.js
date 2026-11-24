@@ -69,7 +69,10 @@ export async function getAdminPlatformStats() {
            'verification' AS type,
            cv.verification_id AS item_id,
            COALESCE(p.display_name, u.username) AS title,
-           'Pengajuan Kurator' AS category_label,
+           CASE
+             WHEN cv.appeal_note IS NOT NULL THEN 'Banding Kurator'
+             ELSE 'Pengajuan Kurator'
+           END AS category_label,
            cv.submitted_at AS created_at
          FROM curator_verifications cv
          JOIN users u ON u.user_id = cv.user_id
