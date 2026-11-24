@@ -178,23 +178,9 @@ body {
   box-shadow: var(--shadow-btn);
 }
 
-.member-nav-cta[aria-current="page"]::after {
-  content: "";
-  position: absolute;
-  inset-inline: 1rem;
-  inset-block-end: 0.2rem;
-  border-block-end: 2.5px solid var(--color-brand-700);
-  border-radius: 9999px;
-  pointer-events: none;
-}
-
 @media (forced-colors: active) {
   .member-nav-cta[aria-current="page"] {
     outline: 2px solid Highlight;
-  }
-
-  .member-nav-cta[aria-current="page"]::after {
-    border-block-end-color: Highlight;
   }
 }
 

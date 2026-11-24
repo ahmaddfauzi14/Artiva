@@ -107,8 +107,8 @@ export default function ProfileSettings({ user }) {
         className="space-y-6 rounded-[28px] border border-line bg-surface p-6 shadow-card sm:p-8 lg:col-span-7"
       >
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-600">
-            PROFIL KREATOR
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
+            {user.role === 'curator' ? 'PROFIL KURATOR' : 'PROFIL KREATOR'}
           </p>
           <h2 className="mt-1 text-2xl font-semibold text-ink">
             Identitas yang tampil di ARTIVA

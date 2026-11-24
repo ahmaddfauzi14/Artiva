@@ -6,11 +6,11 @@ import { listCuratorChallenges } from '@/lib/repositories/curator-challenges';
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Tantangan Saya · ARTIVA',
+  title: 'Tantangan Saya · Kurator ARTIVA',
 };
 
 export default async function CuratorChallengesPage() {
-  const user = await requirePageRole('curator', '/dashboard/curator/challenges');
+  const user = await requirePageRole('curator', '/curator/challenges');
   const result = await listCuratorChallenges(user.user_id, {
     page: 1,
     limit: 50,
@@ -19,11 +19,11 @@ export default async function CuratorChallengesPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="RUANG KURATOR"
-        title="Tantangan Saya"
+        eyebrow="MANAJEMEN TANTANGAN"
+        title="Tantangan"
         subtitle="Kelola seluruh tantangan kreatif yang kamu buat, publikasikan draft, pantau karya masuk, dan umumkan pemenang."
         actionLabel="Buat tantangan →"
-        actionHref="/dashboard/curator/challenges/new"
+        actionHref="/curator/challenges/new"
       />
       <CuratorChallenges initialChallenges={result.items} />
     </div>

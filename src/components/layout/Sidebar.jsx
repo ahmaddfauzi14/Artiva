@@ -12,12 +12,10 @@ import { apiFetch } from '@/lib/shared/api-client';
 import { getStatusMeta } from '@/lib/shared/status-styles';
 
 const ROLE_SPACE_LABEL = {
-  curator: 'RUANG KURATOR',
   admin: 'RUANG ADMIN',
 };
 
 const ROLE_TITLE = {
-  curator: 'Kurator',
   admin: 'Admin',
 };
 
@@ -113,16 +111,6 @@ function MenuGlyph({ name }) {
 }
 
 export function getSidebarMenu(role) {
-  if (role === 'curator') {
-    return [
-      { key: 'dashboard', label: 'Dashboard', href: '/dashboard/curator', icon: 'grid' },
-      { key: 'challenges', label: 'Tantangan saya', href: '/dashboard/curator/challenges', icon: 'trophy' },
-      { key: 'submissions', label: 'Submission aktif', href: '/dashboard/curator?view=submissions', icon: 'send' },
-      { key: 'winners', label: 'Tentukan pemenang', href: '/dashboard/curator?view=winners', icon: 'shield' },
-      { key: 'announcements', label: 'Pengumuman', href: '/dashboard/curator?view=announcements', icon: 'frame' },
-    ];
-  }
-
   if (role === 'admin') {
     return [
       { key: 'dashboard', label: 'Dashboard', href: '/dashboard/admin', icon: 'grid' },
@@ -168,27 +156,6 @@ export default function Sidebar({
         pathname === item.href &&
         (!currentQuery || currentQuery === 'overview' || currentQuery === 'dashboard')
       );
-    }
-    if (
-      user.role === 'curator' &&
-      item.key === 'challenges' &&
-      pathname.startsWith('/dashboard/curator/challenges')
-    ) {
-      return !pathname.endsWith('/submissions') && !pathname.endsWith('/winners');
-    }
-    if (
-      user.role === 'curator' &&
-      item.key === 'submissions' &&
-      pathname.endsWith('/submissions')
-    ) {
-      return true;
-    }
-    if (
-      user.role === 'curator' &&
-      item.key === 'winners' &&
-      pathname.endsWith('/winners')
-    ) {
-      return true;
     }
     if (pathname === item.href) return true;
     if (item.href !== '/challenges' && pathname.startsWith(`${item.href}/`)) {

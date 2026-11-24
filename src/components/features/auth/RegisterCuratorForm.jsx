@@ -82,7 +82,7 @@ export default function RegisterCuratorForm() {
           Akun Kurator atas nama <strong>{createdUser.display_name}</strong> sedang berstatus menunggu peninjauan. Kamu akan dapat membuat tantangan setelah Admin menyetujui pengajuan ini.
         </Alert>
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button variant="primary" href="/dashboard/curator/verification">
+          <Button variant="primary" href="/curator/verification">
             Lihat status verifikasi →
           </Button>
           <Button variant="secondary" href="/">

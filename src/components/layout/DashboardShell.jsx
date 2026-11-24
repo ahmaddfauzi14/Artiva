@@ -1,34 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Suspense, useRef, useState } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 
 const ROLE_SPACE = {
-  curator: { label: 'Ruang Kurator', href: '/dashboard/curator' },
   admin: { label: 'Ruang Admin', href: '/dashboard/admin' },
 };
 
 const ROLE_TITLE = {
-  curator: 'Kurator',
   admin: 'Admin',
 };
 
-function resolveCurrentSection(role, pathname, queryKey) {
-  if (role === 'curator') {
-    if (pathname.includes('/challenges/new')) return 'Buat tantangan';
-    if (pathname.endsWith('/edit')) return 'Ubah tantangan';
-    if (pathname.endsWith('/submissions')) return 'Submission aktif';
-    if (pathname.endsWith('/winners')) return 'Penetapan pemenang';
-    if (pathname === '/dashboard/curator/challenges') return 'Tantangan saya';
-    if (queryKey === 'challenges') return 'Tantangan saya';
-    if (queryKey === 'submissions') return 'Submission aktif';
-    if (queryKey === 'winners') return 'Tentukan pemenang';
-    if (queryKey === 'announcements') return 'Pengumuman';
-    return 'Dashboard';
-  }
-
+function resolveCurrentSection(role, pathname) {
   if (role === 'admin') {
     if (pathname.startsWith('/dashboard/admin/curators/')) return 'Detail pengajuan';
     if (pathname.startsWith('/dashboard/admin/curators')) return 'Verifikasi kurator';
@@ -45,11 +30,9 @@ function resolveCurrentSection(role, pathname, queryKey) {
 
 function DashboardTopbar({ user, triggerRef, mobileOpen, onOpenMobile }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const queryKey = searchParams.get('tab') || searchParams.get('view') || '';
 
   const space = ROLE_SPACE[user.role] || { label: 'Ruang', href: '/' };
-  const sectionLabel = resolveCurrentSection(user.role, pathname, queryKey);
+  const sectionLabel = resolveCurrentSection(user.role, pathname);
 
   return (
     <header className="glass sticky top-0 z-30 border-x-0 border-t-0 border-b border-line">

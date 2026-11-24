@@ -4,20 +4,30 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useId, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Logout01Icon } from '@hugeicons/core-free-icons';
+import { Logout01Icon, Shield01Icon } from '@hugeicons/core-free-icons';
 import ArtivaLogo from '@/components/layout/ArtivaLogo';
 import Avatar from '@/components/ui/Avatar';
 import Button from '@/components/ui/Button';
 import GooeyNav from '@/components/effects/GooeyNav';
+import { CURATOR_NAV_ITEMS } from '@/components/features/curator/curator-nav';
 import { MEMBER_NAV_ITEMS } from '@/components/features/member/member-nav';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/shared/api-client';
 import { getStatusMeta } from '@/lib/shared/status-styles';
 
 const DASHBOARD_HOME = {
-  curator: '/dashboard/curator',
   admin: '/dashboard/admin',
 };
+
+const CURATOR_VERIFICATION_ITEMS = [
+  {
+    key: 'verification',
+    label: 'Status verifikasi',
+    href: '/curator/verification',
+    icon: Shield01Icon,
+    match: (pathname) => pathname.startsWith('/curator/verification'),
+  },
+];
 
 const ROLE_TITLE = {
   member: 'Member',
@@ -36,9 +46,20 @@ const GOOEY_COLORS = ['#F2C94C', '#79A0E8', '#2856B8'];
 function getDashboardDestination(user) {
   if (!user) return '/login';
   if (user.role === 'curator' && user.status !== 'active') {
-    return '/dashboard/curator/verification';
+    return '/curator/verification';
   }
   return DASHBOARD_HOME[user.role] || '/';
+}
+
+function getProfileNavItems(user) {
+  if (!user) return null;
+  if (user.role === 'member') return MEMBER_NAV_ITEMS;
+  if (user.role === 'curator') {
+    return user.status === 'active'
+      ? CURATOR_NAV_ITEMS
+      : CURATOR_VERIFICATION_ITEMS;
+  }
+  return null;
 }
 
 function getActivePublicIndex(pathname) {
@@ -67,7 +88,9 @@ export default function Navbar({ user = null }) {
   const isAuthPage =
     pathname === '/login' || pathname.startsWith('/register');
   const activePublicIndex = getActivePublicIndex(pathname);
-  const isMemberRoute = pathname.startsWith('/me');
+  const isAccountRoute =
+    pathname.startsWith('/me') || pathname.startsWith('/curator');
+  const profileNavItems = getProfileNavItems(user);
 
   const getMenuItems = () => {
     if (!menuPanelRef.current) return [];
@@ -275,7 +298,7 @@ export default function Navbar({ user = null }) {
                 onClick={handleTriggerClick}
                 onKeyDown={handleTriggerKeyDown}
                 className={`inline-flex min-h-[44px] items-center gap-2 rounded-full border p-1 pr-2.5 shadow-card-sm transition-all hover:-translate-y-px hover:border-brand-400 ${
-                  accountMenuOpen || isMemberRoute
+                  accountMenuOpen || isAccountRoute
                     ? 'border-brand-700 bg-brand-50/90'
                     : 'border-line bg-surface/90'
                 }`}
@@ -317,15 +340,16 @@ export default function Navbar({ user = null }) {
                       {displayName}
                     </p>
                     <p className="truncate text-xs text-ink-soft">
-                      {user.role === 'member'
+                      {user.role === 'member' ||
+                      (user.role === 'curator' && user.status === 'active')
                         ? `@${user.username}`
                         : `${ROLE_TITLE[user.role] || user.role} · ${statusMeta?.label}`}
                     </p>
                   </div>
 
                   <div className="mt-1.5 space-y-1">
-                    {user.role === 'member' ? (
-                      MEMBER_NAV_ITEMS.map((item) => {
+                    {profileNavItems ? (
+                      profileNavItems.map((item) => {
                         const active = item.match(pathname);
                         return (
                           <Link

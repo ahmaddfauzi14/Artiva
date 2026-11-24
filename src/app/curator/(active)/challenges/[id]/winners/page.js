@@ -19,7 +19,7 @@ export default async function CuratorChallengeWinnersPage({ params }) {
   const challengeId = Number(id);
   const user = await requirePageRole(
     'curator',
-    `/dashboard/curator/challenges/${id}/winners`
+    `/curator/challenges/${id}/winners`
   );
 
   if (!Number.isInteger(challengeId) || challengeId <= 0) {

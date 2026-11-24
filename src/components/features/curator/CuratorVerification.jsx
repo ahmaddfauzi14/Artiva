@@ -45,9 +45,9 @@ export default function CuratorVerification({ verification: initialVerification 
           showToast({
             tone: 'success',
             title: 'Pengajuan disetujui!',
-            message: 'Akun Kuratormu sudah aktif. Mengarahkan ke Dashboard Kurator...',
+            message: 'Akun Kuratormu sudah aktif. Mengarahkan ke beranda ARTIVA...',
           });
-          router.push('/dashboard/curator');
+          router.push('/');
           router.refresh();
           return;
         }
@@ -508,8 +508,8 @@ export default function CuratorVerification({ verification: initialVerification 
 
         <div className="flex flex-wrap items-center gap-3">
           {status === 'approved' ? (
-            <Button variant="primary" href="/dashboard/curator">
-              Buka Dashboard Kurator
+            <Button variant="primary" href="/curator/challenges">
+              Kelola tantangan →
             </Button>
           ) : status === 'pending' ? (
             <Button

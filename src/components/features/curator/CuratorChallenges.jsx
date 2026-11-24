@@ -100,7 +100,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
         <Button
           variant="tonal"
           size="sm"
-          href={`/dashboard/curator/challenges/${ch.challenge_id}/submissions`}
+          href={`/curator/challenges/${ch.challenge_id}/submissions`}
         >
           Lihat submission ({ch.submission_count}) →
         </Button>
@@ -110,7 +110,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
         <Button
           variant="primary"
           size="sm"
-          href={`/dashboard/curator/challenges/${ch.challenge_id}/winners`}
+          href={`/curator/challenges/${ch.challenge_id}/winners`}
         >
           Tentukan pemenang →
         </Button>
@@ -120,7 +120,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
         <Button
           variant="secondary"
           size="sm"
-          href={`/dashboard/curator/challenges/${ch.challenge_id}/winners`}
+          href={`/curator/challenges/${ch.challenge_id}/winners`}
         >
           Lihat pengumuman →
         </Button>
@@ -130,7 +130,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
         <Button
           variant="secondary"
           size="sm"
-          href={`/dashboard/curator/challenges/${ch.challenge_id}/edit`}
+          href={`/curator/challenges/${ch.challenge_id}/edit`}
         >
           Ubah
         </Button>
@@ -199,7 +199,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
           title="Belum ada tantangan dibuat"
           description="Buat tantangan tematik pertamamu untuk mengajak kreator berpartisipasi."
           actionLabel="Buat tantangan →"
-          actionHref="/dashboard/curator/challenges/new"
+          actionHref="/curator/challenges/new"
         />
       ) : statusFilter === 'all' ? (
         <div className="space-y-10">

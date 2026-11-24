@@ -16,32 +16,46 @@ function resolveRedirectTarget(user, nextParam) {
     !nextParam.startsWith('//') &&
     !nextParam.startsWith('/login')
   ) {
-    if (
-      user.role === 'curator' &&
-      user.status !== 'active' &&
-      nextParam.startsWith('/dashboard/curator')
-    ) {
-      return '/dashboard/curator/verification';
+    if (user.role === 'curator' && user.status !== 'active') {
+      if (
+        nextParam.startsWith('/dashboard/curator') ||
+        nextParam.startsWith('/curator')
+      ) {
+        return '/curator/verification';
+      }
+      if (!nextParam.startsWith('/dashboard') && !nextParam.startsWith('/me')) {
+        return nextParam;
+      }
     }
     if (
       user.role === 'member' &&
-      !nextParam.startsWith('/dashboard')
+      !nextParam.startsWith('/dashboard') &&
+      !nextParam.startsWith('/curator')
     ) {
       return nextParam;
     }
     if (
-      user.role !== 'member' &&
-      (nextParam.startsWith(`/dashboard/${user.role}`) ||
-        !nextParam.startsWith('/dashboard'))
+      user.role === 'curator' &&
+      user.status === 'active' &&
+      !nextParam.startsWith('/dashboard') &&
+      !nextParam.startsWith('/me')
+    ) {
+      return nextParam;
+    }
+    if (
+      user.role === 'admin' &&
+      (nextParam.startsWith('/dashboard/admin') ||
+        (!nextParam.startsWith('/dashboard') &&
+          !nextParam.startsWith('/me') &&
+          !nextParam.startsWith('/curator')))
     ) {
       return nextParam;
     }
   }
   if (user.role === 'curator' && user.status !== 'active') {
-    return '/dashboard/curator/verification';
+    return '/curator/verification';
   }
   if (user.role === 'admin') return '/dashboard/admin';
-  if (user.role === 'curator') return '/dashboard/curator';
   return '/';
 }
 

@@ -19,11 +19,8 @@ import {
 export const dynamic = 'force-dynamic';
 
 function getWorkspacePath(user) {
-  if (!user || user.role === 'member') return null;
-  if (user.role === 'curator' && user.status !== 'active') {
-    return '/dashboard/curator/verification';
-  }
-  return `/dashboard/${user.role}`;
+  if (!user || user.role !== 'admin') return null;
+  return '/dashboard/admin';
 }
 
 export default async function HomePage() {
@@ -76,6 +73,20 @@ export default async function HomePage() {
               ) : user?.role === 'member' ? (
                 <Button variant="secondary" size="lg" href="/me/artworks">
                   Karya saya →
+                </Button>
+              ) : user?.role === 'curator' ? (
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  href={
+                    user.status === 'active'
+                      ? '/curator/challenges'
+                      : '/curator/verification'
+                  }
+                >
+                  {user.status === 'active'
+                    ? 'Kelola tantangan →'
+                    : 'Status verifikasi →'}
                 </Button>
               ) : (
                 <Button variant="secondary" size="lg" href="/register/member">
@@ -252,11 +263,17 @@ export default async function HomePage() {
               description="Para Kurator sedang menyiapkan tantangan kreatif berikutnya untuk komunitas."
               actionLabel={
                 user?.role === 'curator'
-                  ? 'Buka ruang Kurator →'
+                  ? user.status === 'active'
+                    ? 'Buat tantangan →'
+                    : 'Status verifikasi →'
                   : 'Ajukan sebagai Kurator →'
               }
               actionHref={
-                user?.role === 'curator' ? workspaceHref : '/register/curator'
+                user?.role === 'curator'
+                  ? user.status === 'active'
+                    ? '/curator/challenges/new'
+                    : '/curator/verification'
+                  : '/register/curator'
               }
             />
           )}
@@ -322,28 +339,44 @@ export default async function HomePage() {
               title={
                 user?.role === 'member'
                   ? 'Lengkapi profilmu'
-                  : user
-                    ? 'Lengkapi portofoliomu'
-                    : 'Buat akun Member'
+                  : user?.role === 'curator'
+                    ? user.status === 'active'
+                      ? 'Lengkapi profil kurator'
+                      : 'Status verifikasi kurator'
+                    : user
+                      ? 'Lengkapi portofoliomu'
+                      : 'Buat akun Member'
               }
               description={
                 user?.role === 'member'
                   ? 'Perbarui bio, foto profil, dan tautan portofolio kreator sesuai gaya visualmu.'
-                  : user
-                    ? 'Kelola ruang karyamu dan perbarui profil kreator sesuai gaya visualmu.'
-                    : 'Siapkan profil kreator pribadimu dalam beberapa detik tanpa biaya.'
+                  : user?.role === 'curator'
+                    ? user.status === 'active'
+                      ? 'Perbarui nama penyelenggara, bio kurasi, dan tautan portofolio kuratormu.'
+                      : 'Pantau status peninjauan pengajuan akun Kurator oleh tim Admin.'
+                    : user
+                      ? 'Kelola ruang karyamu dan perbarui profil kreator sesuai gaya visualmu.'
+                      : 'Siapkan profil kreator pribadimu dalam beberapa detik tanpa biaya.'
               }
               href={
                 user?.role === 'member'
                   ? '/me/profile'
-                  : workspaceHref || '/register/member'
+                  : user?.role === 'curator'
+                    ? user.status === 'active'
+                      ? '/curator/profile'
+                      : '/curator/verification'
+                    : workspaceHref || '/register/member'
               }
               ctaLabel={
                 user?.role === 'member'
                   ? 'Atur profil →'
-                  : workspaceHref
-                    ? 'Buka ruang saya →'
-                    : 'Daftar Member →'
+                  : user?.role === 'curator'
+                    ? user.status === 'active'
+                      ? 'Atur profil →'
+                      : 'Lihat status →'
+                    : workspaceHref
+                      ? 'Buka ruang saya →'
+                      : 'Daftar Member →'
               }
             />
             <StepCard
@@ -386,19 +419,37 @@ export default async function HomePage() {
                 <h2 className="text-[28px] font-semibold leading-tight text-ink sm:text-[34px]">
                   {user.role === 'member'
                     ? 'Lanjutkan kreativitasmu di ARTIVA.'
-                    : 'Lanjutkan kreativitasmu di ruang ARTIVA.'}
+                    : user.role === 'curator'
+                      ? 'Lanjutkan kurasi tantangan di ARTIVA.'
+                      : 'Lanjutkan kreativitasmu di ruang ARTIVA.'}
                 </h2>
                 <p className="text-base text-ink-soft">
-                  Kelola karya portofolio, ikuti tantangan terbuka, atau jelajahi perspektif baru dari kreator lain.
+                  {user.role === 'curator'
+                    ? 'Kelola tantangan tematik, tinjau karya peserta, atau perbarui identitas kuratormu.'
+                    : 'Kelola karya portofolio, ikuti tantangan terbuka, atau jelajahi perspektif baru dari kreator lain.'}
                 </p>
               </div>
               <div className="flex flex-wrap gap-3 lg:col-span-5 lg:justify-end">
                 <Button
                   variant="primary"
                   size="lg"
-                  href={user.role === 'member' ? '/me/artworks' : workspaceHref}
+                  href={
+                    user.role === 'member'
+                      ? '/me/artworks'
+                      : user.role === 'curator'
+                        ? user.status === 'active'
+                          ? '/curator/challenges'
+                          : '/curator/verification'
+                        : workspaceHref
+                  }
                 >
-                  {user.role === 'member' ? 'Karya saya →' : 'Buka ruang saya →'}
+                  {user.role === 'member'
+                    ? 'Karya saya →'
+                    : user.role === 'curator'
+                      ? user.status === 'active'
+                        ? 'Kelola tantangan →'
+                        : 'Status verifikasi →'
+                      : 'Buka ruang saya →'}
                 </Button>
                 <Button variant="secondary" size="lg" href="/challenges">
                   Lihat tantangan →

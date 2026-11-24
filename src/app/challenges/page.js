@@ -71,7 +71,9 @@ export default async function ChallengesPage({ searchParams }) {
               variant="primary"
               href={
                 user?.role === 'curator'
-                  ? '/dashboard/curator/challenges/new'
+                  ? user.status === 'active'
+                    ? '/curator/challenges/new'
+                    : '/curator/verification'
                   : user?.role === 'member'
                     ? '/me/artworks'
                     : '/register/member'
@@ -79,7 +81,9 @@ export default async function ChallengesPage({ searchParams }) {
               className="w-full"
             >
               {user?.role === 'curator'
-                ? 'Buat tantangan →'
+                ? user.status === 'active'
+                  ? 'Buat tantangan →'
+                  : 'Status verifikasi →'
                 : user?.role === 'member'
                   ? 'Siapkan karya saya →'
                   : 'Gabung sebagai Member →'}

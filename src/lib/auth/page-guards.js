@@ -3,14 +3,14 @@ import { getCurrentUser } from '@/lib/auth/session';
 
 export const DASHBOARD_HOME_BY_ROLE = {
   member: '/',
-  curator: '/dashboard/curator',
+  curator: '/',
   admin: '/dashboard/admin',
 };
 
 export function getHomeForUser(user) {
   if (!user) return '/login';
   if (user.role === 'curator' && user.status !== 'active') {
-    return '/dashboard/curator/verification';
+    return '/curator/verification';
   }
   return DASHBOARD_HOME_BY_ROLE[user.role] || '/';
 }

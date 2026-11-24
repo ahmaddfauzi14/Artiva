@@ -18,7 +18,7 @@ export default async function CuratorChallengeSubmissionsPage({ params }) {
   const challengeId = Number(id);
   const user = await requirePageRole(
     'curator',
-    `/dashboard/curator/challenges/${id}/submissions`
+    `/curator/challenges/${id}/submissions`
   );
 
   if (!Number.isInteger(challengeId) || challengeId <= 0) {
@@ -51,7 +51,7 @@ export default async function CuratorChallengeSubmissionsPage({ params }) {
         }
         actionHref={
           challenge.status === 'closed' || challenge.status === 'announced'
-            ? `/dashboard/curator/challenges/${challenge.challenge_id}/winners`
+            ? `/curator/challenges/${challenge.challenge_id}/winners`
             : undefined
         }
       />

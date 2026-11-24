@@ -105,10 +105,10 @@ export default function CuratorWinners({
     return (
       <div className="space-y-6">
         <Link
-          href="/dashboard/curator"
+          href="/curator/challenges"
           className="text-sm font-semibold text-brand-700 hover:underline"
         >
-          ← Kembali ke dashboard kurator
+          ← Kembali ke daftar tantangan
         </Link>
         <Alert tone="warning" title="Tantangan masih berlangsung">
           Penetapan pemenang baru dapat dilakukan setelah tanggal berakhir tantangan lewat dan status berubah menjadi Ditutup.
@@ -122,10 +122,10 @@ export default function CuratorWinners({
       <div className="space-y-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <Link
-            href="/dashboard/curator"
+            href="/curator/challenges"
             className="text-sm font-semibold text-brand-700 hover:underline"
           >
-            ← Kembali ke dashboard kurator
+            ← Kembali ke daftar tantangan
           </Link>
           <Button
             variant="secondary"
@@ -149,10 +149,10 @@ export default function CuratorWinners({
     <div className="space-y-8">
       <div>
         <Link
-          href="/dashboard/curator"
+          href="/curator/challenges"
           className="text-sm font-semibold text-brand-700 hover:underline"
         >
-          ← Kembali ke dashboard kurator
+          ← Kembali ke daftar tantangan
         </Link>
       </div>
 
@@ -161,7 +161,7 @@ export default function CuratorWinners({
           title="Belum ada karya peserta aktif"
           description="Tidak terdapat submission berstatus Terkirim dan karya Dipublikasikan untuk ditetapkan sebagai pemenang."
           actionLabel="Lihat semua submission →"
-          actionHref={`/dashboard/curator/challenges/${challenge.challenge_id}/submissions`}
+          actionHref={`/curator/challenges/${challenge.challenge_id}/submissions`}
         />
       ) : (
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
