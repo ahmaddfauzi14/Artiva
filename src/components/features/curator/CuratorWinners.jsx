@@ -7,9 +7,8 @@ import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import EmptyState from '@/components/ui/EmptyState';
-import StatusBadge from '@/components/ui/StatusBadge';
 import { useToast } from '@/components/ui/Toast';
-import WinnerCard from '@/components/cards/WinnerCard';
+import WinnerPodium from '@/components/cards/WinnerPodium';
 import { apiFetch } from '@/lib/shared/api-client';
 
 export default function CuratorWinners({
@@ -141,19 +140,7 @@ export default function CuratorWinners({
           Pemenang tantangan ini sudah diumumkan secara resmi dan tidak dapat diubah kembali.
         </Alert>
 
-        <div className="auto-grid-wide gap-6">
-          {winners.map((w) => (
-            <div key={w.winner_id} className="space-y-2">
-              <WinnerCard winner={w} />
-              {w.is_moderated ? (
-                <StatusBadge
-                  label="Peringatan BR-12: Karya pemenang dimoderasi"
-                  tone="danger"
-                />
-              ) : null}
-            </div>
-          ))}
-        </div>
+        <WinnerPodium winners={winners} showModerationWarning />
       </div>
     );
   }

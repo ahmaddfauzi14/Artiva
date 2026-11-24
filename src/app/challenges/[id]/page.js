@@ -7,7 +7,7 @@ import EmptyState from '@/components/ui/EmptyState';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import StatusBadge from '@/components/ui/StatusBadge';
-import WinnerCard from '@/components/cards/WinnerCard';
+import WinnerPodium from '@/components/cards/WinnerPodium';
 import { getCurrentUser } from '@/lib/auth/session';
 import { todayInTz } from '@/lib/server/challenge-status';
 import { formatDateRangeId } from '@/lib/shared/format';
@@ -177,11 +177,7 @@ export default async function ChallengeDetailPage({ params }) {
                 Karya yang mencuri perhatian.
               </h2>
             </div>
-            <div className="auto-grid-wide gap-6">
-              {winners.map((w) => (
-                <WinnerCard key={w.winner_id} winner={w} />
-              ))}
-            </div>
+            <WinnerPodium winners={winners} />
           </section>
         ) : null}
 

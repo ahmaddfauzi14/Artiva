@@ -7,7 +7,7 @@ import Footer from '@/components/layout/Footer';
 import HomeSearchBox from '@/components/features/home/HomeSearchBox';
 import Navbar from '@/components/layout/Navbar';
 import StepCard from '@/components/cards/StepCard';
-import WinnerCard from '@/components/cards/WinnerCard';
+import WinnerPodium from '@/components/cards/WinnerPodium';
 import { getCurrentUser } from '@/lib/auth/session';
 import { listPublicArtworks } from '@/lib/repositories/artworks';
 import { listActiveCategories } from '@/lib/repositories/categories';
@@ -280,11 +280,7 @@ export default async function HomePage() {
           </div>
 
           {winners.length > 0 ? (
-            <div className="auto-grid-wide gap-6">
-              {winners.map((w) => (
-                <WinnerCard key={w.winner_id} winner={w} />
-              ))}
-            </div>
+            <WinnerPodium winners={winners} />
           ) : (
             <div className="flex flex-col items-start justify-between gap-4 rounded-[28px] bg-tint-butter p-6 shadow-tint-butter sm:flex-row sm:items-center sm:p-8">
               <div className="space-y-1">

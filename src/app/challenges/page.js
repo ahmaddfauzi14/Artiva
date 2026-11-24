@@ -3,7 +3,7 @@ import ChallengeExplorer from '@/components/features/challenges/ChallengeExplore
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import StepCard from '@/components/cards/StepCard';
-import WinnerCard from '@/components/cards/WinnerCard';
+import WinnerPodium from '@/components/cards/WinnerPodium';
 import { getCurrentUser } from '@/lib/auth/session';
 import {
   listLatestAnnouncedWinners,
@@ -145,11 +145,7 @@ export default async function ChallengesPage({ searchParams }) {
                 Karya yang mencuri perhatian.
               </h2>
             </div>
-            <div className="auto-grid-wide gap-6">
-              {latestWinnersData.winners.map((w) => (
-                <WinnerCard key={w.winner_id} winner={w} />
-              ))}
-            </div>
+            <WinnerPodium winners={latestWinnersData.winners} />
           </section>
         ) : null}
 
