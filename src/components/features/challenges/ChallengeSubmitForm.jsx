@@ -64,7 +64,7 @@ export default function ChallengeSubmitForm({
         title: 'Submission berhasil',
         message: `Karya "${selectedArtwork?.title}" telah didaftarkan ke tantangan.`,
       });
-      router.push('/dashboard/member?tab=submissions');
+      router.push('/me/submissions');
       router.refresh();
     } catch (err) {
       showToast({ tone: 'error', message: err.message });
@@ -117,11 +117,11 @@ export default function ChallengeSubmitForm({
           }
           description={
             challenge.category
-              ? `Hanya karya berstatus Dipublikasikan dengan kategori ${challenge.category.name} yang dapat didaftarkan ke tantangan ini. Unggah karya baru atau periksa status karyamu di Dashboard Member.`
-              : 'Hanya karya berstatus Dipublikasikan yang dapat didaftarkan ke tantangan ini. Unggah karya baru atau publikasikan karyamu di Dashboard Member.'
+              ? `Hanya karya berstatus Dipublikasikan dengan kategori ${challenge.category.name} yang dapat didaftarkan ke tantangan ini. Unggah karya baru atau periksa status karyamu di halaman Karya saya.`
+              : 'Hanya karya berstatus Dipublikasikan yang dapat didaftarkan ke tantangan ini. Unggah karya baru atau publikasikan karyamu di halaman Karya saya.'
           }
           actionLabel="Unggah karya baru →"
-          actionHref="/dashboard/member/artworks/new"
+          actionHref="/me/artworks/new"
         />
       ) : (
         <div className="space-y-10">
@@ -176,18 +176,18 @@ export default function ChallengeSubmitForm({
                   <p>
                     Seluruh karya portofoliomu yang cocok dengan ketentuan
                     tantangan ini sudah berhasil diajukan. Kamu dapat memantau
-                    atau menarik pengajuan di Dashboard Member.
+                    atau menarik pengajuan di halaman Submission.
                   </p>
                   <div className="flex flex-wrap items-center gap-3">
                     <Button
                       variant="secondary"
                       size="sm"
-                      href="/dashboard/member?tab=submissions"
+                      href="/me/submissions"
                     >
-                      Lihat submission di Dashboard →
+                      Lihat submission saya →
                     </Button>
                     <Link
-                      href="/dashboard/member/artworks/new"
+                      href="/me/artworks/new"
                       className="text-xs font-semibold text-brand-700 hover:underline"
                     >
                       Atau unggah karya baru

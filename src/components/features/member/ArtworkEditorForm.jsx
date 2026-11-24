@@ -82,7 +82,7 @@ export default function ArtworkEditorForm({
         });
       }
 
-      router.push('/dashboard/member?tab=artworks');
+      router.push('/me/artworks');
       router.refresh();
     } catch (err) {
       setErrorMsg(err.message);
@@ -105,7 +105,7 @@ export default function ArtworkEditorForm({
         message: 'Karya telah dihapus dari daftar portofoliomu.',
       });
       setDeleteOpen(false);
-      router.push('/dashboard/member?tab=artworks');
+      router.push('/me/artworks');
       router.refresh();
     } catch (err) {
       showToast({ tone: 'error', message: err.message });
@@ -240,7 +240,7 @@ export default function ArtworkEditorForm({
               </Button>
               <Button
                 variant="secondary"
-                href="/dashboard/member?tab=artworks"
+                href="/me/artworks"
                 className="w-full"
               >
                 Batal

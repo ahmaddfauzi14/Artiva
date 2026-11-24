@@ -12,13 +12,11 @@ import { apiFetch } from '@/lib/shared/api-client';
 import { getStatusMeta } from '@/lib/shared/status-styles';
 
 const ROLE_SPACE_LABEL = {
-  member: 'RUANG MEMBER',
   curator: 'RUANG KURATOR',
   admin: 'RUANG ADMIN',
 };
 
 const ROLE_TITLE = {
-  member: 'Member',
   curator: 'Kurator',
   admin: 'Admin',
 };
@@ -115,17 +113,6 @@ function MenuGlyph({ name }) {
 }
 
 export function getSidebarMenu(role) {
-  if (role === 'member') {
-    return [
-      { key: 'dashboard', label: 'Dashboard', href: '/dashboard/member', icon: 'grid' },
-      { key: 'artworks', label: 'Karya saya', href: '/dashboard/member?tab=artworks', icon: 'frame' },
-      { key: 'challenges', label: 'Tantangan', href: '/dashboard/member/challenges', icon: 'trophy' },
-      { key: 'submissions', label: 'Submission saya', href: '/dashboard/member?tab=submissions', icon: 'send' },
-      { key: 'favorites', label: 'Favorit', href: '/dashboard/member?tab=favorites', icon: 'heart' },
-      { key: 'profile', label: 'Profil', href: '/dashboard/member/profile', icon: 'user' },
-    ];
-  }
-
   if (role === 'curator') {
     return [
       { key: 'dashboard', label: 'Dashboard', href: '/dashboard/curator', icon: 'grid' },
@@ -181,9 +168,6 @@ export default function Sidebar({
         pathname === item.href &&
         (!currentQuery || currentQuery === 'overview' || currentQuery === 'dashboard')
       );
-    }
-    if (item.key === 'artworks' && pathname.startsWith('/dashboard/member/artworks')) {
-      return true;
     }
     if (
       user.role === 'curator' &&

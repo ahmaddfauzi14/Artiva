@@ -19,7 +19,7 @@ import {
 export const dynamic = 'force-dynamic';
 
 function getWorkspacePath(user) {
-  if (!user) return '/login';
+  if (!user || user.role === 'member') return null;
   if (user.role === 'curator' && user.status !== 'active') {
     return '/dashboard/curator/verification';
   }
@@ -69,9 +69,13 @@ export default async function HomePage() {
               <Button variant="primary" size="lg" href="/artworks">
                 Jelajahi karya →
               </Button>
-              {user ? (
+              {workspaceHref ? (
                 <Button variant="secondary" size="lg" href={workspaceHref}>
                   Buka ruang saya →
+                </Button>
+              ) : user?.role === 'member' ? (
+                <Button variant="secondary" size="lg" href="/me/artworks">
+                  Karya saya →
                 </Button>
               ) : (
                 <Button variant="secondary" size="lg" href="/register/member">
@@ -117,7 +121,7 @@ export default async function HomePage() {
                 </Link>
               ) : (
                 <Link
-                  href={user?.role === 'member' ? '/dashboard/member/artworks/new' : '/artworks'}
+                  href={user?.role === 'member' ? '/me/artworks/new' : '/artworks'}
                   className="group flex aspect-[4/3] w-full flex-col justify-between overflow-hidden rounded-[18px] border border-line bg-surface p-5 shadow-card-sm"
                 >
                   <div className="flex items-center justify-between gap-2">
@@ -204,7 +208,7 @@ export default async function HomePage() {
               actionLabel="Unggah karya pertama →"
               actionHref={
                 user?.role === 'member'
-                  ? '/dashboard/member/artworks/new'
+                  ? '/me/artworks/new'
                   : '/register/member'
               }
             />
@@ -315,14 +319,32 @@ export default async function HomePage() {
               stagger
               number="01"
               tint="lavender"
-              title={user ? 'Lengkapi portofoliomu' : 'Buat akun Member'}
-              description={
-                user
-                  ? 'Kelola ruang karyamu dan perbarui profil kreator sesuai gaya visualmu.'
-                  : 'Siapkan profil kreator pribadimu dalam beberapa detik tanpa biaya.'
+              title={
+                user?.role === 'member'
+                  ? 'Lengkapi profilmu'
+                  : user
+                    ? 'Lengkapi portofoliomu'
+                    : 'Buat akun Member'
               }
-              href={user ? workspaceHref : '/register/member'}
-              ctaLabel={user ? 'Buka ruang saya →' : 'Daftar Member →'}
+              description={
+                user?.role === 'member'
+                  ? 'Perbarui bio, foto profil, dan tautan portofolio kreator sesuai gaya visualmu.'
+                  : user
+                    ? 'Kelola ruang karyamu dan perbarui profil kreator sesuai gaya visualmu.'
+                    : 'Siapkan profil kreator pribadimu dalam beberapa detik tanpa biaya.'
+              }
+              href={
+                user?.role === 'member'
+                  ? '/me/profile'
+                  : workspaceHref || '/register/member'
+              }
+              ctaLabel={
+                user?.role === 'member'
+                  ? 'Atur profil →'
+                  : workspaceHref
+                    ? 'Buka ruang saya →'
+                    : 'Daftar Member →'
+              }
             />
             <StepCard
               index={1}
@@ -333,7 +355,7 @@ export default async function HomePage() {
               description="Unggah gambar karyamu sekali saja dengan kontrol penuh status publikasi."
               href={
                 user?.role === 'member'
-                  ? '/dashboard/member/artworks/new'
+                  ? '/me/artworks/new'
                   : '/artworks'
               }
               ctaLabel={
@@ -362,15 +384,21 @@ export default async function HomePage() {
                   SIAP BERKARYA HARI INI
                 </p>
                 <h2 className="text-[28px] font-semibold leading-tight text-ink sm:text-[34px]">
-                  Lanjutkan kreativitasmu di ruang ARTIVA.
+                  {user.role === 'member'
+                    ? 'Lanjutkan kreativitasmu di ARTIVA.'
+                    : 'Lanjutkan kreativitasmu di ruang ARTIVA.'}
                 </h2>
                 <p className="text-base text-ink-soft">
                   Kelola karya portofolio, ikuti tantangan terbuka, atau jelajahi perspektif baru dari kreator lain.
                 </p>
               </div>
               <div className="flex flex-wrap gap-3 lg:col-span-5 lg:justify-end">
-                <Button variant="primary" size="lg" href={workspaceHref}>
-                  Buka ruang saya →
+                <Button
+                  variant="primary"
+                  size="lg"
+                  href={user.role === 'member' ? '/me/artworks' : workspaceHref}
+                >
+                  {user.role === 'member' ? 'Karya saya →' : 'Buka ruang saya →'}
                 </Button>
                 <Button variant="secondary" size="lg" href="/challenges">
                   Lihat tantangan →

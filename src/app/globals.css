@@ -53,6 +53,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
@@ -153,6 +154,47 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+  }
+}
+
+/* Nav CTA Member di bawah Navbar */
+.member-nav-scroller {
+  scrollbar-width: none;
+  scroll-snap-type: inline proximity;
+}
+
+.member-nav-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.member-nav-cta {
+  scroll-snap-align: start;
+}
+
+.member-nav-cta[aria-current="page"] {
+  background-image: var(--grad-primary);
+  border-color: var(--color-brand-400);
+  color: #ffffff;
+  box-shadow: var(--shadow-btn);
+}
+
+.member-nav-cta[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 1rem;
+  inset-block-end: 0.2rem;
+  border-block-end: 2.5px solid var(--color-brand-700);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+@media (forced-colors: active) {
+  .member-nav-cta[aria-current="page"] {
+    outline: 2px solid Highlight;
+  }
+
+  .member-nav-cta[aria-current="page"]::after {
+    border-block-end-color: Highlight;
   }
 }
 

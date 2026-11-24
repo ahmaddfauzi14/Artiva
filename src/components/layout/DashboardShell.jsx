@@ -6,31 +6,16 @@ import { Suspense, useRef, useState } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 
 const ROLE_SPACE = {
-  member: { label: 'Ruang Member', href: '/dashboard/member' },
   curator: { label: 'Ruang Kurator', href: '/dashboard/curator' },
   admin: { label: 'Ruang Admin', href: '/dashboard/admin' },
 };
 
 const ROLE_TITLE = {
-  member: 'Member',
   curator: 'Kurator',
   admin: 'Admin',
 };
 
 function resolveCurrentSection(role, pathname, queryKey) {
-  if (role === 'member') {
-    if (pathname.includes('/artworks/new')) return 'Tambah karya';
-    if (pathname.includes('/artworks/') && pathname.endsWith('/edit')) {
-      return 'Ubah karya';
-    }
-    if (pathname.startsWith('/dashboard/member/challenges')) return 'Tantangan';
-    if (pathname.endsWith('/profile')) return 'Profil & akun';
-    if (queryKey === 'artworks') return 'Karya saya';
-    if (queryKey === 'submissions') return 'Submission saya';
-    if (queryKey === 'favorites') return 'Favorit';
-    return 'Dashboard';
-  }
-
   if (role === 'curator') {
     if (pathname.includes('/challenges/new')) return 'Buat tantangan';
     if (pathname.endsWith('/edit')) return 'Ubah tantangan';

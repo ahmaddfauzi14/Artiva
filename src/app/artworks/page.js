@@ -62,7 +62,7 @@ export default async function ArtworksPage({ searchParams }) {
             variant="primary"
             href={
               user?.role === 'member'
-                ? '/dashboard/member/artworks/new'
+                ? '/me/artworks/new'
                 : user
                   ? '/challenges'
                   : '/register/member'

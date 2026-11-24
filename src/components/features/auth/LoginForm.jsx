@@ -23,7 +23,17 @@ function resolveRedirectTarget(user, nextParam) {
     ) {
       return '/dashboard/curator/verification';
     }
-    if (nextParam.startsWith(`/dashboard/${user.role}`) || !nextParam.startsWith('/dashboard')) {
+    if (
+      user.role === 'member' &&
+      !nextParam.startsWith('/dashboard')
+    ) {
+      return nextParam;
+    }
+    if (
+      user.role !== 'member' &&
+      (nextParam.startsWith(`/dashboard/${user.role}`) ||
+        !nextParam.startsWith('/dashboard'))
+    ) {
       return nextParam;
     }
   }
@@ -32,7 +42,7 @@ function resolveRedirectTarget(user, nextParam) {
   }
   if (user.role === 'admin') return '/dashboard/admin';
   if (user.role === 'curator') return '/dashboard/curator';
-  return '/dashboard/member';
+  return '/';
 }
 
 export default function LoginForm({ nextParam = '', errorParam = '' }) {

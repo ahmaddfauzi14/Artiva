@@ -1,24 +1,7 @@
-import PageHeader from '@/components/layout/PageHeader';
-import ProfileSettings from '@/components/features/member/ProfileSettings';
-import { requirePageRole } from '@/lib/auth/page-guards';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = {
-  title: 'Profil & Akun · ARTIVA',
-};
-
-export default async function MemberProfilePage() {
-  const user = await requirePageRole('member', '/dashboard/member/profile');
-
-  return (
-    <div className="space-y-8">
-      <PageHeader
-        eyebrow="PENGATURAN AKUN"
-        title="Profil & Akun"
-        subtitle="Perbarui tampilan profil kreator serta keamanan email dan kata sandimu."
-      />
-      <ProfileSettings user={user} />
-    </div>
-  );
+export default function LegacyMemberProfileRedirect() {
+  redirect('/me/profile');
 }

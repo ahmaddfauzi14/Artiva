@@ -26,7 +26,7 @@ export default function ArtworkCard({
     mode === 'public' && artwork.status && artwork.status !== 'published';
   const href =
     mode === 'dashboard' || mode === 'horizontal'
-      ? `/dashboard/member/artworks/${artwork.artwork_id}/edit`
+      ? `/me/artworks/${artwork.artwork_id}/edit`
       : `/artworks/${artwork.artwork_id}`;
 
   const handlePointerMove = (e) => {
@@ -112,9 +112,9 @@ export default function ArtworkCard({
     return (
       <article
         onPointerMove={handlePointerMove}
-        className={`spotlight-surface group flex flex-col gap-5 rounded-[28px] p-4 sm:flex-row sm:items-center sm:justify-between ${tintClass} motion-safe:transition-all motion-safe:duration-200 ease-[var(--ease-spring)] motion-safe:hover:-translate-y-0.5 hover:shadow-lift ${className}`}
+        className={`spotlight-surface group flex flex-col gap-5 overflow-hidden rounded-[28px] p-4 sm:flex-row sm:items-center sm:justify-between ${tintClass} motion-safe:transition-all motion-safe:duration-200 ease-[var(--ease-spring)] motion-safe:hover:-translate-y-0.5 hover:shadow-lift ${className}`}
       >
-        <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="flex w-full min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center">
           <Link
             href={
               artwork.status === 'published'
@@ -137,7 +137,7 @@ export default function ArtworkCard({
             )}
           </Link>
 
-          <div className="min-w-0 flex-1 space-y-1.5">
+          <div className="w-full min-w-0 flex-1 space-y-1.5">
             <div className="flex flex-wrap items-center gap-2">
               <StatusBadge domain="artwork" status={artwork.status} />
               <span className="rounded-full bg-surface/90 px-3 py-0.5 text-xs font-semibold text-ink-soft">
@@ -145,14 +145,14 @@ export default function ArtworkCard({
               </span>
             </div>
 
-            <h3 className="truncate text-xl font-semibold text-ink">
+            <h3 className="max-w-full truncate text-xl font-semibold text-ink">
               <Link
                 href={
                   artwork.status === 'published'
                     ? `/artworks/${artwork.artwork_id}`
                     : href
                 }
-                className="hover:text-brand-700 hover:underline"
+                className="block truncate hover:text-brand-700 hover:underline"
               >
                 {artwork.title}
               </Link>

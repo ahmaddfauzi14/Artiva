@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth/session';
 
 export const DASHBOARD_HOME_BY_ROLE = {
-  member: '/dashboard/member',
+  member: '/',
   curator: '/dashboard/curator',
   admin: '/dashboard/admin',
 };

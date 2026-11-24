@@ -73,7 +73,7 @@ export default async function ChallengesPage({ searchParams }) {
                 user?.role === 'curator'
                   ? '/dashboard/curator/challenges/new'
                   : user?.role === 'member'
-                    ? '/dashboard/member?tab=artworks'
+                    ? '/me/artworks'
                     : '/register/member'
               }
               className="w-full"

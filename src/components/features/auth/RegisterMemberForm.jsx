@@ -78,8 +78,8 @@ export default function RegisterMemberForm() {
           Akun Member <span className="font-semibold text-ink">@{createdUser.username}</span> sudah aktif. Kamu bisa langsung mengunggah karya pertamamu atau menjelajahi tantangan terbuka.
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button variant="primary" href="/dashboard/member">
-            Masuk ke Dashboard →
+          <Button variant="primary" href="/">
+            Masuk ke Beranda →
           </Button>
           <Button variant="secondary" href="/artworks">
             Jelajahi karya →
