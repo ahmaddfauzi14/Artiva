@@ -147,6 +147,32 @@ export async function findCuratorChallengeById(
   return rows[0] ? mapCuratorChallengeRow(rows[0]) : null;
 }
 
+export async function existsCuratorChallengeTitle(
+  curatorId,
+  title,
+  excludeChallengeId = null,
+  client = null
+) {
+  const params = [curatorId, title];
+  let excludeClause = '';
+  if (excludeChallengeId !== null && excludeChallengeId !== undefined) {
+    params.push(excludeChallengeId);
+    excludeClause = `AND challenge_id <> $${params.length}`;
+  }
+
+  const { rowCount } = await query(
+    `SELECT 1
+     FROM challenges
+     WHERE curator_id = $1
+       AND LOWER(BTRIM(title)) = LOWER(BTRIM($2))
+       ${excludeClause}
+     LIMIT 1`,
+    params,
+    client
+  );
+  return rowCount > 0;
+}
+
 export async function insertChallengeRow(
   { curatorId, categoryId, title, description, rules, startDate, endDate, status },
   client = null

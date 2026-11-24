@@ -125,6 +125,16 @@ function mapPgError(err) {
         409
       );
     }
+    if (constraint === 'uq_challenges_curator_title') {
+      return fail(
+        'CHALLENGE_TITLE_TAKEN',
+        getErrorMessage('CHALLENGE_TITLE_TAKEN'),
+        409,
+        {
+          title: getErrorMessage('CHALLENGE_TITLE_TAKEN'),
+        }
+      );
+    }
     if (constraint.includes('categories')) {
       return fail('INVALID_STATE', 'Nama atau slug kategori sudah digunakan.', 409);
     }

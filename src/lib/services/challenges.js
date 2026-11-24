@@ -1,9 +1,11 @@
 import { withTransaction } from '@/lib/server/db';
 import { AppError } from '@/lib/server/http';
+import { getErrorMessage } from '@/lib/shared/error-messages';
 import { todayInTz } from '@/lib/server/challenge-status';
 import { findActiveCategoryById } from '@/lib/repositories/categories';
 import {
   deleteChallengeRow,
+  existsCuratorChallengeTitle,
   findCuratorChallengeById,
   insertChallengeRow,
   listCuratorChallengeSubmissions,
@@ -31,6 +33,14 @@ export async function createCuratorChallenge(curatorId, input) {
         { category_id: 'Pilih kategori yang aktif.' }
       );
     }
+  }
+
+  const titleTaken = await existsCuratorChallengeTitle(curatorId, input.title);
+  if (titleTaken) {
+    const message = getErrorMessage('CHALLENGE_TITLE_TAKEN');
+    throw new AppError(409, 'CHALLENGE_TITLE_TAKEN', message, {
+      title: message,
+    });
   }
 
   return insertChallengeRow({
@@ -142,6 +152,21 @@ export async function updateCuratorChallenge(curatorId, challengeId, input) {
           'Kategori tidak ditemukan atau sedang nonaktif.',
           { category_id: 'Pilih kategori yang aktif.' }
         );
+      }
+    }
+
+    if (input.title !== undefined) {
+      const titleTaken = await existsCuratorChallengeTitle(
+        curatorId,
+        input.title,
+        challengeId,
+        client
+      );
+      if (titleTaken) {
+        const message = getErrorMessage('CHALLENGE_TITLE_TAKEN');
+        throw new AppError(409, 'CHALLENGE_TITLE_TAKEN', message, {
+          title: message,
+        });
       }
     }
 

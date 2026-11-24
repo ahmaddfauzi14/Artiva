@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS challenges (
   created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
   CONSTRAINT chk_challenge_dates CHECK (end_date > start_date)
 );
+CREATE UNIQUE INDEX IF NOT EXISTS uq_challenges_curator_title ON challenges (curator_id, LOWER(BTRIM(title)));
 
 CREATE TABLE IF NOT EXISTS submissions (
   submission_id SERIAL PRIMARY KEY,

@@ -12,6 +12,7 @@ export const ERROR_MESSAGES = {
   ARTWORK_NOT_ELIGIBLE: 'Karya tidak memenuhi syarat tantangan ini.',
   CHALLENGE_NOT_OPEN: 'Tantangan sedang tidak menerima submission saat ini.',
   CHALLENGE_STILL_OPEN: 'Tantangan masih berlangsung. Penetapan pemenang dilakukan setelah periode berakhir.',
+  CHALLENGE_TITLE_TAKEN: 'Kamu sudah memiliki tantangan dengan judul yang sama.',
   ALREADY_SUBMITTED: 'Karya ini sudah pernah dikirim ke tantangan yang sama.',
   WITHDRAW_NOT_ALLOWED: 'Submission tidak dapat ditarik karena tantangan sudah ditutup.',
   NO_SUBMISSIONS: 'Belum ada karya peserta aktif untuk ditetapkan sebagai pemenang.',
