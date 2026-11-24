@@ -204,7 +204,7 @@ export default function CuratorDashboard({
       ),
       colSpan: 2,
       rowSpan: 2,
-      onClick: () => switchView('challenges'),
+      href: '/dashboard/curator/challenges',
       visual: 'automation',
     },
     {

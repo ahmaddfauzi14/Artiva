@@ -23,6 +23,7 @@ function resolveCurrentSection(role, pathname, queryKey) {
     if (pathname.includes('/artworks/') && pathname.endsWith('/edit')) {
       return 'Ubah karya';
     }
+    if (pathname.startsWith('/dashboard/member/challenges')) return 'Tantangan';
     if (pathname.endsWith('/profile')) return 'Profil & akun';
     if (queryKey === 'artworks') return 'Karya saya';
     if (queryKey === 'submissions') return 'Submission saya';
@@ -35,6 +36,7 @@ function resolveCurrentSection(role, pathname, queryKey) {
     if (pathname.endsWith('/edit')) return 'Ubah tantangan';
     if (pathname.endsWith('/submissions')) return 'Submission aktif';
     if (pathname.endsWith('/winners')) return 'Penetapan pemenang';
+    if (pathname === '/dashboard/curator/challenges') return 'Tantangan saya';
     if (queryKey === 'challenges') return 'Tantangan saya';
     if (queryKey === 'submissions') return 'Submission aktif';
     if (queryKey === 'winners') return 'Tentukan pemenang';

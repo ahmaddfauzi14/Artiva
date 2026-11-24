@@ -103,7 +103,7 @@ export default function ChallengeEditorForm({
         });
       }
 
-      router.push('/dashboard/curator?view=challenges');
+      router.push('/dashboard/curator/challenges');
       router.refresh();
     } catch (err) {
       setErrorMsg(err.message);
@@ -125,7 +125,7 @@ export default function ChallengeEditorForm({
         title: 'Tantangan dipublikasikan',
         message: 'Tantangan kini berstatus Terbuka.',
       });
-      router.push('/dashboard/curator?view=challenges');
+      router.push('/dashboard/curator/challenges');
       router.refresh();
     } catch (err) {
       setErrorMsg(err.message);
@@ -147,7 +147,7 @@ export default function ChallengeEditorForm({
         title: 'Tantangan dihapus',
         message: 'Tantangan berhasil dihapus.',
       });
-      router.push('/dashboard/curator?view=challenges');
+      router.push('/dashboard/curator/challenges');
       router.refresh();
     } catch (err) {
       showToast({ tone: 'error', message: err.message });
@@ -334,7 +334,7 @@ export default function ChallengeEditorForm({
 
                 <Button
                   variant="ghost"
-                  href="/dashboard/curator?view=challenges"
+                  href="/dashboard/curator/challenges"
                   className="w-full"
                 >
                   Kembali ke daftar
@@ -343,7 +343,7 @@ export default function ChallengeEditorForm({
             ) : (
               <Button
                 variant="secondary"
-                href="/dashboard/curator?view=challenges"
+                href="/dashboard/curator/challenges"
                 className="w-full"
               >
                 Kembali ke daftar

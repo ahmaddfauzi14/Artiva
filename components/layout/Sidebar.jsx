@@ -119,7 +119,7 @@ export function getSidebarMenu(role) {
     return [
       { key: 'dashboard', label: 'Dashboard', href: '/dashboard/member', icon: 'grid' },
       { key: 'artworks', label: 'Karya saya', href: '/dashboard/member?tab=artworks', icon: 'frame' },
-      { key: 'challenges', label: 'Tantangan', href: '/challenges', icon: 'trophy' },
+      { key: 'challenges', label: 'Tantangan', href: '/dashboard/member/challenges', icon: 'trophy' },
       { key: 'submissions', label: 'Submission saya', href: '/dashboard/member?tab=submissions', icon: 'send' },
       { key: 'favorites', label: 'Favorit', href: '/dashboard/member?tab=favorites', icon: 'heart' },
       { key: 'profile', label: 'Profil', href: '/dashboard/member/profile', icon: 'user' },
@@ -129,7 +129,7 @@ export function getSidebarMenu(role) {
   if (role === 'curator') {
     return [
       { key: 'dashboard', label: 'Dashboard', href: '/dashboard/curator', icon: 'grid' },
-      { key: 'challenges', label: 'Tantangan saya', href: '/dashboard/curator?view=challenges', icon: 'trophy' },
+      { key: 'challenges', label: 'Tantangan saya', href: '/dashboard/curator/challenges', icon: 'trophy' },
       { key: 'submissions', label: 'Submission aktif', href: '/dashboard/curator?view=submissions', icon: 'send' },
       { key: 'winners', label: 'Tentukan pemenang', href: '/dashboard/curator?view=winners', icon: 'shield' },
       { key: 'announcements', label: 'Pengumuman', href: '/dashboard/curator?view=announcements', icon: 'frame' },

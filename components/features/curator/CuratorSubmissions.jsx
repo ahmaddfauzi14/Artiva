@@ -44,7 +44,7 @@ export default function CuratorSubmissions({
     <div className="space-y-6">
       <div>
         <Link
-          href="/dashboard/curator?view=challenges"
+          href="/dashboard/curator/challenges"
           className="text-sm font-semibold text-brand-700 hover:underline"
         >
           ← Kembali ke daftar tantangan

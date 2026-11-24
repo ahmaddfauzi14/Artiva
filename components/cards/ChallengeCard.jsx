@@ -18,6 +18,7 @@ export default function ChallengeCard({
   challenge,
   variant = 'feature',
   actions = null,
+  metaSlot = null,
 }) {
   const { isMotionActive } = useMotion();
   const isClosingSoon =
@@ -102,6 +103,8 @@ export default function ChallengeCard({
                   {challenge.description}
                 </p>
               ) : null}
+
+              {metaSlot}
             </div>
           </div>
 
