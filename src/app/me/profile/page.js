@@ -12,7 +12,7 @@ export default async function MemberProfilePage() {
   const user = await requirePageRole('member', '/me/profile');
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="PENGATURAN AKUN"
         title="Profil"

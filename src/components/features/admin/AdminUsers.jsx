@@ -8,12 +8,7 @@ import SearchBar from '@/components/ui/SearchBar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { useAdminList } from '@/components/features/admin/useAdminList';
 import { formatDateId } from '@/lib/shared/format';
-
-const ROLE_LABELS = {
-  member: 'Member',
-  curator: 'Kurator',
-  admin: 'Admin',
-};
+import { ROLE_LABELS } from '@/lib/shared/navigation';
 
 export default function AdminUsers({
   initialUsers = [],

@@ -10,14 +10,14 @@ export default function EmptyState({
 }) {
   return (
     <div
-      className={`flex flex-col items-center justify-center rounded-[28px] bg-tint-lavender px-6 py-12 text-center shadow-tint-lavender ${className}`}
+      className={`flex flex-col items-center justify-center rounded-[24px] bg-tint-lavender px-6 py-8 text-center shadow-tint-lavender sm:py-10 ${className}`}
     >
       <span
         aria-hidden="true"
-        className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface text-brand-700 shadow-card-sm"
+        className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-surface text-brand-700 shadow-card-sm"
       >
         <svg
-          className="h-7 w-7"
+          className="h-6 w-6"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"

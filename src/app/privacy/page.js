@@ -1,7 +1,4 @@
-import Link from 'next/link';
-import Footer from '@/components/layout/Footer';
-import Navbar from '@/components/layout/Navbar';
-import PageHeader from '@/components/layout/PageHeader';
+import LegalPageLayout from '@/components/layout/LegalPageLayout';
 import { getPublicViewer } from '@/lib/auth/page-guards';
 
 export const dynamic = 'force-dynamic';
@@ -47,55 +44,16 @@ export default async function PrivacyPage() {
   const user = await getPublicViewer();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar user={user} />
-
-      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-10 px-4 py-10 sm:px-6 md:px-8 lg:py-12">
-        <PageHeader
-          eyebrow="PRIVASI & KEAMANAN"
-          title="Kebijakan Privasi"
-          subtitle="Penjelasan ringkas mengenai informasi yang disimpan oleh ARTIVA dan bagaimana pengguna memegang kendali atas datanya."
-        />
-
-        <div className="space-y-6 rounded-[28px] border border-line bg-surface p-6 shadow-card sm:p-8">
-          {SECTIONS.map((section) => (
-            <section
-              key={section.title}
-              className="space-y-2.5 border-b border-line/60 pb-6 last:border-b-0 last:pb-0"
-            >
-              <h2 className="text-xl font-semibold text-ink">
-                {section.title}
-              </h2>
-              {section.body.map((paragraph, idx) => (
-                <p
-                  key={idx}
-                  className="text-base leading-relaxed text-ink-soft"
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </section>
-          ))}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-4 text-sm text-ink-soft">
-          <span>Lihat juga:</span>
-          <Link
-            href="/terms"
-            className="inline-flex min-h-[44px] items-center font-semibold text-brand-700 hover:underline"
-          >
-            Ketentuan Penggunaan
-          </Link>
-          <Link
-            href="/contact"
-            className="inline-flex min-h-[44px] items-center font-semibold text-brand-700 hover:underline"
-          >
-            Kontak &amp; Dukungan
-          </Link>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+    <LegalPageLayout
+      user={user}
+      eyebrow="PRIVASI & KEAMANAN"
+      title="Kebijakan Privasi"
+      subtitle="Penjelasan ringkas mengenai informasi yang disimpan oleh ARTIVA dan bagaimana pengguna memegang kendali atas datanya."
+      sections={SECTIONS}
+      relatedLinks={[
+        { label: 'Ketentuan Penggunaan', href: '/terms' },
+        { label: 'Kontak & Dukungan', href: '/contact' },
+      ]}
+    />
   );
 }

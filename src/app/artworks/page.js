@@ -1,7 +1,6 @@
 import ArtworkExplorer from '@/components/features/artworks/ArtworkExplorer';
+import PublicShell from '@/components/layout/PublicShell';
 import Button from '@/components/ui/Button';
-import Footer from '@/components/layout/Footer';
-import Navbar from '@/components/layout/Navbar';
 import { getPublicViewer } from '@/lib/auth/page-guards';
 import { listPublicArtworks } from '@/lib/repositories/artworks';
 import { listActiveCategories } from '@/lib/repositories/categories';
@@ -11,6 +10,16 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Jelajahi Karya · ARTIVA',
 };
+
+function getBannerCta(user) {
+  if (user?.role === 'member') {
+    return { label: 'Unggah karya →', href: '/me/artworks/new' };
+  }
+  if (user) {
+    return { label: 'Jelajahi tantangan →', href: '/challenges' };
+  }
+  return { label: 'Gabung sebagai Member →', href: '/register/member' };
+}
 
 export default async function ArtworksPage({ searchParams }) {
   const user = await getPublicViewer();
@@ -24,61 +33,44 @@ export default async function ArtworksPage({ searchParams }) {
     listPublicArtworks({ q, category, limit: null }),
   ]);
 
+  const bannerCta = getBannerCta(user);
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar user={user} />
-
-      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-10 px-4 py-10 sm:px-6 md:px-8">
-        <section className="grid grid-cols-1 gap-6 md:grid-cols-12 md:items-end">
-          <div className="space-y-2 md:col-span-7">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
-              GALERI KOMUNITAS
-            </p>
-            <h1 className="text-[2rem] font-semibold leading-tight text-ink sm:text-[2.5rem]">
-              Jelajahi karya dari kreator bertalenta.
-            </h1>
-          </div>
-          <p className="text-base text-ink-soft md:col-span-5">
-            Temukan ilustrasi, fotografi, desain antarmuka, hingga eksplorasi 3D terbaru yang dipublikasikan oleh komunitas ARTIVA.
+    <PublicShell user={user} mainClassName="space-y-7 py-6 sm:py-8">
+      <section className="grid grid-cols-1 gap-4 md:grid-cols-12 md:items-end">
+        <div className="space-y-1.5 md:col-span-7">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
+            GALERI KOMUNITAS
           </p>
-        </section>
+          <h1 className="text-[1.75rem] font-semibold leading-tight text-ink sm:text-[2.25rem]">
+            Jelajahi karya dari kreator bertalenta.
+          </h1>
+        </div>
+        <p className="text-sm text-ink-soft sm:text-base md:col-span-5">
+          Temukan ilustrasi, fotografi, desain antarmuka, hingga eksplorasi 3D terbaru yang dipublikasikan oleh komunitas ARTIVA.
+        </p>
+      </section>
 
-        <ArtworkExplorer
-          initialArtworks={result.items}
-          categories={categories}
-          initialQuery={q}
-          initialCategory={category}
-        />
+      <ArtworkExplorer
+        initialArtworks={result.items}
+        categories={categories}
+        initialQuery={q}
+        initialCategory={category}
+      />
 
-        <section className="edge-glow flex flex-col items-start justify-between gap-6 rounded-[28px] bg-grad-hero p-6 shadow-glass sm:flex-row sm:items-center sm:p-8">
-          <div className="space-y-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
-              BAGIKAN KARYAMU
-            </p>
-            <h2 className="text-2xl font-semibold text-ink">
-              Dari terinspirasi, jadi menginspirasi.
-            </h2>
-          </div>
-          <Button
-            variant="primary"
-            href={
-              user?.role === 'member'
-                ? '/me/artworks/new'
-                : user
-                  ? '/challenges'
-                  : '/register/member'
-            }
-          >
-            {user?.role === 'member'
-              ? 'Unggah karya →'
-              : user
-                ? 'Jelajahi tantangan →'
-                : 'Gabung sebagai Member →'}
-          </Button>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+      <section className="edge-glow flex flex-col items-start justify-between gap-4 rounded-[26px] bg-grad-hero p-5 shadow-glass sm:flex-row sm:items-center sm:p-6">
+        <div className="space-y-1">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
+            BAGIKAN KARYAMU
+          </p>
+          <h2 className="text-xl font-semibold text-ink sm:text-2xl">
+            Dari terinspirasi, jadi menginspirasi.
+          </h2>
+        </div>
+        <Button variant="primary" href={bannerCta.href}>
+          {bannerCta.label}
+        </Button>
+      </section>
+    </PublicShell>
   );
 }

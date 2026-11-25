@@ -1,27 +1,20 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useSyncExternalStore } from 'react';
+import { useState } from 'react';
 import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import FormField from '@/components/ui/FormField';
 import RoleSelector from '@/components/features/auth/RoleSelector';
 import {
-  clearRegisterDraft,
-  getRegisterDraftSnapshot,
-  getServerRegisterDraftSnapshot,
-  subscribeRegisterDraft,
-  updateRegisterDraftField,
-} from '@/components/features/auth/register-draft';
+  RegisterIdentityFields,
+  RegisterPasswordFields,
+} from '@/components/features/auth/AccountCredentialsFields';
+import { useRegisterDraft } from '@/components/features/auth/register-draft';
 import { apiFetch } from '@/lib/shared/api-client';
 
 export default function RegisterCuratorForm() {
-  const shared = useSyncExternalStore(
-    subscribeRegisterDraft,
-    getRegisterDraftSnapshot,
-    getServerRegisterDraftSnapshot
-  );
-
+  const { draft, onFieldChange, clearDraft } = useRegisterDraft();
   const [bio, setBio] = useState('');
   const [website, setWebsite] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,16 +22,12 @@ export default function RegisterCuratorForm() {
   const [fieldErrors, setFieldErrors] = useState({});
   const [createdUser, setCreatedUser] = useState(null);
 
-  const updateShared = (key) => (e) => {
-    updateRegisterDraftField(key, e.target.value);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     setFieldErrors({});
 
-    if (shared.password !== shared.confirm_password) {
+    if (draft.password !== draft.confirm_password) {
       setFieldErrors({
         confirm_password: 'Konfirmasi kata sandi tidak cocok.',
       });
@@ -51,15 +40,15 @@ export default function RegisterCuratorForm() {
       const res = await apiFetch('/api/auth/register/curator', {
         method: 'POST',
         body: {
-          username: shared.username,
-          email: shared.email,
-          display_name: shared.display_name,
+          username: draft.username,
+          email: draft.email,
+          display_name: draft.display_name,
           bio,
           website,
-          password: shared.password,
+          password: draft.password,
         },
       });
-      clearRegisterDraft();
+      clearDraft();
       setCreatedUser(res.data.user);
     } catch (err) {
       setErrorMsg(err.message);
@@ -71,7 +60,7 @@ export default function RegisterCuratorForm() {
 
   if (createdUser) {
     return (
-      <div className="space-y-6 py-2">
+      <div className="space-y-5 py-1">
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
           PENDAFTARAN SELESAI
         </p>
@@ -94,10 +83,10 @@ export default function RegisterCuratorForm() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="hidden lg:block space-y-1">
+    <div className="space-y-5">
+      <div className="hidden space-y-1 lg:block">
         <h2 className="text-2xl font-semibold text-ink">Ajukan akun Kurator</h2>
-        <p className="text-base text-ink-soft">
+        <p className="text-sm text-ink-soft sm:text-base">
           Pengajuan Kurator ditinjau oleh Admin untuk menjaga kredibilitas tantangan.
         </p>
       </div>
@@ -111,36 +100,18 @@ export default function RegisterCuratorForm() {
       ) : null}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField
-            label="Username"
-            name="username"
-            value={shared.username}
-            onChange={updateShared('username')}
-            placeholder="contoh: studio_komunitas"
-            error={fieldErrors.username}
-            required
-            inputProps={{ autoComplete: 'username' }}
-          />
-
-          <FormField
-            label="Email"
-            name="email"
-            type="email"
-            value={shared.email}
-            onChange={updateShared('email')}
-            placeholder="email@example.com"
-            error={fieldErrors.email}
-            required
-            inputProps={{ autoComplete: 'email' }}
-          />
-        </div>
+        <RegisterIdentityFields
+          draft={draft}
+          onFieldChange={onFieldChange}
+          fieldErrors={fieldErrors}
+          usernamePlaceholder="contoh: studio_komunitas"
+        />
 
         <FormField
           label="Nama Kurator / Organisasi"
           name="display_name"
-          value={shared.display_name}
-          onChange={updateShared('display_name')}
+          value={draft.display_name}
+          onChange={onFieldChange('display_name')}
           placeholder="Nama studio, komunitas, atau organisasi"
           error={fieldErrors.display_name}
           required
@@ -168,41 +139,20 @@ export default function RegisterCuratorForm() {
           error={fieldErrors.website}
         />
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField
-            label="Kata sandi"
-            name="password"
-            type="password"
-            value={shared.password}
-            onChange={updateShared('password')}
-            placeholder="Minimal 8 karakter"
-            helperText="Gunakan minimal 8 karakter."
-            error={fieldErrors.password}
-            required
-            inputProps={{ autoComplete: 'new-password' }}
-          />
+        <RegisterPasswordFields
+          draft={draft}
+          onFieldChange={onFieldChange}
+          fieldErrors={fieldErrors}
+        />
 
-          <FormField
-            label="Konfirmasi kata sandi"
-            name="confirm_password"
-            type="password"
-            value={shared.confirm_password}
-            onChange={updateShared('confirm_password')}
-            placeholder="Ulangi kata sandi"
-            error={fieldErrors.confirm_password}
-            required
-            inputProps={{ autoComplete: 'new-password' }}
-          />
-        </div>
-
-        <div className="pt-2">
+        <div className="pt-1">
           <Button type="submit" variant="primary" loading={loading} className="w-full">
             Ajukan akun Kurator
           </Button>
         </div>
       </form>
 
-      <div className="border-t border-line pt-5 text-sm text-ink-soft">
+      <div className="border-t border-line pt-4 text-sm text-ink-soft">
         <p>
           Sudah punya akun?{' '}
           <Link href="/login" className="font-semibold text-brand-700 hover:underline">

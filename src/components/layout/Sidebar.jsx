@@ -23,17 +23,14 @@ import {
   SidebarSection,
   SidebarToggle,
   useSidebar,
-} from '@/components/ui/sidebar';
+} from '@/components/ui/SidebarPrimitive';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/shared/api-client';
+import { ADMIN_SIDEBAR_ITEMS, ROLE_LABELS } from '@/lib/shared/navigation';
 import { getStatusMeta } from '@/lib/shared/status-styles';
 
 const ROLE_SPACE_LABEL = {
   admin: 'RUANG ADMIN',
-};
-
-const ROLE_TITLE = {
-  admin: 'Admin',
 };
 
 function renderMenuIcon(name) {
@@ -60,47 +57,7 @@ function renderMenuIcon(name) {
 }
 
 export function getSidebarMenu(role) {
-  if (role === 'admin') {
-    return [
-      {
-        key: 'dashboard',
-        label: 'Dashboard',
-        href: '/dashboard/admin',
-        icon: 'grid',
-        section: 'Ringkasan',
-      },
-      {
-        key: 'curators',
-        label: 'Verifikasi kurator',
-        href: '/dashboard/admin/curators',
-        icon: 'shield',
-        section: 'Pengelolaan',
-      },
-      {
-        key: 'users',
-        label: 'Pengguna',
-        href: '/dashboard/admin/users',
-        icon: 'users',
-        section: 'Pengelolaan',
-      },
-      {
-        key: 'categories',
-        label: 'Kategori',
-        href: '/dashboard/admin/categories',
-        icon: 'tag',
-        section: 'Pengelolaan',
-      },
-      {
-        key: 'reports',
-        label: 'Moderasi laporan',
-        href: '/dashboard/admin/reports',
-        icon: 'flag',
-        section: 'Pengelolaan',
-      },
-    ];
-  }
-
-  return [];
+  return role === 'admin' ? ADMIN_SIDEBAR_ITEMS : [];
 }
 
 function SidebarBrandMark({ role, onNavigate }) {
@@ -152,7 +109,7 @@ function SidebarUserFooter({ user, loggingOut, onLogout }) {
               {displayName}
             </p>
             <p className="truncate py-[1px] text-[0.6875rem] leading-snug text-ink-mute">
-              {ROLE_TITLE[user.role] || user.role} · {statusMeta?.label}
+              {ROLE_LABELS[user.role] || user.role} · {statusMeta?.label}
             </p>
           </div>
         ) : null}

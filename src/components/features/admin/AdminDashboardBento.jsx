@@ -81,9 +81,9 @@ function OverviewCard({ stats, canAnimate }) {
       initial={canAnimate ? { opacity: 0, y: 14 } : false}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
-      className="rounded-[22px] border border-line bg-surface/90 p-5 shadow-card-sm sm:p-6"
+      className="rounded-[22px] border border-line bg-surface/90 p-4 shadow-card-sm sm:p-5"
     >
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+      <div className="mb-3.5 flex flex-wrap items-center justify-between gap-3">
         <h2
           id="admin-overview-heading"
           className="text-lg font-semibold text-ink"
@@ -219,9 +219,9 @@ function AccountStatusDonutCard({ stats, canAnimate }) {
       initial={canAnimate ? { opacity: 0, y: 16 } : false}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: canAnimate ? 0.06 : 0, ease: EASE_OUT_EXPO }}
-      className="rounded-[22px] border border-line bg-surface/90 p-5 shadow-card-sm sm:p-6"
+      className="rounded-[22px] border border-line bg-surface/90 p-4 shadow-card-sm sm:p-5"
     >
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2
             id="account-status-heading"
@@ -291,9 +291,9 @@ function AccountStatusDonutCard({ stats, canAnimate }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
+      <div className="grid grid-cols-1 items-center gap-5 md:grid-cols-12">
         <div className="flex items-center justify-center md:col-span-5">
-          <div className="relative h-64 w-64 sm:h-72 sm:w-72">
+          <div className="relative h-52 w-52 sm:h-56 sm:w-56">
             <svg
               viewBox="0 0 240 240"
               className="h-full w-full"
@@ -344,7 +344,7 @@ function AccountStatusDonutCard({ stats, canAnimate }) {
           </div>
         </div>
 
-        <div className="space-y-3 md:col-span-7">
+        <div className="space-y-2.5 md:col-span-7">
           {segments.map((seg) => {
             const percent = total > 0 ? Math.round((seg.value / total) * 100) : 0;
             const isActive = activeKey === seg.key;

@@ -108,7 +108,7 @@ Klik setiap modul di bawah ini untuk melihat detail fungsionalitasnya secara len
 <summary><b>🎨 5. Desain Visual &amp; Komponen Interaktif</b></summary>
 
 - **Tema Midnight Navy &amp; Warm Gold**: Palet `#091326` (canvas), `#101F3D` (surface), `#F7F3E6` (ink), dan aksen emas `#F2C94C` dengan tipografi **Poppins**.
-- **Efek &amp; Mikro-Interaksi**: Menggunakan komponen kustom seperti `Aurora`, `GooeyNav`, `MagicBento`, `CircularGallery`, `GridMotion`, `TiltedCard`, `ProfileCard`, `PulseHeart`, `WinnerPodium`, dan `AnimatedList` dengan dukungan `MotionContext`.
+- **Efek &amp; Mikro-Interaksi**: Menggunakan komponen kustom seperti `Aurora`, `GooeyNav`, `CircularGallery`, `GridMotion`, `TiltedCard`, `ProfileCard`, `PulseHeart`, dan `WinnerPodium` dengan dukungan `MotionContext`.
 - **Ikon Konsisten**: Seluruh antarmuka menggunakan paket ikon **Hugeicons** (`@hugeicons/react`).
 
 </details>
@@ -340,16 +340,16 @@ Artiva/
     │   ├── curator/                # Ruang kerja Kurator & halaman status verifikasi/banding
     │   └── dashboard/admin/        # Dashboard Admin (stats, curators, categories, users, reports)
     ├── components/
-    │   ├── cards/                  # ArtworkCard, ChallengeCard, StepCard, WinnerCard, WinnerPodium
-    │   ├── effects/                # Aurora, CircularGallery, GooeyNav, GridMotion, MagicBento, TiltedCard, dll.
+    │   ├── cards/                  # ArtworkCard, ChallengeCard, StepCard, WinnerPodium
+    │   ├── effects/                # Aurora, CircularGallery, GooeyNav, GridMotion, TiltedCard, dll.
     │   ├── features/               # Komponen fitur per domain (admin, artworks, auth, challenges, curator, member)
-    │   ├── layout/                 # Navbar, Sidebar, DashboardShell, AuthShell, Footer, PageHeader
+    │   ├── layout/                 # PublicShell, Navbar, Sidebar, DashboardShell, AuthShell, Footer, PageHeader, SectionHeader
     │   └── ui/                     # Komponen UI reusable (Button, DataTable, ImageUploader, ConfirmModal, Toast, dll.)
     └── lib/
         ├── auth/                   # Session JWT (jose), password (bcryptjs), guards & page-guards
         ├── repositories/           # Query PostgreSQL terstruktur per entitas
         ├── server/                 # Pool DB, wrapper HTTP/CSRF, rate-limit, upload handler, sync status tantangan
-        ├── shared/                 # Helper format tanggal/zona waktu, error-messages, permissions, api-client
+        ├── shared/                 # Helper format tanggal/zona waktu, navigation, error-messages, permissions, api-client
         └── validators/             # Skema validasi Zod untuk seluruh input API
 ```
 

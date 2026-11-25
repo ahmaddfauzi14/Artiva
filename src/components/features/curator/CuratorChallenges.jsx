@@ -29,10 +29,12 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
-  const drafts = challenges.filter((c) => c.status === 'draft');
-  const opens = challenges.filter((c) => c.status === 'open');
-  const closeds = challenges.filter((c) => c.status === 'closed');
-  const announceds = challenges.filter((c) => c.status === 'announced');
+  const byStatus = {
+    draft: challenges.filter((c) => c.status === 'draft'),
+    open: challenges.filter((c) => c.status === 'open'),
+    closed: challenges.filter((c) => c.status === 'closed'),
+    announced: challenges.filter((c) => c.status === 'announced'),
+  };
 
   const handlePublish = async (ch) => {
     setPublishingId(ch.challenge_id);
@@ -149,47 +151,33 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
   );
 
   const visibleList =
-    statusFilter === 'closed'
-      ? closeds
-      : statusFilter === 'open'
-        ? opens
-        : statusFilter === 'draft'
-          ? drafts
-          : statusFilter === 'announced'
-            ? announceds
-            : challenges;
+    statusFilter === 'all' ? challenges : byStatus[statusFilter] || challenges;
 
   const groupedSections = [
-    { key: 'closed', title: 'Menunggu penetapan pemenang', list: closeds },
-    { key: 'open', title: 'Sedang berlangsung (Terbuka)', list: opens },
-    { key: 'draft', title: 'Draft', list: drafts },
-    { key: 'announced', title: 'Sudah diumumkan', list: announceds },
+    { key: 'closed', title: 'Menunggu penetapan pemenang', list: byStatus.closed },
+    { key: 'open', title: 'Sedang berlangsung (Terbuka)', list: byStatus.open },
+    { key: 'draft', title: 'Draft', list: byStatus.draft },
+    { key: 'announced', title: 'Sudah diumumkan', list: byStatus.announced },
   ].filter((group) => group.list.length > 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <ChipRow
         items={STATUS_FILTERS.map((item) => ({
           ...item,
           count:
             item.value === 'all'
               ? challenges.length
-              : item.value === 'closed'
-                ? closeds.length
-                : item.value === 'open'
-                  ? opens.length
-                  : item.value === 'draft'
-                    ? drafts.length
-                    : announceds.length,
+              : (byStatus[item.value] || []).length,
         }))}
         activeValue={statusFilter}
         onSelect={setStatusFilter}
       />
 
-      {closeds.length > 0 &&
+      {byStatus.closed.length > 0 &&
       (statusFilter === 'all' || statusFilter === 'closed') ? (
         <Alert tone="warning" title="Menunggu penetapan pemenang">
-          Ada {closeds.length} tantangan yang periodenya sudah berakhir dan siap
+          Ada {byStatus.closed.length} tantangan yang periodenya sudah berakhir dan siap
           ditetapkan pemenangnya.
         </Alert>
       ) : null}
@@ -202,7 +190,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
           actionHref="/curator/challenges/new"
         />
       ) : statusFilter === 'all' ? (
-        <div className="space-y-10">
+        <div className="space-y-7">
           {groupedSections.map((group) => (
             <section key={group.key} className="space-y-4">
               <h2 className="tabular-nums text-xl font-semibold text-ink">

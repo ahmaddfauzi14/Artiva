@@ -74,7 +74,7 @@ export default function ChallengeSubmitForm({
   };
 
   return (
-    <div className="space-y-8 pb-8">
+    <div className="space-y-6 pb-4">
       <div>
         <Link
           href={`/challenges/${challenge.challenge_id}`}
@@ -124,7 +124,7 @@ export default function ChallengeSubmitForm({
           actionHref="/me/artworks/new"
         />
       ) : (
-        <div className="space-y-10">
+        <div className="space-y-7">
           {/* Bagian 1: Karya Portofolio Siap Dipilih */}
           <section className="space-y-5">
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">

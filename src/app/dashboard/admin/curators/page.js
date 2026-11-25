@@ -16,7 +16,7 @@ export default async function AdminCuratorsPage() {
   ]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="VERIFIKASI PENYELENGGARA"
         title="Verifikasi kurator"

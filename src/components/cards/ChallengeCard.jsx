@@ -5,7 +5,10 @@ import Button from '@/components/ui/Button';
 import { useMotion } from '@/components/effects/MotionContext';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { formatDateRangeId, getInitials } from '@/lib/shared/format';
-import { tintFullClassByName } from '@/lib/shared/stagger';
+import {
+  tintFullClassByName,
+  updateSpotlightPosition,
+} from '@/lib/shared/stagger';
 
 const STATUS_TINTS = {
   open: 'mint',
@@ -30,12 +33,8 @@ export default function ChallengeCard({
   const periodText = formatDateRangeId(challenge.start_date, challenge.end_date);
 
   const handlePointerMove = (e) => {
-    if (!isMotionActive || (e.pointerType && e.pointerType !== 'mouse')) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / Math.max(rect.width, 1)) * 100;
-    const y = ((e.clientY - rect.top) / Math.max(rect.height, 1)) * 100;
-    e.currentTarget.style.setProperty('--mx', `${x.toFixed(1)}%`);
-    e.currentTarget.style.setProperty('--my', `${y.toFixed(1)}%`);
+    if (!isMotionActive) return;
+    updateSpotlightPosition(e);
   };
 
   if (variant === 'compact') {

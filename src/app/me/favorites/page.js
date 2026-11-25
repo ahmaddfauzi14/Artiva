@@ -20,7 +20,7 @@ export default async function MemberFavoritesPage() {
   const favorites = myFavorites.items || [];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="SIMPANAN INSPIRASI"
         title="Favorit"

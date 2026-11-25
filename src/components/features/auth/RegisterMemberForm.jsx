@@ -1,42 +1,31 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useSyncExternalStore } from 'react';
+import { useState } from 'react';
 import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import FormField from '@/components/ui/FormField';
 import RoleSelector from '@/components/features/auth/RoleSelector';
 import {
-  clearRegisterDraft,
-  getRegisterDraftSnapshot,
-  getServerRegisterDraftSnapshot,
-  subscribeRegisterDraft,
-  updateRegisterDraftField,
-} from '@/components/features/auth/register-draft';
+  RegisterIdentityFields,
+  RegisterPasswordFields,
+} from '@/components/features/auth/AccountCredentialsFields';
+import { useRegisterDraft } from '@/components/features/auth/register-draft';
 import { apiFetch } from '@/lib/shared/api-client';
 
 export default function RegisterMemberForm() {
-  const form = useSyncExternalStore(
-    subscribeRegisterDraft,
-    getRegisterDraftSnapshot,
-    getServerRegisterDraftSnapshot
-  );
-
+  const { draft, onFieldChange, clearDraft } = useRegisterDraft();
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
   const [createdUser, setCreatedUser] = useState(null);
-
-  const updateField = (key) => (e) => {
-    updateRegisterDraftField(key, e.target.value);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     setFieldErrors({});
 
-    if (form.password !== form.confirm_password) {
+    if (draft.password !== draft.confirm_password) {
       setFieldErrors({
         confirm_password: 'Konfirmasi kata sandi tidak cocok.',
       });
@@ -49,13 +38,13 @@ export default function RegisterMemberForm() {
       const res = await apiFetch('/api/auth/register/member', {
         method: 'POST',
         body: {
-          username: form.username,
-          email: form.email,
-          display_name: form.display_name,
-          password: form.password,
+          username: draft.username,
+          email: draft.email,
+          display_name: draft.display_name,
+          password: draft.password,
         },
       });
-      clearRegisterDraft();
+      clearDraft();
       setCreatedUser(res.data.user);
     } catch (err) {
       setErrorMsg(err.message);
@@ -67,7 +56,7 @@ export default function RegisterMemberForm() {
 
   if (createdUser) {
     return (
-      <div className="space-y-6 py-2">
+      <div className="space-y-5 py-1">
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
           PENDAFTARAN SELESAI
         </p>
@@ -90,10 +79,10 @@ export default function RegisterMemberForm() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="hidden lg:block space-y-1">
+    <div className="space-y-5">
+      <div className="hidden space-y-1 lg:block">
         <h2 className="text-2xl font-semibold text-ink">Buat akun ARTIVA</h2>
-        <p className="text-base text-ink-soft">
+        <p className="text-sm text-ink-soft sm:text-base">
           Unggah karya, beri apresiasi, dan ikuti berbagai tantangan kreatif.
         </p>
       </div>
@@ -110,74 +99,34 @@ export default function RegisterMemberForm() {
         <FormField
           label="Nama lengkap"
           name="display_name"
-          value={form.display_name}
-          onChange={updateField('display_name')}
+          value={draft.display_name}
+          onChange={onFieldChange('display_name')}
           placeholder="Nama tampilan di galeri (opsional)"
           helperText="Jika kosong, akan memakai username."
           error={fieldErrors.display_name}
         />
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField
-            label="Username"
-            name="username"
-            value={form.username}
-            onChange={updateField('username')}
-            placeholder="contoh: kreator_muda"
-            helperText="3–30 karakter huruf kecil, angka, atau _."
-            error={fieldErrors.username}
-            required
-            inputProps={{ autoComplete: 'username' }}
-          />
+        <RegisterIdentityFields
+          draft={draft}
+          onFieldChange={onFieldChange}
+          fieldErrors={fieldErrors}
+          usernameHelperText="3–30 karakter huruf kecil, angka, atau _."
+        />
 
-          <FormField
-            label="Email"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={updateField('email')}
-            placeholder="email@example.com"
-            error={fieldErrors.email}
-            required
-            inputProps={{ autoComplete: 'email' }}
-          />
-        </div>
+        <RegisterPasswordFields
+          draft={draft}
+          onFieldChange={onFieldChange}
+          fieldErrors={fieldErrors}
+        />
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField
-            label="Kata sandi"
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={updateField('password')}
-            placeholder="Minimal 8 karakter"
-            helperText="Gunakan minimal 8 karakter."
-            error={fieldErrors.password}
-            required
-            inputProps={{ autoComplete: 'new-password' }}
-          />
-
-          <FormField
-            label="Konfirmasi kata sandi"
-            name="confirm_password"
-            type="password"
-            value={form.confirm_password}
-            onChange={updateField('confirm_password')}
-            placeholder="Ulangi kata sandi"
-            error={fieldErrors.confirm_password}
-            required
-            inputProps={{ autoComplete: 'new-password' }}
-          />
-        </div>
-
-        <div className="pt-2">
+        <div className="pt-1">
           <Button type="submit" variant="primary" loading={loading} className="w-full">
             Buat akun Member
           </Button>
         </div>
       </form>
 
-      <div className="border-t border-line pt-5 text-sm text-ink-soft">
+      <div className="border-t border-line pt-4 text-sm text-ink-soft">
         <p>
           Sudah memiliki akun?{' '}
           <Link href="/login" className="font-semibold text-brand-700 hover:underline">

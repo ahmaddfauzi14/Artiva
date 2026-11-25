@@ -24,71 +24,63 @@ const LEGAL_LINKS = [
   { label: 'Kebijakan Privasi', href: '/privacy' },
 ];
 
+function FooterLinkGroup({ id, title, links }) {
+  return (
+    <nav aria-labelledby={id} className="min-w-0">
+      <h3
+        id={id}
+        className="text-xs font-semibold uppercase tracking-[0.08em] text-ink-mute"
+      >
+        {title}
+      </h3>
+      <ul className="mt-2 flex flex-col gap-0.5">
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className="inline-flex min-h-[36px] items-center text-sm font-medium text-ink transition-colors hover:text-brand-700 hover:underline underline-offset-4 sm:min-h-[30px]"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
 export default function Footer() {
   return (
     <footer className="mt-auto border-t border-line bg-brand-900">
-      <div className="mx-auto max-w-[90rem] px-4 py-8 sm:px-6 md:px-8">
-        {/* Zona Atas: Brand Ringkas + 2 Kolom Navigasi Vertikal */}
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-14">
-          <div className="min-w-0 lg:flex-1 lg:max-w-4xl">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:items-start">
+          <div className="min-w-0 md:col-span-6 lg:col-span-7">
             <Link href="/" className="inline-flex items-center">
               <ArtivaLogo size="md" />
             </Link>
-            <h2 className="mt-3.5 text-xl font-semibold tracking-[-0.01em] text-ink">
+            <h2 className="mt-3 text-lg font-semibold tracking-[-0.01em] text-ink">
               Ekosistem Kreatif ARTIVA
             </h2>
-            <p className="mt-1.5 text-base leading-relaxed text-ink-soft">
+            <p className="mt-1 max-w-lg text-sm leading-relaxed text-ink-soft">
               Ruang bertemu karya, ide, dan apresiasi yang menyatukan portofolio digital, interaksi komunitas, dan tantangan kreatif terkurasi.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 sm:gap-14 lg:shrink-0 lg:gap-16">
-            <nav aria-labelledby="footer-quick-links" className="min-w-0">
-              <h3
-                id="footer-quick-links"
-                className="text-xs font-semibold uppercase tracking-[0.08em] text-ink-mute"
-              >
-                Tautan Cepat
-              </h3>
-              <ul className="mt-2.5 flex flex-col gap-1">
-                {QUICK_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="inline-flex min-h-[36px] items-center text-sm font-medium text-ink transition-colors hover:text-brand-700 hover:underline underline-offset-4 sm:min-h-[30px]"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-
-            <nav aria-labelledby="footer-about-links" className="min-w-0">
-              <h3
-                id="footer-about-links"
-                className="text-xs font-semibold uppercase tracking-[0.08em] text-ink-mute"
-              >
-                Tentang
-              </h3>
-              <ul className="mt-2.5 flex flex-col gap-1">
-                {ABOUT_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="inline-flex min-h-[36px] items-center text-sm font-medium text-ink transition-colors hover:text-brand-700 hover:underline underline-offset-4 sm:min-h-[30px]"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+          <div className="grid grid-cols-2 gap-6 md:col-span-6 lg:col-span-5">
+            <FooterLinkGroup
+              id="footer-quick-links"
+              title="Tautan Cepat"
+              links={QUICK_LINKS}
+            />
+            <FooterLinkGroup
+              id="footer-about-links"
+              title="Tentang"
+              links={ABOUT_LINKS}
+            />
           </div>
         </div>
 
-        {/* Zona Bawah: Hak Cipta, Tautan Legal, Catatan Karya, & GitHub */}
-        <div className="mt-6 flex flex-col gap-4 border-t border-line/80 pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-5 flex flex-col gap-3 border-t border-line/80 pt-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0 space-y-1">
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-mute">
               <span>© 2026 ARTIVA. Seluruh hak cipta dilindungi.</span>
@@ -100,10 +92,7 @@ export default function Footer() {
                   {LEGAL_LINKS.map((link, index) => (
                     <li key={link.href} className="inline-flex items-center gap-2.5">
                       {index > 0 ? (
-                        <span
-                          aria-hidden="true"
-                          className="select-none text-line"
-                        >
+                        <span aria-hidden="true" className="select-none text-line">
                           |
                         </span>
                       ) : null}

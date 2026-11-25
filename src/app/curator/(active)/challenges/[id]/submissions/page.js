@@ -37,7 +37,7 @@ export default async function CuratorChallengeSubmissionsPage({ params }) {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="KURASI KARYA MASUK"
         title={`Submission: ${challenge.title}`}

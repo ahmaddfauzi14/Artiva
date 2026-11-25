@@ -1,27 +1,26 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import FormField from '@/components/ui/FormField';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { useToast } from '@/components/ui/Toast';
+import VerificationHistoryList from '@/components/features/curator/VerificationHistoryList';
 import { apiFetch } from '@/lib/shared/api-client';
 import { formatDateTimeId } from '@/lib/shared/format';
 
 export default function CuratorVerification({ verification: initialVerification }) {
   const router = useRouter();
   const { showToast } = useToast();
-  const historyListId = useId();
   const [verification, setVerification] = useState(initialVerification);
   const [checking, setChecking] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
 
   const [appealOpen, setAppealOpen] = useState(false);
   const [submittingAppeal, setSubmittingAppeal] = useState(false);
@@ -225,9 +224,9 @@ export default function CuratorVerification({ verification: initialVerification 
       : null;
 
   return (
-    <div className="grid w-full grid-cols-1 items-start gap-8 lg:grid-cols-12">
+    <div className="grid w-full grid-cols-1 items-start gap-6 lg:grid-cols-12">
       {/* Panel Kiri */}
-      <div className="edge-glow rounded-[28px] bg-grad-hero p-6 shadow-glass space-y-5 sm:p-8 lg:sticky lg:top-24 lg:col-span-5">
+      <div className="edge-glow space-y-4 rounded-[24px] bg-grad-hero p-5 shadow-glass sm:p-6 lg:sticky lg:top-24 lg:col-span-5">
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
             VERIFIKASI KURATOR
@@ -263,7 +262,7 @@ export default function CuratorVerification({ verification: initialVerification 
       </div>
 
       {/* Kartu Status Kanan */}
-      <div className="rounded-[28px] border border-line bg-surface p-6 shadow-card sm:p-8 space-y-6 lg:col-span-7">
+      <div className="space-y-5 rounded-[24px] border border-line bg-surface p-5 shadow-card sm:p-6 lg:col-span-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-ink-mute">
@@ -546,74 +545,7 @@ export default function CuratorVerification({ verification: initialVerification 
         </div>
 
         {/* Riwayat Pengajuan */}
-        {history.length > 1 ? (
-          <div className="space-y-3 border-t border-line pt-5">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.06em] text-ink-mute">
-                Riwayat Pengajuan ({history.length})
-              </h3>
-              <button
-                type="button"
-                aria-expanded={showHistory}
-                aria-controls={historyListId}
-                onClick={() => setShowHistory((prev) => !prev)}
-                className="inline-flex min-h-[44px] -my-2 cursor-pointer items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-brand-700 hover:bg-brand-50/50 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60"
-              >
-                <span>{showHistory ? 'Sembunyikan' : 'Lihat semua'}</span>
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className={`h-4 w-4 motion-safe:transition-transform ${
-                    showHistory ? 'rotate-180' : ''
-                  }`}
-                >
-                  <path d="M5 7.5l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </div>
-            {showHistory ? (
-              <ol id={historyListId} className="space-y-3">
-                {history.map((item) => (
-                  <li
-                    key={item.verification_id}
-                    className="rounded-[16px] border border-line bg-canvas p-4 text-sm space-y-2"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-semibold text-ink">
-                          {item.is_appeal
-                            ? `Banding ke-${item.appeal_number}`
-                            : 'Pengajuan awal'}
-                        </span>
-                        <span className="text-xs text-ink-mute">
-                          {formatDateTimeId(item.submitted_at)}
-                        </span>
-                      </div>
-                      <StatusBadge domain="verification" status={item.status} />
-                    </div>
-
-                    {item.appeal_note ? (
-                      <p className="text-ink-soft">
-                        <span className="font-semibold text-ink">Catatan banding:</span>{' '}
-                        {item.appeal_note}
-                      </p>
-                    ) : null}
-
-                    {item.note ? (
-                      <p className="text-ink-soft">
-                        <span className="font-semibold text-ink">Catatan Admin:</span>{' '}
-                        {item.note}
-                      </p>
-                    ) : null}
-                  </li>
-                ))}
-              </ol>
-            ) : null}
-          </div>
-        ) : null}
+        <VerificationHistoryList history={history} />
       </div>
 
       <ConfirmModal

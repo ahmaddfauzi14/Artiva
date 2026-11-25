@@ -17,7 +17,7 @@ export default async function NewArtworkPage() {
   ]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <div>
         <Link
           href="/me/artworks"

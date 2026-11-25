@@ -1,5 +1,7 @@
 'use client';
 
+import { useSyncExternalStore } from 'react';
+
 const DRAFT_KEY = 'artiva_register_draft';
 const EMPTY_DRAFT = {
   username: '',
@@ -13,12 +15,12 @@ let cachedRaw = null;
 let cachedParsed = EMPTY_DRAFT;
 const listeners = new Set();
 
-export function subscribeRegisterDraft(callback) {
+function subscribeRegisterDraft(callback) {
   listeners.add(callback);
   return () => listeners.delete(callback);
 }
 
-export function getRegisterDraftSnapshot() {
+function getRegisterDraftSnapshot() {
   try {
     const raw = window.sessionStorage.getItem(DRAFT_KEY);
     if (!raw) {
@@ -43,7 +45,7 @@ export function getRegisterDraftSnapshot() {
   }
 }
 
-export function getServerRegisterDraftSnapshot() {
+function getServerRegisterDraftSnapshot() {
   return EMPTY_DRAFT;
 }
 
@@ -67,11 +69,28 @@ export function clearRegisterDraft() {
   try {
     window.sessionStorage.removeItem(DRAFT_KEY);
   } catch {
-    // Ignore storage failures.
+    // Abaikan kegagalan akses sessionStorage
   }
   cachedRaw = null;
   cachedParsed = EMPTY_DRAFT;
   for (const listener of listeners) {
     listener();
   }
+}
+
+/**
+ * Hook sederhana agar draf form registrasi tetap tersimpan saat pengguna berpindah tab Member/Kurator.
+ */
+export function useRegisterDraft() {
+  const draft = useSyncExternalStore(
+    subscribeRegisterDraft,
+    getRegisterDraftSnapshot,
+    getServerRegisterDraftSnapshot
+  );
+
+  const onFieldChange = (key) => (e) => {
+    updateRegisterDraftField(key, e.target.value);
+  };
+
+  return { draft, onFieldChange, clearDraft: clearRegisterDraft };
 }

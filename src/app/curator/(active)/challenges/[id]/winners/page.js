@@ -47,7 +47,7 @@ export default async function CuratorChallengeWinnersPage({ params }) {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow={
           challenge.status === 'announced'

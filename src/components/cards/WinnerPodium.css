@@ -473,12 +473,12 @@
    ======================================================================== */
 @container podium (inline-size >= 680px) {
   .wp-stage {
-    padding-block: 3.75rem 3.5rem;
-    padding-inline: clamp(1.25rem, 3.2cqi, 2.5rem);
+    padding-block: 2rem 2.5rem;
+    padding-inline: clamp(1.25rem, 3cqi, 2.25rem);
   }
 
   .wp-floor {
-    block-size: 6rem;
+    block-size: 4.5rem;
   }
 
   /* Grid spotlight langit-langit sejajar persis dengan kolom podium */
@@ -548,15 +548,15 @@
   }
 
   .wp-slot[data-rank='1'] {
-    --pedestal-height: 144px;
+    --pedestal-height: 118px;
   }
 
   .wp-slot[data-rank='2'] {
-    --pedestal-height: 104px;
+    --pedestal-height: 86px;
   }
 
   .wp-slot[data-rank='3'] {
-    --pedestal-height: 82px;
+    --pedestal-height: 68px;
   }
 
   .wp-showcase {

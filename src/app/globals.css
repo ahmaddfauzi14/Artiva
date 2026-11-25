@@ -73,7 +73,6 @@
 }
 
 html {
-  font-size: 90%;
   scroll-behavior: smooth;
   overflow-x: clip;
   scrollbar-width: none;
@@ -85,10 +84,18 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.55;
+  text-align: start;
   overflow-x: clip;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+h1,
+h2,
+h3,
+th {
+  text-wrap: balance;
 }
 
 html::-webkit-scrollbar,
@@ -136,14 +143,14 @@ body::-webkit-scrollbar,
 
 /* Tipografi & Grid Responsif (modern-web-guidance: responsive-design & css-layout) */
 .text-display-fluid {
-  font-size: clamp(2.125rem, 1.4rem + 2.34vw, 3.375rem);
-  line-height: 1.09;
+  font-size: clamp(2rem, 1.35rem + 2.15vw, 3rem);
+  line-height: 1.1;
   letter-spacing: -0.025em;
 }
 
 .auto-grid-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14.6875rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
 }
 
 .auto-grid-wide {

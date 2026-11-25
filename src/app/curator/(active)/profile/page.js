@@ -12,7 +12,7 @@ export default async function CuratorProfilePage() {
   const user = await requirePageRole('curator', '/curator/profile');
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="PENGATURAN AKUN"
         title="Profil"

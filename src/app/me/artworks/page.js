@@ -17,7 +17,7 @@ export default async function MemberArtworksPage() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="PORTOFOLIO MEMBER"
         title="Karya saya"

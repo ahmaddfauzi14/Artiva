@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import CreatorProfile from '@/components/features/creators/CreatorProfile';
-import Footer from '@/components/layout/Footer';
-import Navbar from '@/components/layout/Navbar';
+import PublicShell from '@/components/layout/PublicShell';
 import { getPublicViewer } from '@/lib/auth/page-guards';
 import { findPublicCreatorByUsername } from '@/lib/repositories/artworks';
 
@@ -25,7 +24,6 @@ export default async function CreatorProfilePage({ params, searchParams }) {
   const page = Math.max(1, Number(sp?.page || '1') || 1);
 
   const data = await findPublicCreatorByUsername(username, { page, limit: 12 });
-
   if (!data) {
     notFound();
   }
@@ -33,18 +31,8 @@ export default async function CreatorProfilePage({ params, searchParams }) {
   const { creator, artworks, meta } = data;
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar user={viewer} />
-
-      <main className="mx-auto w-full max-w-[90rem] flex-1 px-4 py-10 sm:px-6 md:px-8">
-        <CreatorProfile
-          creator={creator}
-          artworks={artworks}
-          meta={meta}
-        />
-      </main>
-
-      <Footer />
-    </div>
+    <PublicShell user={viewer} mainClassName="py-6 sm:py-8">
+      <CreatorProfile creator={creator} artworks={artworks} meta={meta} />
+    </PublicShell>
   );
 }

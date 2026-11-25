@@ -4,50 +4,21 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useId, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Logout01Icon, Shield01Icon } from '@hugeicons/core-free-icons';
+import { Logout01Icon } from '@hugeicons/core-free-icons';
 import ArtivaLogo from '@/components/layout/ArtivaLogo';
 import Avatar from '@/components/ui/Avatar';
 import Button from '@/components/ui/Button';
 import GooeyNav from '@/components/effects/GooeyNav';
-import { CURATOR_NAV_ITEMS } from '@/components/features/curator/curator-nav';
-import { MEMBER_NAV_ITEMS } from '@/components/features/member/member-nav';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/shared/api-client';
+import {
+  getProfileNavItems,
+  PUBLIC_NAV_ITEMS,
+  ROLE_LABELS,
+} from '@/lib/shared/navigation';
 import { getStatusMeta } from '@/lib/shared/status-styles';
 
-const CURATOR_VERIFICATION_ITEMS = [
-  {
-    key: 'verification',
-    label: 'Status verifikasi',
-    href: '/curator/verification',
-    icon: Shield01Icon,
-    match: (pathname) => pathname.startsWith('/curator/verification'),
-  },
-];
-
-const ROLE_TITLE = {
-  member: 'Member',
-  curator: 'Kurator',
-};
-
-const PUBLIC_ITEMS = [
-  { label: 'Beranda', href: '/' },
-  { label: 'Jelajahi', href: '/artworks' },
-  { label: 'Tantangan', href: '/challenges' },
-];
-
 const GOOEY_COLORS = ['#F2C94C', '#79A0E8', '#2856B8'];
-
-function getProfileNavItems(user) {
-  if (!user) return null;
-  if (user.role === 'member') return MEMBER_NAV_ITEMS;
-  if (user.role === 'curator') {
-    return user.status === 'active'
-      ? CURATOR_NAV_ITEMS
-      : CURATOR_VERIFICATION_ITEMS;
-  }
-  return null;
-}
 
 function getActivePublicIndex(pathname) {
   if (pathname === '/') return 0;
@@ -210,7 +181,7 @@ export default function Navbar({ user = null }) {
   const statusMeta = user ? getStatusMeta('user', user.status) : null;
 
   const sharedGooeyProps = {
-    items: PUBLIC_ITEMS,
+    items: PUBLIC_NAV_ITEMS,
     linkComponent: Link,
     activeIndex: activePublicIndex,
     theme: 'dark',
@@ -229,7 +200,7 @@ export default function Navbar({ user = null }) {
 
   return (
     <header className="glass sticky top-0 z-40 border-x-0 border-t-0 border-b border-line">
-      <div className="relative z-20 mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6 md:px-8">
+      <div className="relative z-20 mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         {/* Brand Wordmark */}
         <Link
           href="/"
@@ -329,7 +300,7 @@ export default function Navbar({ user = null }) {
                       {user.role === 'member' ||
                       (user.role === 'curator' && user.status === 'active')
                         ? `@${user.username}`
-                        : `${ROLE_TITLE[user.role] || user.role} · ${statusMeta?.label}`}
+                        : `${ROLE_LABELS[user.role] || user.role} · ${statusMeta?.label}`}
                     </p>
                   </div>
 

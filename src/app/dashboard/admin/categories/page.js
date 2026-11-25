@@ -16,7 +16,7 @@ export default async function AdminCategoriesPage() {
   ]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="TAKSONOMI PLATFORM"
         title="Manajemen kategori"

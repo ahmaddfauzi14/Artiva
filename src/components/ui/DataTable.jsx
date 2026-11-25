@@ -107,7 +107,7 @@ export default function DataTable({
                           key={col.key}
                           scope="row"
                           data-label={col.key === 'id' ? col.label : undefined}
-                          className={`py-3.5 ${padRight} text-left font-semibold text-ink align-middle ${
+                          className={`py-2.5 ${padRight} text-left font-semibold text-ink align-middle ${
                             col.cellClassName || ''
                           }`}
                         >
@@ -120,7 +120,7 @@ export default function DataTable({
                       <td
                         key={col.key}
                         data-label={col.label}
-                        className={`py-3.5 ${padRight} text-ink-soft align-middle ${
+                        className={`py-2.5 ${padRight} text-ink-soft align-middle ${
                           col.cellClassName || ''
                         }`}
                       >
@@ -143,7 +143,7 @@ export default function DataTable({
       className="overflow-hidden rounded-[22px] border border-line bg-surface/90 shadow-card-sm"
     >
       {hasHeader ? (
-        <div className="flex flex-col gap-3 border-b border-line/80 px-5 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-3 border-b border-line/80 px-4 py-3.5 sm:px-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center justify-between gap-4">
             {title ? (
               <h2 id={headingId} className="text-lg font-semibold text-ink">
@@ -204,13 +204,13 @@ export default function DataTable({
 
       <div
         role={hasTabs ? 'tabpanel' : undefined}
-        className="p-5 sm:p-6"
+        className="p-4 sm:p-5"
       >
         {renderBody()}
       </div>
 
       {authorityNote ? (
-        <div className="border-t border-line/70 bg-brand-50/45 px-5 py-3 text-xs text-ink-soft sm:px-6">
+        <div className="border-t border-line/70 bg-brand-50/45 px-4 py-2.5 text-xs text-ink-soft sm:px-5">
           {authorityNote}
         </div>
       ) : null}

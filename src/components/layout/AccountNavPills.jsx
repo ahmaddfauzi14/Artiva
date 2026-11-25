@@ -4,10 +4,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { CURATOR_NAV_ITEMS, MEMBER_NAV_ITEMS } from '@/lib/shared/navigation';
 
-export default function AccountNavPills({ items = [], ariaLabel }) {
+const NAV_BY_ROLE = {
+  member: { items: MEMBER_NAV_ITEMS, label: 'Navigasi halaman member' },
+  curator: { items: CURATOR_NAV_ITEMS, label: 'Navigasi halaman kurator' },
+};
+
+/**
+ * Deretan tombol pill navigasi untuk ruang kerja Member dan Kurator.
+ */
+export default function AccountNavPills({ role, items, ariaLabel }) {
   const pathname = usePathname();
   const activeLinkRef = useRef(null);
+
+  const preset = role ? NAV_BY_ROLE[role] : null;
+  const navItems = items || preset?.items || [];
+  const navLabel = ariaLabel || preset?.label || 'Navigasi akun';
 
   useEffect(() => {
     activeLinkRef.current?.scrollIntoView({
@@ -19,10 +32,10 @@ export default function AccountNavPills({ items = [], ariaLabel }) {
 
   return (
     <nav
-      aria-label={ariaLabel}
-      className="member-nav-scroller -mx-1 flex items-center gap-3 overflow-x-auto px-1 py-1.5 scroll-smooth"
+      aria-label={navLabel}
+      className="member-nav-scroller -mx-1 flex items-center gap-2.5 overflow-x-auto px-1 py-1 scroll-smooth"
     >
-      {items.map((item) => {
+      {navItems.map((item) => {
         const active = item.match(pathname);
         return (
           <Link
@@ -30,7 +43,7 @@ export default function AccountNavPills({ items = [], ariaLabel }) {
             ref={active ? activeLinkRef : undefined}
             href={item.href}
             aria-current={active ? 'page' : undefined}
-            className="member-nav-cta group relative inline-flex min-h-[44px] shrink-0 items-center gap-2 overflow-hidden rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-ink shadow-card-sm motion-safe:transition-all motion-safe:duration-200 ease-[var(--ease-spring)] hover:border-brand-400 hover:bg-brand-50 hover:shadow-card motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-px"
+            className="member-nav-cta group relative inline-flex min-h-[42px] shrink-0 items-center gap-2 overflow-hidden rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-ink shadow-card-sm motion-safe:transition-all motion-safe:duration-200 ease-[var(--ease-spring)] hover:border-brand-400 hover:bg-brand-50 hover:shadow-card motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-px"
           >
             {active ? (
               <span

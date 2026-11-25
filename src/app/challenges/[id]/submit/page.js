@@ -1,10 +1,9 @@
-import Footer from '@/components/layout/Footer';
-import Navbar from '@/components/layout/Navbar';
+import { notFound } from 'next/navigation';
 import ChallengeSubmitForm from '@/components/features/challenges/ChallengeSubmitForm';
+import PublicShell from '@/components/layout/PublicShell';
 import { requirePageRole } from '@/lib/auth/page-guards';
 import { todayInTz } from '@/lib/server/challenge-status';
 import { getEligibleArtworksForMember } from '@/lib/services/submissions';
-import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,16 +34,12 @@ export default async function SubmitChallengePage({ params }) {
     today <= data.challenge.end_date;
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar user={user} />
-      <main className="mx-auto w-full max-w-[90rem] flex-1 px-4 py-10 sm:px-6 md:px-8">
-        <ChallengeSubmitForm
-          challenge={data.challenge}
-          artworks={data.artworks}
-          isOpenWindow={isOpenWindow}
-        />
-      </main>
-      <Footer />
-    </div>
+    <PublicShell user={user} mainClassName="py-6 sm:py-8">
+      <ChallengeSubmitForm
+        challenge={data.challenge}
+        artworks={data.artworks}
+        isOpenWindow={isOpenWindow}
+      />
+    </PublicShell>
   );
 }

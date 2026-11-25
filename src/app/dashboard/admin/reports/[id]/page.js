@@ -25,7 +25,7 @@ export default async function AdminReportDetailPage({ params }) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="TINJAUAN LAPORAN"
         title={`Laporan #${report.report_id}: ${report.artwork_title}`}

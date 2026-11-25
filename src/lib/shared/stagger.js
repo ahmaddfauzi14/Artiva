@@ -49,3 +49,15 @@ export function offsetAt(index = 0) {
 export function masonryAspectAt(index = 0) {
   return MASONRY_ASPECTS[Math.abs(index) % MASONRY_ASPECTS.length];
 }
+
+/**
+ * Memperbarui koordinat sorotan kursor (--mx, --my) untuk elemen `.spotlight-surface`.
+ */
+export function updateSpotlightPosition(event) {
+  if (event.pointerType && event.pointerType !== 'mouse') return;
+  const rect = event.currentTarget.getBoundingClientRect();
+  const x = ((event.clientX - rect.left) / Math.max(rect.width, 1)) * 100;
+  const y = ((event.clientY - rect.top) / Math.max(rect.height, 1)) * 100;
+  event.currentTarget.style.setProperty('--mx', `${x.toFixed(1)}%`);
+  event.currentTarget.style.setProperty('--my', `${y.toFixed(1)}%`);
+}

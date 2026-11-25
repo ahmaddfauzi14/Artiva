@@ -16,7 +16,7 @@ export default async function AdminUsersPage() {
   ]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="MANAJEMEN AKUN"
         title="Daftar pengguna"

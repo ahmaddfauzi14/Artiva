@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ArtworkDetail from '@/components/features/artworks/ArtworkDetail';
-import Footer from '@/components/layout/Footer';
-import Navbar from '@/components/layout/Navbar';
+import PublicShell from '@/components/layout/PublicShell';
 import { getPublicViewer } from '@/lib/auth/page-guards';
 import { canInteract, canReport } from '@/lib/shared/permissions';
 import { findPublicArtworkById } from '@/lib/repositories/artworks';
@@ -46,30 +45,24 @@ export default async function ArtworkDetailPage({ params }) {
   });
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar user={viewer} />
+    <PublicShell user={viewer} mainClassName="space-y-5 py-6 sm:py-8">
+      <div>
+        <Link
+          href="/artworks"
+          className="text-sm font-semibold text-brand-700 hover:underline"
+        >
+          ← Kembali ke galeri karya
+        </Link>
+      </div>
 
-      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-8 px-4 py-10 sm:px-6 md:px-8">
-        <div>
-          <Link
-            href="/artworks"
-            className="text-sm font-semibold text-brand-700 hover:underline"
-          >
-            ← Kembali ke galeri karya
-          </Link>
-        </div>
-
-        <ArtworkDetail
-          artwork={artwork}
-          initialComments={commentsData.items}
-          initialCommentsMeta={commentsData.meta}
-          viewer={viewer}
-          canInteract={canInteract(viewer)}
-          canReport={canReport(viewer)}
-        />
-      </main>
-
-      <Footer />
-    </div>
+      <ArtworkDetail
+        artwork={artwork}
+        initialComments={commentsData.items}
+        initialCommentsMeta={commentsData.meta}
+        viewer={viewer}
+        canInteract={canInteract(viewer)}
+        canReport={canReport(viewer)}
+      />
+    </PublicShell>
   );
 }

@@ -2,20 +2,20 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import FormField from '@/components/ui/FormField';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { useToast } from '@/components/ui/Toast';
+import VerificationHistoryList from '@/components/features/curator/VerificationHistoryList';
 import { apiFetch } from '@/lib/shared/api-client';
 import { formatDateTimeId, getInitials } from '@/lib/shared/format';
 
 export default function AdminCuratorDetail({ initialVerification }) {
   const router = useRouter();
   const { showToast } = useToast();
-  const historyListId = useId();
 
   const [verification, setVerification] = useState(initialVerification);
   const [rejectNote, setRejectNote] = useState('');
@@ -23,7 +23,6 @@ export default function AdminCuratorDetail({ initialVerification }) {
   const [approveOpen, setApproveOpen] = useState(false);
   const [rejectOpen, setRejectOpen] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
 
   const isPending = verification.status === 'pending';
 
@@ -189,102 +188,15 @@ export default function AdminCuratorDetail({ initialVerification }) {
             ) : null}
           </div>
 
-          {history.length > 1 ? (
-            <div className="space-y-3 border-t border-line pt-5">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-ink-mute">
-                  Riwayat Pengajuan &amp; Peninjauan ({history.length})
-                </p>
-                <button
-                  type="button"
-                  aria-expanded={showHistory}
-                  aria-controls={historyListId}
-                  onClick={() => setShowHistory((prev) => !prev)}
-                  className="inline-flex min-h-[44px] -my-2 cursor-pointer items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-brand-700 hover:bg-brand-50/50 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60"
-                >
-                  <span>{showHistory ? 'Sembunyikan' : 'Lihat semua'}</span>
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className={`h-4 w-4 motion-safe:transition-transform ${
-                      showHistory ? 'rotate-180' : ''
-                    }`}
-                  >
-                    <path d="M5 7.5l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </div>
-              {showHistory ? (
-                <ol id={historyListId} className="space-y-3">
-                  {history.map((item) => {
-                    const isCurrent =
-                      item.verification_id === verification.verification_id;
-                    return (
-                      <li
-                        key={item.verification_id}
-                        className={`rounded-[16px] border p-4 text-sm space-y-2 ${
-                          isCurrent
-                            ? 'border-brand-700 bg-brand-50/40'
-                            : 'border-line bg-canvas'
-                        }`}
-                      >
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="font-semibold text-ink">
-                              RG-{String(item.verification_id).padStart(3, '0')} ·{' '}
-                              {item.is_appeal
-                                ? `Banding ke-${item.appeal_number}`
-                                : 'Pengajuan awal'}
-                            </span>
-                            {isCurrent ? (
-                              <span className="text-xs font-semibold text-brand-700">
-                                (Sedang dilihat)
-                              </span>
-                            ) : (
-                              <Link
-                                href={`/dashboard/admin/curators/${item.verification_id}`}
-                                className="text-xs font-semibold text-brand-700 hover:underline"
-                              >
-                                Buka detail
-                              </Link>
-                            )}
-                          </div>
-                          <StatusBadge domain="verification" status={item.status} />
-                        </div>
-
-                        <p className="text-xs text-ink-mute">
-                          Diajukan {formatDateTimeId(item.submitted_at)}
-                          {item.reviewed_at
-                            ? ` · Diputuskan ${formatDateTimeId(item.reviewed_at)}`
-                            : ''}
-                          {item.reviewer_display_name || item.reviewer_username
-                            ? ` oleh ${item.reviewer_display_name || item.reviewer_username}`
-                            : ''}
-                        </p>
-
-                        {item.appeal_note ? (
-                          <p className="text-ink-soft">
-                            <span className="font-semibold text-ink">Catatan banding:</span>{' '}
-                            {item.appeal_note}
-                          </p>
-                        ) : null}
-
-                        {item.note ? (
-                          <p className="text-ink-soft">
-                            <span className="font-semibold text-ink">Catatan Admin:</span>{' '}
-                            {item.note}
-                          </p>
-                        ) : null}
-                      </li>
-                    );
-                  })}
-                </ol>
-              ) : null}
-            </div>
-          ) : null}
+          <VerificationHistoryList
+            history={history}
+            title="Riwayat Pengajuan & Peninjauan"
+            currentVerificationId={verification.verification_id}
+            showReviewerMeta
+            buildDetailHref={(item) =>
+              `/dashboard/admin/curators/${item.verification_id}`
+            }
+          />
         </div>
 
         {/* Kanan: Panel Keputusan */}
