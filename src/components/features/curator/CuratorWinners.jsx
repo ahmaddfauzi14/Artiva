@@ -7,9 +7,16 @@ import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import EmptyState from '@/components/ui/EmptyState';
+import Select from '@/components/ui/Select';
 import { useToast } from '@/components/ui/Toast';
 import WinnerPodium from '@/components/cards/WinnerPodium';
 import { apiFetch } from '@/lib/shared/api-client';
+
+const RANK_OPTIONS = [
+  { value: '1', label: 'Juara 1' },
+  { value: '2', label: 'Juara 2' },
+  { value: '3', label: 'Juara 3' },
+];
 
 export default function CuratorWinners({
   challenge: initialChallenge,
@@ -208,18 +215,19 @@ export default function CuratorWinners({
                         </Button>
 
                         {isSelected ? (
-                          <select
-                            aria-label={`Peringkat untuk ${sub.artwork.title}`}
-                            value={chosenRank}
-                            onChange={(e) =>
-                              setRank(sub.submission_id, e.target.value)
-                            }
-                            className="h-11 rounded-full border border-brand-200 bg-surface px-3 text-sm font-semibold text-ink"
-                          >
-                            <option value={1}>Juara 1</option>
-                            <option value={2}>Juara 2</option>
-                            <option value={3}>Juara 3</option>
-                          </select>
+                          <div className="w-[126px] shrink-0">
+                            <Select
+                              size="sm"
+                              align="end"
+                              ariaLabel={`Peringkat untuk ${sub.artwork.title}`}
+                              value={String(chosenRank)}
+                              onValueChange={(nextRank) =>
+                                setRank(sub.submission_id, nextRank)
+                              }
+                              options={RANK_OPTIONS}
+                              className="border-brand-200 bg-surface"
+                            />
+                          </div>
                         ) : null}
                       </div>
                     </div>

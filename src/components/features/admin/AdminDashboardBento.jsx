@@ -2,18 +2,16 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Select } from '@base-ui/react/select';
 import { motion, useReducedMotion } from 'framer-motion';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
-  ArrowDown01Icon,
   Flag01Icon,
   SecurityCheckIcon,
   Tag01Icon,
-  Tick02Icon,
   UserMultipleIcon,
 } from '@hugeicons/core-free-icons';
 import { useMotion } from '@/components/effects/MotionContext';
+import Select from '@/components/ui/Select';
 import { formatNumberId } from '@/lib/shared/format';
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1];
@@ -253,63 +251,21 @@ function AccountStatusDonutCard({ stats, canAnimate }) {
           >
             Jenis akun
           </span>
-          <Select.Root
-            items={ROLE_OPTIONS}
-            value={roleFilter}
-            modal={false}
-            onValueChange={(nextValue) => {
-              if (nextValue) {
-                setRoleFilter(nextValue);
-                setActiveKey(null);
-              }
-            }}
-          >
-            <Select.Trigger
-              aria-labelledby="account-role-filter-label"
-              className="inline-flex h-10 min-w-[185px] cursor-pointer items-center justify-between gap-3 rounded-xl border border-line bg-canvas/90 px-3.5 text-xs font-semibold text-ink transition-colors hover:border-brand-400/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-700 data-[popup-open]:border-brand-700"
-            >
-              <Select.Value />
-              <Select.Icon className="text-ink-soft transition-transform duration-150 [[data-popup-open]_&]:rotate-180">
-                <HugeiconsIcon
-                  icon={ArrowDown01Icon}
-                  size={16}
-                  strokeWidth={1.8}
-                  aria-hidden="true"
-                />
-              </Select.Icon>
-            </Select.Trigger>
-
-            <Select.Portal>
-              <Select.Positioner
-                sideOffset={6}
-                align="end"
-                alignItemWithTrigger={false}
-                className="z-50 outline-none"
-              >
-                <Select.Popup className="min-w-[185px] origin-[var(--transform-origin)] rounded-xl border border-line bg-surface p-1.5 shadow-modal outline-none">
-                  <Select.List className="space-y-0.5 outline-none">
-                    {ROLE_OPTIONS.map((opt) => (
-                      <Select.Item
-                        key={opt.value}
-                        value={opt.value}
-                        className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2 text-xs font-medium text-ink-soft outline-none transition-colors select-none data-[highlighted]:bg-brand-50 data-[highlighted]:text-ink data-[selected]:bg-brand-700/15 data-[selected]:font-semibold data-[selected]:text-brand-700"
-                      >
-                        <Select.ItemText>{opt.label}</Select.ItemText>
-                        <Select.ItemIndicator className="text-brand-700">
-                          <HugeiconsIcon
-                            icon={Tick02Icon}
-                            size={14}
-                            strokeWidth={2}
-                            aria-hidden="true"
-                          />
-                        </Select.ItemIndicator>
-                      </Select.Item>
-                    ))}
-                  </Select.List>
-                </Select.Popup>
-              </Select.Positioner>
-            </Select.Portal>
-          </Select.Root>
+          <div className="min-w-[185px]">
+            <Select
+              size="sm"
+              align="end"
+              ariaLabelledBy="account-role-filter-label"
+              value={roleFilter}
+              options={ROLE_OPTIONS}
+              onValueChange={(nextValue) => {
+                if (nextValue) {
+                  setRoleFilter(nextValue);
+                  setActiveKey(null);
+                }
+              }}
+            />
+          </div>
         </div>
       </div>
 

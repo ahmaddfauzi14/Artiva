@@ -254,7 +254,7 @@ export default function Navbar({ user = null }) {
                 aria-label={`Menu akun ${displayName}`}
                 onClick={handleTriggerClick}
                 onKeyDown={handleTriggerKeyDown}
-                className={`inline-flex min-h-[44px] items-center gap-2 rounded-full border p-1 pr-2.5 shadow-card-sm transition-all hover:-translate-y-px hover:border-brand-400 ${
+                className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full border p-1 pr-2.5 shadow-card-sm transition-all hover:-translate-y-px hover:border-brand-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-700 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas ${
                   accountMenuOpen || isAccountRoute
                     ? 'border-brand-700 bg-brand-50/90'
                     : 'border-line bg-surface/90'
@@ -283,7 +283,7 @@ export default function Navbar({ user = null }) {
                   role="menu"
                   aria-labelledby={triggerId}
                   onKeyDown={handleMenuKeyDown}
-                  className="modal-in absolute right-0 z-50 mt-2 w-60 max-w-[calc(100vw-2rem)] rounded-[18px] border border-line bg-surface p-2 shadow-modal"
+                  className="modal-in absolute right-0 z-50 mt-2 max-h-[calc(100dvh-5.5rem)] w-60 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-[18px] border border-line bg-surface p-2 shadow-modal"
                 >
                   <div className="rounded-[14px] bg-brand-50 px-3 py-2.5">
                     <p className="truncate text-sm font-semibold text-ink">

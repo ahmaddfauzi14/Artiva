@@ -4,6 +4,7 @@ import { useEffect, useId, useRef } from 'react';
 import Button from '@/components/ui/Button';
 
 function isPointerOutsideDialog(e, dialog) {
+  if (e.target !== dialog) return false;
   const rect = dialog.getBoundingClientRect();
   return (
     e.clientX < rect.left ||
