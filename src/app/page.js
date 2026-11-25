@@ -4,6 +4,7 @@ import ChallengeCard from '@/components/cards/ChallengeCard';
 import StepCard from '@/components/cards/StepCard';
 import WinnerPodium from '@/components/cards/WinnerPodium';
 import HomeSearchBox from '@/components/features/home/HomeSearchBox';
+import FaqSection from '@/components/features/home/FaqSection';
 import PublicShell from '@/components/layout/PublicShell';
 import SectionHeader from '@/components/layout/SectionHeader';
 import Button from '@/components/ui/Button';
@@ -509,6 +510,9 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {/* 7. Pertanyaan yang sering diajukan (FAQ) */}
+      <FaqSection />
     </PublicShell>
   );
 }
