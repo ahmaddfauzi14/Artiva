@@ -8,6 +8,7 @@ import PublicShell from '@/components/layout/PublicShell';
 import SectionHeader from '@/components/layout/SectionHeader';
 import Button from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
+import PillScrollRow from '@/components/ui/PillScrollRow';
 import { getPublicViewer } from '@/lib/auth/page-guards';
 import { listPublicArtworks } from '@/lib/repositories/artworks';
 import { listActiveCategories } from '@/lib/repositories/categories';
@@ -257,10 +258,15 @@ export default async function HomePage() {
           }
         />
 
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scroll-smooth sm:overflow-visible sm:pb-0 sm:wrap-balance">
+        <PillScrollRow
+          as="nav"
+          aria-label="Filter kategori karya"
+          className="gap-2 sm:gap-2.5"
+        >
           <Link
             href="/artworks"
-            className="min-h-[40px] inline-flex shrink-0 items-center rounded-full bg-grad-primary px-4 text-sm font-semibold text-white shadow-btn"
+            aria-current="page"
+            className="min-h-[44px] inline-flex shrink-0 items-center rounded-full bg-grad-primary px-4 text-sm font-semibold text-white shadow-btn"
           >
             Semua karya
           </Link>
@@ -268,12 +274,12 @@ export default async function HomePage() {
             <Link
               key={cat.category_id}
               href={`/artworks?category=${cat.slug}`}
-              className="min-h-[40px] inline-flex shrink-0 items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink shadow-card-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50"
+              className="min-h-[44px] inline-flex shrink-0 items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink shadow-card-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50"
             >
               {cat.name}
             </Link>
           ))}
-        </div>
+        </PillScrollRow>
 
         {latestArtworks.length === 0 ? (
           <EmptyState

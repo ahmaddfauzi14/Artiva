@@ -1,11 +1,14 @@
 'use client';
 
+import PillScrollRow from '@/components/ui/PillScrollRow';
+
 export default function ChipRow({ items = [], activeValue, onSelect, className = '' }) {
   return (
-    <div
+    <PillScrollRow
       role="tablist"
       aria-label="Filter daftar"
-      className={`flex items-center gap-2.5 overflow-x-auto pb-2 scroll-smooth sm:overflow-visible sm:pb-0 sm:wrap-balance ${className}`}
+      activeKey={activeValue}
+      className={`gap-2.5 ${className}`}
     >
       {items.map((item) => {
         const isActive = item.value === activeValue;
@@ -37,6 +40,6 @@ export default function ChipRow({ items = [], activeValue, onSelect, className =
           </button>
         );
       })}
-    </div>
+    </PillScrollRow>
   );
 }

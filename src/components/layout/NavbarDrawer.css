@@ -1,0 +1,97 @@
+/* Drawer navigasi responsif untuk mobile dan tablet (< 1024px) */
+@property --drawer-backdrop {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.artiva-nav-drawer {
+  --drawer-width: min(21rem, 84dvw, calc(100dvw - 24px));
+  --drawer-backdrop: 0;
+  position: fixed;
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.artiva-nav-drawer::backdrop {
+  background: rgb(6 13 28);
+  opacity: calc(var(--drawer-backdrop) * 0.72);
+}
+
+.artiva-nav-drawer__scroller {
+  position: relative;
+  display: grid;
+  grid-template-columns: 100% var(--drawer-width);
+  width: 100%;
+  height: 100svh;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  overscroll-behavior: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+}
+
+.artiva-nav-drawer__scroller::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .artiva-nav-drawer__scroller {
+    scroll-behavior: smooth;
+  }
+}
+
+.artiva-nav-drawer__scroller::before {
+  content: "";
+  scroll-snap-align: start;
+  scroll-initial-target: nearest;
+}
+
+.artiva-nav-drawer__sheet {
+  height: 100svh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-snap-align: end;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.artiva-nav-drawer__sheet::-webkit-scrollbar {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .artiva-nav-drawer {
+    timeline-scope: --artiva-drawer-fade;
+    animation: artiva-drawer-backdrop linear both;
+    animation-timeline: --artiva-drawer-fade;
+  }
+
+  .artiva-nav-drawer__scroller {
+    scroll-timeline: --artiva-drawer-fade x;
+  }
+
+  @keyframes artiva-drawer-backdrop {
+    0% {
+      --drawer-backdrop: 0;
+    }
+    100% {
+      --drawer-backdrop: 1;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .drawer-nav-link[aria-current="page"] {
+    outline: 2px solid Highlight;
+  }
+}

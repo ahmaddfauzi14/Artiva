@@ -12,7 +12,8 @@ const NAV_BY_ROLE = {
 };
 
 /**
- * Deretan tombol pill navigasi untuk ruang kerja Member dan Kurator.
+ * Deretan tombol pill navigasi untuk ruang kerja Member dan Kurator pada desktop (>= 1024px).
+ * Pada mode mobile dan tablet, navigasi akun diakses melalui menu profil di Navbar.
  */
 export default function AccountNavPills({ role, items, ariaLabel }) {
   const pathname = usePathname();
@@ -23,6 +24,7 @@ export default function AccountNavPills({ role, items, ariaLabel }) {
   const navLabel = ariaLabel || preset?.label || 'Navigasi akun';
 
   useEffect(() => {
+    if (!window.matchMedia('(min-width: 1024px)').matches) return;
     activeLinkRef.current?.scrollIntoView({
       block: 'nearest',
       inline: 'nearest',
@@ -33,7 +35,7 @@ export default function AccountNavPills({ role, items, ariaLabel }) {
   return (
     <nav
       aria-label={navLabel}
-      className="member-nav-scroller -mx-1 flex items-center gap-2.5 overflow-x-auto px-1 py-1 scroll-smooth"
+      className="member-nav-scroller -mx-1 hidden items-center gap-2.5 overflow-x-auto px-1 py-1 scroll-smooth lg:flex"
     >
       {navItems.map((item) => {
         const active = item.match(pathname);
