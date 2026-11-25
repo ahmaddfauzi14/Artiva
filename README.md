@@ -704,6 +704,83 @@ flowchart TD
 | 🏛️ **Curator** | `pending` → `active` | ✅ | ❌ *(kelola tantangan)* | ❌ *(fokus kurasi)* | ❌ | ✅ *(jika active)* | ❌ |
 | 🛡️ **Admin** | `active` | ✅ | ❌ *(moderasi status)* | ❌ | ❌ | ❌ | ✅ |
 
+### 🧪 Daftar Akun Testing &amp; Perkondisiannya
+
+Setelah menjalankan `node scripts/seed.js` dan `node scripts/seed-dummy.js`, tersedia total **44 akun** (1 Admin, 10 Kurator, dan 33 Member) untuk menguji seluruh skenario sistem. Login dapat menggunakan **username** maupun **email**.
+
+- **Password Admin (`scripts/seed.js`)**: mengikuti `SEED_ADMIN_PASSWORD` di `.env.local` (fallback default di `seed.js`: `AdminArtiva2026!`, atau sesuai nilai yang Anda set dari `.env.example`).
+- **Password Seluruh Akun Demo (`scripts/seed-dummy.js`)**: **`ArtivaDummy2026!`**
+
+<details open>
+<summary><b>🛡️ 1. Akun Admin &amp; Kurator (11 Akun — Lengkap dengan Status &amp; Kondisi Testing)</b></summary>
+
+| Username | Email | Role | Status Akun | Status Verifikasi | Perkondisian &amp; Skenario Testing |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| `admin` | `admin@artiva.local` | `admin` | `active` | — | Diarahkan otomatis ke `/dashboard/admin` saat login/buka halaman publik. Akses penuh kelola kategori (`7` aktif, `2` nonaktif), verifikasi/tolak kurator (+ unduh CV), moderasi laporan (`pending`/`resolved`/`dismissed`), dan suspend/aktifkan/hapus akun. |
+| `kurator_galeri` | `kurator.galeri@artiva.local` | `curator` | `active` | `approved` | Kurator utama. Memiliki 2 tantangan `open` (*Dialog Cahaya...* lintas kategori, *Eksplorasi Garis...*), 2 tantangan `closed` siap penjurian, dan 1 tantangan `announced` lengkap 3 pemenang. |
+| `kurator_seni_rupa` | `kurator.senirupa@artiva.local` | `curator` | `active` | `approved` | Memiliki 2 tantangan `closed` (*Simfoni Romantisisme...*, *Keemasan Poster Litografi...*) siap tetapkan 1–3 pemenang, serta 1 tantangan `draft` siap dipublikasikan. |
+| `kurator_fotografi` | `kurator.fotografi@artiva.local` | `curator` | `active` | `approved` | Memiliki 1 tantangan `open` (*Lensa Sejarah...* dengan 1 submission `withdrawn`), 1 tantangan `closed` siap penjurian, dan 1 tantangan `announced` lengkap 3 pemenang. |
+| `kurator_digital` | `kurator.digital@artiva.local` | `curator` | `active` | `approved` | Memiliki 2 tantangan `closed` (*Estetika Dunia 3D...*, *Antarmuka Terbuka...*) siap tetapkan pemenang, serta 1 tantangan `draft` siap dipublikasikan. |
+| `kurator_pending_1` | `rendra.kurator@artiva.local` | `curator` | `pending` | `pending` | Pengajuan kurator baru (0 riwayat penolakan, CV terlampir). Saat login diarahkan ke `/curator/verification` dan diblokir dari API kurator aktif (`403 CURATOR_NOT_VERIFIED`). Untuk uji Approve/Reject awal oleh Admin. |
+| `kurator_pending_2` | `larasati.kurator@artiva.local` | `curator` | `pending` | `pending` | Pengajuan kurator baru (0 riwayat penolakan, CV terlampir). Untuk uji antrean verifikasi Admin bersama `kurator_pending_1`. |
+| `kurator_pending_3` | `dimas.kurator@artiva.local` | `curator` | `pending` | `pending` | Pengajuan **banding ke-1** yang sedang menunggu tinjauan Admin (memiliki 1 riwayat `rejected` sebelumnya + `appeal_note`). Untuk uji review banding di dashboard Admin. |
+| `kurator_ditolak_1` | `fajar.kurator@artiva.local` | `curator` | `pending` | `rejected` | Ditolak **1 kali** (`0` banding terpakai). Saat login diarahkan ke `/curator/verification` dengan catatan penolakan Admin; masih bisa memperbarui profil/CV dan **ajukan banding** (maks. 3x) atau hapus akun. |
+| `kurator_ditolak_2` | `citra.kurator@artiva.local` | `curator` | `pending` | `rejected` | Sudah ditolak **4 kali** (pengajuan awal + **3 kali banding ditolak**). Kuota banding habis (`409 APPEAL_LIMIT_REACHED`); hanya bisa menghapus akun permanen di `/curator/verification`. |
+| `kurator_tangguh` | `bagas.kurator@artiva.local` | `curator` | `suspended` | `approved` | Pernah disetujui lalu ditangguhkan Admin. **Ditolak saat login** (`403 ACCOUNT_SUSPENDED`). Untuk uji pemblokiran login akun `suspended` dan pemulihan/aktivasi kembali oleh Admin. |
+
+</details>
+
+<details open>
+<summary><b>🚫 2. Akun Member Ditangguhkan (3 Akun — Uji Moderasi &amp; Pemblokiran Login)</b></summary>
+
+| Username | Email | Role | Status Akun | Perkondisian &amp; Skenario Testing |
+| :--- | :--- | :---: | :---: | :--- |
+| `akun_spam_bot` | `spambot@artiva.local` | `member` | `suspended` | **Ditolak saat login** (`403 ACCOUNT_SUSPENDED`). Memiliki 1 karya berstatus `removed` (spam promosi), serta tercatat sebagai pelapor pada laporan berstatus `pending` dan `dismissed`. |
+| `reuploader_ilegal` | `reuploader@artiva.local` | `member` | `suspended` | **Ditolak saat login** (`403 ACCOUNT_SUSPENDED`). Memiliki 1 karya `hidden` (hak cipta) dan 1 karya `removed` (plagiarisme), serta tercatat sebagai pelapor pada laporan `pending` dan `dismissed`. |
+| `vandalis_komentar` | `vandalis@artiva.local` | `member` | `suspended` | **Ditolak saat login** (`403 ACCOUNT_SUSPENDED`). Memiliki 1 karya `removed`, serta tercatat sebagai pelapor pada 2 laporan `pending`. |
+
+</details>
+
+<details>
+<summary><b>🧑‍🎨 3. Akun Member Aktif (30 Akun — Kreator Portofolio, Interaksi &amp; Peserta Tantangan)</b></summary>
+
+Seluruh 30 akun di bawah berstatus `active` (`role: member`). Dapat login normal, mengunggah karya, memberi like/favorit/komentar/laporan, serta mengirim karya ke tantangan berstatus `open` (atau menarik submission).
+
+| Username | Email | Nama Tampilan | Perkondisian Khusus |
+| :--- | :--- | :--- | :--- |
+| `raden_saleh` | `raden.saleh@artiva.local` | Raden Saleh Sjarif Bustaman | Karya di tantangan `open`, `closed`, &amp; `announced` (pemenang); pelapor 1 laporan `resolved`. |
+| `vincent_vangogh` | `vincent.vangogh@artiva.local` | Vincent van Gogh | Karya di tantangan `open` &amp; `closed`. |
+| `johannes_vermeer` | `johannes.vermeer@artiva.local` | Johannes Vermeer | Karya di tantangan `announced` (pemenang) &amp; `withdrawn` di tantangan `closed`. |
+| `claude_monet` | `claude.monet@artiva.local` | Claude Monet | Memiliki karya `published` (pemenang `announced`) **dan** 1 karya berstatus `hidden` untuk uji visibilitas di `/me/artworks`. |
+| `gustav_klimt` | `gustav.klimt@artiva.local` | Gustav Klimt | Karya ikut tantangan `announced` (non-pemenang). |
+| `katsushika_hokusai` | `hokusai@artiva.local` | Katsushika Hokusai | Karya di tantangan `open` &amp; `closed`. |
+| `ernst_haeckel` | `ernst.haeckel@artiva.local` | Ernst Haeckel | Karya di tantangan `open` &amp; `closed`. |
+| `kassian_cephas` | `kassian.cephas@artiva.local` | Kassian Cephas | Karya di tantangan `open`, `closed`, &amp; `announced` (pemenang). |
+| `ansel_adams` | `ansel.adams@artiva.local` | Ansel Adams | Karya di tantangan `open` (termasuk 1 `withdrawn`) &amp; `closed`; pelapor 1 laporan `resolved`. |
+| `dorothea_lange` | `dorothea.lange@artiva.local` | Dorothea Lange | Karya di tantangan `closed` &amp; `announced` (pemenang). |
+| `alphonse_mucha` | `alphonse.mucha@artiva.local` | Alphonse Mucha | Karya di tantangan `open` &amp; `closed`; pelapor 1 laporan `resolved`. |
+| `toulouse_lautrec` | `toulouse.lautrec@artiva.local` | Henri de Toulouse-Lautrec | Karya di tantangan `closed`. |
+| `blender_studio` | `studio@blender.artiva.local` | Blender Studio &amp; Komunitas | Karya 3D Art di tantangan `open` &amp; `closed` (termasuk 1 `withdrawn`); pelapor 1 laporan `resolved`. |
+| `open_design_lab` | `opendesign@artiva.local` | Open Source Design Collective | Karya UI/UX di tantangan `closed`; 1 karya dilaporkan (`pending`). |
+| `auguste_rodin` | `auguste.rodin@artiva.local` | Auguste Rodin | Karya kategori `Lainnya` (patung klasik) di portofolio publik. |
+| `leonardo_davinci` | `leonardo.davinci@artiva.local` | Leonardo da Vinci | Karya di tantangan `open` &amp; `closed`. |
+| `sandro_botticelli` | `sandro.botticelli@artiva.local` | Sandro Botticelli | Karya kategori `Lukisan` di portofolio publik. |
+| `rembrandt_vanrijn` | `rembrandt@artiva.local` | Rembrandt van Rijn | Karya di tantangan `closed`. |
+| `edvard_munch` | `edvard.munch@artiva.local` | Edvard Munch | Memiliki karya `published` (1 dilaporkan `pending`) **dan** 1 karya berstatus `hidden` untuk uji visibilitas di `/me/artworks`. |
+| `utagawa_hiroshige` | `utagawa.hiroshige@artiva.local` | Utagawa Hiroshige | Karya di tantangan `open` &amp; `closed`. |
+| `nasa_archive` | `nasa.archive@artiva.local` | NASA — Arsip Antariksa | Karya di tantangan `open` &amp; `closed`. |
+| `michelangelo_b` | `michelangelo@artiva.local` | Michelangelo Buonarroti | Karya di tantangan `closed`. |
+| `steinlen_art` | `steinlen@artiva.local` | Théophile-Alexandre Steinlen | Karya di tantangan `open` &amp; `closed`. |
+| `georges_seurat` | `georges.seurat@artiva.local` | Georges Seurat | Karya di tantangan `closed`. |
+| `caspar_friedrich` | `caspar.friedrich@artiva.local` | Caspar David Friedrich | Karya di tantangan `closed`. |
+| `diego_velazquez` | `diego.velazquez@artiva.local` | Diego Velázquez | Karya di tantangan `closed`. |
+| `pieter_bruegel` | `pieter.bruegel@artiva.local` | Pieter Bruegel the Elder | Karya kategori `Lukisan` di portofolio publik. |
+| `arthur_rackham` | `arthur.rackham@artiva.local` | Arthur Rackham | Karya di tantangan `closed`. |
+| `alfred_stieglitz` | `alfred.stieglitz@artiva.local` | Alfred Stieglitz | Karya di tantangan `open`, `closed`, &amp; `announced` (pemenang). |
+| `jules_cheret` | `jules.cheret@artiva.local` | Jules Chéret | Karya di tantangan `closed`. |
+
+</details>
+
 <details>
 <summary><b>🧭 Panduan cepat penggunaan untuk setiap peran &amp; daftar skrip npm</b></summary>
 
