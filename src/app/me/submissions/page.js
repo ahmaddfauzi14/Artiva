@@ -24,7 +24,10 @@ export default async function MemberSubmissionsPage() {
         title="Submission"
         subtitle="Pantau seluruh karya yang telah kamu ajukan ke tantangan."
         rightSlot={
-          <Button variant="secondary" href="/challenges">
+          <Button
+            variant="secondary"
+            href="/me/submissions/challenges?status=open"
+          >
             Lihat tantangan terbuka →
           </Button>
         }

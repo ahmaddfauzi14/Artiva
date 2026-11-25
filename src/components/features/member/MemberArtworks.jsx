@@ -91,6 +91,7 @@ export default function MemberArtworks({ initialArtworks = [] }) {
               artwork={art}
               index={idx}
               mode="horizontal"
+              href={`/me/artworks/${art.artwork_id}`}
               togglingId={togglingId}
               onToggleStatus={handleToggleArtworkStatus}
               onDelete={setDeleteTarget}

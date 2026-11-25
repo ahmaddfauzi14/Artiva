@@ -18,7 +18,9 @@ export default function ChallengeSubmitForm({
   challenge,
   artworks = [],
   isOpenWindow = false,
+  backHref,
 }) {
+  const resolvedBackHref = backHref || `/challenges/${challenge.challenge_id}`;
   const router = useRouter();
   const { showToast } = useToast();
   const [selectedId, setSelectedId] = useState(null);
@@ -79,7 +81,7 @@ export default function ChallengeSubmitForm({
     <div className="space-y-6 pb-4">
       <div>
         <Link
-          href={`/challenges/${challenge.challenge_id}`}
+          href={resolvedBackHref}
           className="text-sm font-semibold text-brand-700 hover:underline"
         >
           ← Kembali ke detail tantangan

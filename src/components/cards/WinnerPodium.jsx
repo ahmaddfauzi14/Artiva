@@ -117,6 +117,7 @@ export default function WinnerPodium({
   winners = [],
   showModerationWarning = false,
   artworkHrefPrefix = '/artworks',
+  artworkHrefSuffix = '',
   className = '',
 }) {
   const { isMotionActive } = useMotion();
@@ -175,7 +176,7 @@ export default function WinnerPodium({
             const isLinked =
               !winner.is_moderated && Boolean(winner.artwork?.artwork_id);
             const artworkHref = isLinked
-              ? `${artworkHrefPrefix}/${winner.artwork.artwork_id}`
+              ? `${artworkHrefPrefix}/${winner.artwork.artwork_id}${artworkHrefSuffix}`
               : null;
             const artworkTitle = winner.artwork?.title || 'Karya pemenang';
             const creatorName = winner.creator?.display_name || 'Kreator ARTIVA';

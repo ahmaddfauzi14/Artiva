@@ -20,7 +20,7 @@ export default function PublicShell({
         {children}
       </main>
 
-      <Footer />
+      <Footer user={user} />
     </div>
   );
 }

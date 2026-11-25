@@ -24,8 +24,11 @@ export default function ChallengeCard({
   variant = 'feature',
   actions = null,
   metaSlot = null,
+  hrefPrefix = '/challenges',
+  hrefSuffix = '',
 }) {
   const { isMotionActive } = useMotion();
+  const challengeHref = `${hrefPrefix}/${challenge.challenge_id}${hrefSuffix}`;
   const isClosingSoon =
     challenge.status === 'open' &&
     typeof challenge.days_remaining === 'number' &&
@@ -83,7 +86,7 @@ export default function ChallengeCard({
 
               <h3 className="text-xl font-semibold leading-snug text-ink">
                 <Link
-                  href={`/challenges/${challenge.challenge_id}`}
+                  href={challengeHref}
                   className="hover:text-brand-700 hover:underline"
                 >
                   {challenge.title}
@@ -132,7 +135,7 @@ export default function ChallengeCard({
               <Button
                 variant={challenge.status === 'open' ? 'primary' : 'secondary'}
                 size="sm"
-                href={`/challenges/${challenge.challenge_id}`}
+                href={challengeHref}
               >
                 {challenge.status === 'open'
                   ? 'Lihat & ikut tantangan →'
@@ -192,7 +195,7 @@ export default function ChallengeCard({
             </div>
 
             <Link
-              href={`/challenges/${challenge.challenge_id}`}
+              href={challengeHref}
               className="block hover:underline underline-offset-4"
             >
               <h3 className="text-[1.625rem] font-semibold leading-tight text-white sm:text-[1.875rem]">
@@ -228,10 +231,7 @@ export default function ChallengeCard({
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <Button
-              variant="primary"
-              href={`/challenges/${challenge.challenge_id}`}
-            >
+            <Button variant="primary" href={challengeHref}>
               Lihat detail tantangan →
             </Button>
             <p className="text-xs text-[#C4D2E8]">

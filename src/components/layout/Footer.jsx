@@ -5,10 +5,13 @@ import ArtivaLogo from '@/components/layout/ArtivaLogo';
 
 const GITHUB_REPO_URL = 'https://github.com/ahmaddfauzi14/Artiva';
 
-const QUICK_LINKS = [
+const PUBLIC_QUICK_LINKS = [
   { label: 'Beranda', href: '/' },
   { label: 'Jelajahi Karya', href: '/artworks' },
   { label: 'Tantangan', href: '/challenges' },
+];
+
+const GUEST_QUICK_LINKS = [
   { label: 'Daftar Member', href: '/register/member' },
   { label: 'Ajukan Kurator', href: '/register/curator' },
   { label: 'Masuk', href: '/login' },
@@ -51,7 +54,11 @@ function FooterLinkGroup({ id, title, links }) {
   );
 }
 
-export default function Footer() {
+export default function Footer({ user = null }) {
+  const quickLinks = user
+    ? PUBLIC_QUICK_LINKS
+    : [...PUBLIC_QUICK_LINKS, ...GUEST_QUICK_LINKS];
+
   return (
     <footer className="mt-auto border-t border-line bg-brand-900">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -72,7 +79,7 @@ export default function Footer() {
             <FooterLinkGroup
               id="footer-quick-links"
               title="Tautan Cepat"
-              links={QUICK_LINKS}
+              links={quickLinks}
             />
             <FooterLinkGroup
               id="footer-about-links"

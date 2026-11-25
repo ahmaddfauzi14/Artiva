@@ -59,30 +59,49 @@ export default function MemberSubmissions({ initialSubmissions = [] }) {
           title="Saatnya mencoba tantangan pertamamu."
           description="Kamu belum mengirimkan karya ke tantangan mana pun. Pilih tantangan terbuka dan kirim karyamu."
           actionLabel="Jelajahi tantangan →"
-          actionHref="/challenges"
+          actionHref="/me/submissions/challenges"
         />
       ) : (
         <div className="space-y-4">
           {submissions.map((sub) => {
             const canWithdraw =
               sub.status === 'submitted' && sub.challenge.status === 'open';
+            const artworkDetailHref =
+              sub.artwork.status === 'published'
+                ? `/me/submissions/artworks/${sub.artwork.artwork_id}`
+                : null;
+            const challengeDetailHref = `/me/submissions/challenges/${sub.challenge.challenge_id}`;
+            const thumbnail = sub.artwork.image_url ? (
+              <img
+                src={sub.artwork.image_url}
+                alt={sub.artwork.title}
+                width={80}
+                height={80}
+                className={`h-full w-full object-cover ${
+                  artworkDetailHref
+                    ? 'transition-transform duration-200 hover:scale-[1.04]'
+                    : ''
+                }`}
+              />
+            ) : null;
             return (
               <article
                 key={sub.submission_id}
                 className="flex flex-col justify-between gap-4 overflow-hidden rounded-[28px] border border-line bg-surface p-5 shadow-card-sm transition-transform duration-200 hover:-translate-y-0.5 sm:flex-row sm:items-center"
               >
                 <div className="flex min-w-0 flex-1 items-center gap-4">
-                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-[14px] bg-brand-50">
-                    {sub.artwork.image_url ? (
-                      <img
-                        src={sub.artwork.image_url}
-                        alt={sub.artwork.title}
-                        width={80}
-                        height={80}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : null}
-                  </div>
+                  {artworkDetailHref ? (
+                    <Link
+                      href={artworkDetailHref}
+                      className="h-20 w-20 shrink-0 overflow-hidden rounded-[14px] bg-brand-50"
+                    >
+                      {thumbnail}
+                    </Link>
+                  ) : (
+                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-[14px] bg-brand-50">
+                      {thumbnail}
+                    </div>
+                  )}
 
                   <div className="min-w-0 space-y-1.5">
                     <div className="flex flex-wrap items-center gap-2">
@@ -99,12 +118,21 @@ export default function MemberSubmissions({ initialSubmissions = [] }) {
                       ) : null}
                     </div>
                     <h2 className="truncate text-lg font-semibold text-ink">
-                      {sub.artwork.title}
+                      {artworkDetailHref ? (
+                        <Link
+                          href={artworkDetailHref}
+                          className="hover:text-brand-700 hover:underline"
+                        >
+                          {sub.artwork.title}
+                        </Link>
+                      ) : (
+                        sub.artwork.title
+                      )}
                     </h2>
                     <p className="text-sm text-ink-soft">
                       Tantangan:{' '}
                       <Link
-                        href={`/challenges/${sub.challenge.challenge_id}`}
+                        href={challengeDetailHref}
                         className="font-semibold text-brand-700 hover:underline"
                       >
                         {sub.challenge.title}
@@ -122,11 +150,7 @@ export default function MemberSubmissions({ initialSubmissions = [] }) {
                 </div>
 
                 <div className="flex shrink-0 items-center gap-2">
-                  <Button
-                    variant="tonal"
-                    size="sm"
-                    href={`/challenges/${sub.challenge.challenge_id}`}
-                  >
+                  <Button variant="tonal" size="sm" href={challengeDetailHref}>
                     Lihat tantangan →
                   </Button>
                   {canWithdraw ? (

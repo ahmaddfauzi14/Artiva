@@ -22,6 +22,9 @@ export default function ChallengeExplorer({
   initialMeta = { page: 1, limit: 12, total: 0 },
   initialStatus = '',
   initialQuery = '',
+  basePath = '/challenges',
+  challengeHrefPrefix = '/challenges',
+  challengeHrefSuffix = '',
 }) {
   const router = useRouter();
   const [challenges, setChallenges] = useState(initialChallenges);
@@ -45,7 +48,7 @@ export default function ChallengeExplorer({
     if (nextPage > 1) params.set('page', String(nextPage));
 
     const qs = params.toString();
-    router.replace(qs ? `/challenges?${qs}` : '/challenges', { scroll: false });
+    router.replace(qs ? `${basePath}?${qs}` : basePath, { scroll: false });
 
     try {
       params.set('limit', '12');
@@ -113,6 +116,8 @@ export default function ChallengeExplorer({
                 challenge={ch}
                 variant={idx === 0 ? 'feature' : 'compact'}
                 index={idx}
+                hrefPrefix={challengeHrefPrefix}
+                hrefSuffix={challengeHrefSuffix}
               />
             ))}
           </div>
