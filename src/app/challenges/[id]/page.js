@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Award01Icon } from '@hugeicons/core-free-icons';
 import ArtworkCard from '@/components/cards/ArtworkCard';
 import WinnerPodium from '@/components/cards/WinnerPodium';
 import PublicShell from '@/components/layout/PublicShell';
@@ -73,8 +75,18 @@ export default async function ChallengeDetailPage({ params }) {
         </Link>
       </div>
 
-      {/* Header & Aturan Tantangan */}
+      {/* Header, Banner, Hadiah & Aturan Tantangan */}
       <section className="edge-glow rounded-[26px] bg-grad-hero p-5 shadow-glass sm:p-7">
+        {challenge.banner_url ? (
+          <div className="mb-6 aspect-[16/9] w-full overflow-hidden rounded-[20px] border border-line/80 bg-brand-900 sm:aspect-[21/9]">
+            <img
+              src={challenge.banner_url}
+              alt={`Banner ${challenge.title}`}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        ) : null}
+
         <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
           <div className="max-w-3xl space-y-3">
             <div className="flex flex-wrap items-center gap-2">
@@ -149,14 +161,39 @@ export default async function ChallengeDetailPage({ params }) {
           </div>
         </div>
 
-        {challenge.rules ? (
-          <div className="mt-5 rounded-[18px] border border-line bg-surface p-5">
-            <h2 className="text-base font-semibold text-ink sm:text-lg">
-              Ketentuan &amp; Aturan Tantangan
-            </h2>
-            <p className="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-ink-soft sm:text-base">
-              {challenge.rules}
-            </p>
+        {challenge.prize || challenge.rules ? (
+          <div
+            className={`mt-5 grid grid-cols-1 gap-4 ${
+              challenge.prize && challenge.rules ? 'lg:grid-cols-2' : ''
+            }`}
+          >
+            {challenge.prize ? (
+              <div className="rounded-[18px] border border-brand-700/35 bg-brand-50/75 p-5">
+                <h2 className="flex items-center gap-2 text-base font-semibold text-brand-700 sm:text-lg">
+                  <HugeiconsIcon
+                    icon={Award01Icon}
+                    size={18}
+                    strokeWidth={1.8}
+                    aria-hidden="true"
+                  />
+                  <span>Hadiah &amp; Apresiasi</span>
+                </h2>
+                <p className="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-ink sm:text-base">
+                  {challenge.prize}
+                </p>
+              </div>
+            ) : null}
+
+            {challenge.rules ? (
+              <div className="rounded-[18px] border border-line bg-surface p-5">
+                <h2 className="text-base font-semibold text-ink sm:text-lg">
+                  Ketentuan &amp; Aturan Tantangan
+                </h2>
+                <p className="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-ink-soft sm:text-base">
+                  {challenge.rules}
+                </p>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </section>

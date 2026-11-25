@@ -10,6 +10,7 @@ function mapCuratorChallengeRow(row) {
     title: row.title,
     description: row.description || '',
     rules: row.rules || '',
+    prize: row.prize || '',
     start_date: row.start_date,
     end_date: row.end_date,
     status: row.status,
@@ -18,6 +19,8 @@ function mapCuratorChallengeRow(row) {
     days_remaining: daysRemaining(row.end_date),
     submission_count: row.submission_count ?? 0,
     total_submissions: row.total_submissions ?? 0,
+    banner_path: row.banner_path || null,
+    banner_url: toUploadUrl(row.banner_path),
     cover_image_url: toUploadUrl(row.cover_image_path),
     category: row.category_id
       ? {
@@ -174,12 +177,23 @@ export async function existsCuratorChallengeTitle(
 }
 
 export async function insertChallengeRow(
-  { curatorId, categoryId, title, description, rules, startDate, endDate, status },
+  {
+    curatorId,
+    categoryId,
+    title,
+    description,
+    rules,
+    prize,
+    bannerPath,
+    startDate,
+    endDate,
+    status,
+  },
   client = null
 ) {
   const { rows } = await query(
-    `INSERT INTO challenges (curator_id, category_id, title, description, rules, start_date, end_date, status)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `INSERT INTO challenges (curator_id, category_id, title, description, rules, prize, banner_path, start_date, end_date, status)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
      RETURNING challenge_id`,
     [
       curatorId,
@@ -187,6 +201,8 @@ export async function insertChallengeRow(
       title,
       description || null,
       rules || null,
+      prize || null,
+      bannerPath || null,
       startDate,
       endDate,
       status,
@@ -199,7 +215,19 @@ export async function insertChallengeRow(
 export async function updateChallengeRow(
   challengeId,
   curatorId,
-  { categoryId, hasCategoryUpdate, title, description, rules, startDate, endDate, status },
+  {
+    categoryId,
+    hasCategoryUpdate,
+    title,
+    description,
+    rules,
+    prize,
+    bannerPath,
+    clearBanner = false,
+    startDate,
+    endDate,
+    status,
+  },
   client = null
 ) {
   await query(
@@ -210,7 +238,13 @@ export async function updateChallengeRow(
          category_id = CASE WHEN $6::boolean THEN $7::int ELSE category_id END,
          start_date = COALESCE($8::date, start_date),
          end_date = COALESCE($9::date, end_date),
-         status = COALESCE($10::challenge_status, status)
+         status = COALESCE($10::challenge_status, status),
+         prize = CASE WHEN $11::text IS NULL THEN prize ELSE NULLIF($11, '') END,
+         banner_path = CASE
+           WHEN $12::boolean THEN NULL
+           WHEN $13::varchar IS NOT NULL THEN $13::varchar
+           ELSE banner_path
+         END
      WHERE challenge_id = $1 AND curator_id = $2`,
     [
       challengeId,
@@ -223,6 +257,9 @@ export async function updateChallengeRow(
       startDate ?? null,
       endDate ?? null,
       status ?? null,
+      prize === undefined ? null : prize,
+      Boolean(clearBanner),
+      bannerPath ?? null,
     ],
     client
   );
@@ -233,7 +270,7 @@ export async function deleteChallengeRow(challengeId, curatorId, client = null) 
   const { rows } = await query(
     `DELETE FROM challenges
      WHERE challenge_id = $1 AND curator_id = $2
-     RETURNING challenge_id`,
+     RETURNING challenge_id, banner_path`,
     [challengeId, curatorId],
     client
   );

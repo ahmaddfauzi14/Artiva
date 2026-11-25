@@ -2077,6 +2077,9 @@ async function runDummySeed() {
     const curatorId = u('kurator_galeri');
 
     const openTitle = 'Dialog Cahaya, Ruang & Narasi Lintas Era';
+    const openPrize =
+      'Juara 1: Rp3.000.000 + Sertifikat Kurasi · Juara 2: Rp1.500.000 · Juara 3: Sorotan Utama Beranda ARTIVA';
+    const openBannerPath = 'challenges/banner-dialog-cahaya.jpg';
     let openChallengeId;
     const existingOpen = await client.query(
       `SELECT challenge_id FROM challenges WHERE title = $1 LIMIT 1`,
@@ -2084,16 +2087,25 @@ async function runDummySeed() {
     );
     if (existingOpen.rowCount > 0) {
       openChallengeId = existingOpen.rows[0].challenge_id;
+      await client.query(
+        `UPDATE challenges
+         SET prize = COALESCE(prize, $2),
+             banner_path = COALESCE(banner_path, $3)
+         WHERE challenge_id = $1`,
+        [openChallengeId, openPrize, openBannerPath]
+      );
     } else {
       const inserted = await client.query(
-        `INSERT INTO challenges (curator_id, category_id, title, description, rules, start_date, end_date, status)
-         VALUES ($1, NULL, $2, $3, $4, $5, $6, 'open')
+        `INSERT INTO challenges (curator_id, category_id, title, description, rules, prize, banner_path, start_date, end_date, status)
+         VALUES ($1, NULL, $2, $3, $4, $5, $6, $7, $8, 'open')
          RETURNING challenge_id`,
         [
           curatorId,
           openTitle,
           'Tantangan kurasi lintas disiplin yang mempertemukan seni lukis klasik, fotografi dokumenter, poster grafis, ilustrasi ukiyo-e, hingga render 3D modern dalam eksplorasi cahaya dan narasi visual.',
           '1. Karya dipublikasikan di portofolio ARTIVA dengan atribusi dan deskripsi teknik yang jelas.\n2. Terbuka untuk seluruh kategori kreatif.\n3. Penilaian mencakup kekuatan komposisi, pengolahan cahaya, dan kedalaman narasi.',
+          openPrize,
+          openBannerPath,
           formatDateOffset(-4),
           formatDateOffset(21),
         ]
@@ -2126,6 +2138,9 @@ async function runDummySeed() {
 
     // Tantangan terbuka ke-2: fokus Ilustrasi & Seni Grafis
     const openGraphicTitle = 'Eksplorasi Garis, Cetak & Komposisi Visual';
+    const openGraphicPrize =
+      'Juara 1: Rp2.000.000 + Paket Cetak Arsip · Juara 2 & 3: Apresiasi Kurator & Podium Pemenang';
+    const openGraphicBannerPath = 'challenges/banner-garis-cetak.jpg';
     let openGraphicId;
     const existingGraphic = await client.query(
       `SELECT challenge_id FROM challenges WHERE title = $1 LIMIT 1`,
@@ -2133,10 +2148,17 @@ async function runDummySeed() {
     );
     if (existingGraphic.rowCount > 0) {
       openGraphicId = existingGraphic.rows[0].challenge_id;
+      await client.query(
+        `UPDATE challenges
+         SET prize = COALESCE(prize, $2),
+             banner_path = COALESCE(banner_path, $3)
+         WHERE challenge_id = $1`,
+        [openGraphicId, openGraphicPrize, openGraphicBannerPath]
+      );
     } else {
       const inserted = await client.query(
-        `INSERT INTO challenges (curator_id, category_id, title, description, rules, start_date, end_date, status)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, 'open')
+        `INSERT INTO challenges (curator_id, category_id, title, description, rules, prize, banner_path, start_date, end_date, status)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'open')
          RETURNING challenge_id`,
         [
           curatorId,
@@ -2144,6 +2166,8 @@ async function runDummySeed() {
           openGraphicTitle,
           'Wadah kurasi bagi karya ilustrasi cetak kayu, litografi botanis, dan narasi grafis yang menonjolkan kekuatan garis serta ritme bidang.',
           '1. Terbuka bagi karya kategori Ilustrasi.\n2. Sertakan konteks teknik cetak atau proses kreatif pada deskripsi.',
+          openGraphicPrize,
+          openGraphicBannerPath,
           formatDateOffset(-2),
           formatDateOffset(28),
         ]
@@ -2168,6 +2192,9 @@ async function runDummySeed() {
     }
 
     const announcedTitle = 'Kurasi Mahakarya Warna, Cahaya & Emosi';
+    const announcedPrize =
+      'Juara 1: Rp3.500.000 + Podium Utama · Juara 2: Rp2.000.000 · Juara 3: Rp1.000.000';
+    const announcedBannerPath = 'challenges/banner-mahakarya-warna.jpg';
     let announcedChallengeId;
     const existingAnnounced = await client.query(
       `SELECT challenge_id FROM challenges WHERE title = $1 LIMIT 1`,
@@ -2175,10 +2202,17 @@ async function runDummySeed() {
     );
     if (existingAnnounced.rowCount > 0) {
       announcedChallengeId = existingAnnounced.rows[0].challenge_id;
+      await client.query(
+        `UPDATE challenges
+         SET prize = COALESCE(prize, $2),
+             banner_path = COALESCE(banner_path, $3)
+         WHERE challenge_id = $1`,
+        [announcedChallengeId, announcedPrize, announcedBannerPath]
+      );
     } else {
       const inserted = await client.query(
-        `INSERT INTO challenges (curator_id, category_id, title, description, rules, start_date, end_date, status)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, 'announced')
+        `INSERT INTO challenges (curator_id, category_id, title, description, rules, prize, banner_path, start_date, end_date, status)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'announced')
          RETURNING challenge_id`,
         [
           curatorId,
@@ -2186,6 +2220,8 @@ async function runDummySeed() {
           announcedTitle,
           'Program apresiasi khusus karya seni rupa yang menonjolkan drama pencahayaan, harmoni pigmen warna, dan daya gugah emosional lintas abad.',
           '1. Khusus kategori Lukisan.\n2. Dewan Kurasi memilih 3 karya terbaik berdasarkan pencapaian artistik dan signifikansi visual.',
+          announcedPrize,
+          announcedBannerPath,
           formatDateOffset(-35),
           formatDateOffset(-5),
         ]
@@ -2234,6 +2270,8 @@ async function runDummySeed() {
       title,
       description,
       rules,
+      prize = null,
+      bannerPath = null,
       startOffset,
       endOffset,
       status,
@@ -2250,10 +2288,17 @@ async function runDummySeed() {
       );
       if (existing.rowCount > 0) {
         chId = existing.rows[0].challenge_id;
+        await client.query(
+          `UPDATE challenges
+           SET prize = COALESCE(prize, $2),
+               banner_path = COALESCE(banner_path, $3)
+           WHERE challenge_id = $1`,
+          [chId, prize, bannerPath]
+        );
       } else {
         const ins = await client.query(
-          `INSERT INTO challenges (curator_id, category_id, title, description, rules, start_date, end_date, status)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8::challenge_status)
+          `INSERT INTO challenges (curator_id, category_id, title, description, rules, prize, banner_path, start_date, end_date, status)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10::challenge_status)
            RETURNING challenge_id`,
           [
             cidCurator,
@@ -2261,6 +2306,8 @@ async function runDummySeed() {
             title,
             description,
             rules,
+            prize,
+            bannerPath,
             formatDateOffset(startOffset),
             formatDateOffset(endOffset),
             status,
@@ -2319,6 +2366,8 @@ async function runDummySeed() {
         'Kurasi fotografi dokumenter, lanskap hitam-putih, dan arsip visual yang merekam jejak peradaban serta keagungan alam lintas dekade.',
       rules:
         '1. Khusus kategori Fotografi.\n2. Cantumkan tahun pengambilan foto dan konteks arsip.\n3. Peserta dapat menarik pengajuan sebelum tenggat ditutup.',
+      prize: 'Juara 1: Rp2.500.000 + Pameran Arsip Fotografi · Juara 2 & 3: Lencana Kurasi & Sorotan',
+      bannerPath: 'challenges/banner-lensa-sejarah.jpg',
       startOffset: -5,
       endOffset: 18,
       status: 'open',
@@ -2340,6 +2389,8 @@ async function runDummySeed() {
         'Tantangan yang telah menyelesaikan masa penerimaan karya dan saat ini memasuki tahap penjurian untuk memilih 3 pemenang utama.',
       rules:
         '1. Khusus kategori Lukisan.\n2. Dewan kurator memilih 3 pemenang berdasarkan dramatisasi cahaya dan kekuatan komposisi.',
+      prize: 'Juara 1: Rp3.000.000 · Juara 2: Rp1.500.000 · Juara 3: Rp750.000 + Sertifikat Kurasi',
+      bannerPath: 'challenges/banner-romantisisme-barok.jpg',
       startOffset: -25,
       endOffset: -2,
       status: 'closed',
@@ -2361,6 +2412,8 @@ async function runDummySeed() {
       description:
         'Kompetisi render 3D sumber terbuka yang sedang dalam proses penilaian akhir oleh kurator sebelum pengumuman pemenang.',
       rules: '1. Khusus kategori 3D Art.\n2. Menilai teknik pencahayaan, shader material, dan narasi visual.',
+      prize: 'Juara 1: Rp2.500.000 + Paket Aset Blender Studio · Juara 2 & 3: Sorotan Galeri 3D',
+      bannerPath: 'challenges/banner-dunia-3d.jpg',
       startOffset: -20,
       endOffset: -1,
       status: 'closed',
@@ -2382,6 +2435,8 @@ async function runDummySeed() {
         'Tantangan lintas kategori yang telah melewati batas akhir pengiriman dan kini siap dinilai oleh Dewan Kurasi Arsip ARTIVA untuk menentukan 1 hingga 3 pemenang terbaik.',
       rules:
         '1. Terbuka untuk seluruh kategori kreatif (Lukisan, Fotografi, Ilustrasi, Desain Grafis, 3D Art, UI/UX, dan Lainnya).\n2. Dewan kurasi menetapkan 1 hingga 3 karya terbaik berdasarkan kekuatan narasi, komposisi, dan inovasi teknis.',
+      prize: 'Total Hadiah Rp5.000.000 untuk 3 Pemenang + Pameran Unggulan Beranda ARTIVA',
+      bannerPath: 'challenges/banner-antologi-lintas.jpg',
       startOffset: -28,
       endOffset: -3,
       status: 'closed',
@@ -2406,6 +2461,8 @@ async function runDummySeed() {
         'Kompetisi kurasi khusus ilustrasi cetak kayu, ilustrasi ilmiah, sketsa anatomi, hingga dongeng cat air yang telah ditutup dan siap ditetapkan pemenangnya.',
       rules:
         '1. Khusus kategori Ilustrasi.\n2. Penilaian menekankan ketajaman garis, daya cerita, dan keselarasan komposisi visual.',
+      prize: 'Juara 1: Rp2.000.000 + Publikasi Monograf · Juara 2 & 3: Sertifikat Kurator',
+      bannerPath: 'challenges/banner-narasi-fantasi.jpg',
       startOffset: -24,
       endOffset: -2,
       status: 'closed',
@@ -2428,6 +2485,8 @@ async function runDummySeed() {
         'Tantangan fotografi arkeologi, lanskap alam, dokumenter kemanusiaan, dan citra antariksa yang masa pengumpulannya telah selesai dan menunggu pengumuman pemenang.',
       rules:
         '1. Khusus kategori Fotografi.\n2. Kurator memilih hingga 3 karya dengan kekuatan dokumentasi, rentang tonal, dan dampak visual terbaik.',
+      prize: 'Juara 1: Rp2.500.000 · Juara 2: Rp1.250.000 · Juara 3: Buku Foto Kurasi',
+      bannerPath: 'challenges/banner-cakrawala-semesta.jpg',
       startOffset: -26,
       endOffset: -3,
       status: 'closed',
@@ -2450,6 +2509,8 @@ async function runDummySeed() {
         'Ajang kurasi poster litografi, tipografi dekoratif, dan komposisi grafis klasik yang kini berada pada tahap penjurian akhir untuk penentuan pemenang.',
       rules:
         '1. Khusus kategori Desain Grafis.\n2. Menilai keterbacaan tipografi, harmoni warna, dan daya tarik visual poster.',
+      prize: 'Juara 1: Rp2.250.000 + Edisi Cetak Litografi · Juara 2 & 3: Lencana Pemenang',
+      bannerPath: 'challenges/banner-belle-epoque.jpg',
       startOffset: -22,
       endOffset: -2,
       status: 'closed',
@@ -2472,6 +2533,8 @@ async function runDummySeed() {
         'Tantangan kurasi antarmuka aplikasi dan sistem desain sumber terbuka yang telah selesai menerima karya dan siap ditetapkan 1 hingga 3 pemenangnya.',
       rules:
         '1. Khusus kategori UI/UX.\n2. Kurator menilai kejelasan hierarki informasi, konsistensi komponen, dan kenyamanan alur kerja pengguna.',
+      prize: 'Juara 1: Rp3.000.000 + Ulasan Desain Mendalam · Juara 2 & 3: Lisensi Alat Desain',
+      bannerPath: 'challenges/banner-antarmuka-terbuka.png',
       startOffset: -21,
       endOffset: -2,
       status: 'closed',
@@ -2493,6 +2556,8 @@ async function runDummySeed() {
       description:
         'Draf tantangan mendatang yang mengajak desainer UI/UX mengeksplorasi antarmuka inklusif dengan kontras tinggi dan alur kerja bersih.',
       rules: '1. Khusus kategori UI/UX.\n2. Sertakan penjelasan struktur komponen dan aksesibilitas.',
+      prize: 'Juara 1: Rp3.500.000 · Juara 2: Rp1.750.000 · Juara 3: Sorotan Komunitas',
+      bannerPath: 'challenges/banner-desain-aksesibel.webp',
       startOffset: 5,
       endOffset: 35,
       status: 'draft',
@@ -2506,6 +2571,8 @@ async function runDummySeed() {
       description:
         'Draf kurasi poster bergaya Art Nouveau, Belle Époque, hingga tipografi editorial kontemporer.',
       rules: '1. Khusus kategori Desain Grafis.\n2. Format potret atau lanskap beresolusi tinggi.',
+      prize: 'Juara 1: Rp2.000.000 + Pameran Poster · Juara 2 & 3: Sertifikat Kurasi',
+      bannerPath: 'challenges/banner-poster-tipografi.jpg',
       startOffset: 7,
       endOffset: 40,
       status: 'draft',
@@ -2519,6 +2586,8 @@ async function runDummySeed() {
       description:
         'Program apresiasi yang menyoroti kekuatan fotografi dokumenter dalam mengabadikan martabat manusia dan memori sejarah.',
       rules: '1. Khusus kategori Fotografi.\n2. Kurator menetapkan 3 karya pemenang terbaik.',
+      prize: 'Juara 1: Rp3.000.000 + Podium Utama · Juara 2: Rp1.500.000 · Juara 3: Rp750.000',
+      bannerPath: 'challenges/banner-fotografi-dokumenter.jpg',
       startOffset: -45,
       endOffset: -12,
       status: 'announced',

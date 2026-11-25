@@ -27,10 +27,11 @@ export default async function ArtworksPage({ searchParams }) {
   const sp = await searchParams;
   const q = sp?.q || '';
   const category = sp?.category || 'all';
+  const sort = sp?.sort === 'popular' ? 'popular' : 'newest';
 
   const [categories, result] = await Promise.all([
     listActiveCategories(),
-    listPublicArtworks({ q, category, limit: null }),
+    listPublicArtworks({ q, category, sort, limit: null }),
   ]);
 
   const bannerCta = getBannerCta(user);
@@ -56,6 +57,7 @@ export default async function ArtworksPage({ searchParams }) {
         categories={categories}
         initialQuery={q}
         initialCategory={category}
+        initialSort={sort}
       />
 
       <section className="edge-glow flex flex-col items-start justify-between gap-4 rounded-[26px] bg-grad-hero p-5 shadow-glass sm:flex-row sm:items-center sm:p-6">

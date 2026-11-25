@@ -5,7 +5,7 @@ import {
   getCuratorChallenge,
   updateCuratorChallenge,
 } from '@/lib/services/challenges';
-import { updateChallengeSchema } from '@/lib/validators/challenges';
+import { parseChallengeRequest } from '@/lib/validators/challenges';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -22,13 +22,15 @@ export const PATCH = withHandler(async (request, { params }) => {
   const curator = await requireActiveCurator();
   const { id } = await params;
   const challengeId = parsePositiveInt(id, 'challenge_id');
-  const body = await request.json();
-  const input = updateChallengeSchema.parse(body);
+  const { input, bannerFile } = await parseChallengeRequest(request, {
+    partial: true,
+  });
 
   const challenge = await updateCuratorChallenge(
     curator.user_id,
     challengeId,
-    input
+    input,
+    bannerFile
   );
   return ok({ challenge });
 });

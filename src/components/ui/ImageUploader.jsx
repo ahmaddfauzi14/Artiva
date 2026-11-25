@@ -9,6 +9,9 @@ export default function ImageUploader({
   label = 'Gambar karya',
   currentUrl = null,
   onFileSelect,
+  onClear,
+  clearLabel = 'Hapus gambar',
+  disabled = false,
   error,
   required = false,
   helperText = 'JPEG/PNG/WEBP, maks. 5 MB',
@@ -31,13 +34,25 @@ export default function ImageUploader({
   }, [localPreviewUrl]);
 
   const handleFile = (file) => {
-    if (!file) return;
+    if (disabled || !file) return;
     if (localPreviewUrl) {
       URL.revokeObjectURL(localPreviewUrl);
     }
     const nextUrl = URL.createObjectURL(file);
     setLocalPreviewUrl(nextUrl);
     onFileSelect?.(file);
+  };
+
+  const handleClear = () => {
+    if (disabled) return;
+    if (localPreviewUrl) {
+      URL.revokeObjectURL(localPreviewUrl);
+      setLocalPreviewUrl(null);
+    }
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+    onClear?.();
   };
 
   return (
@@ -56,12 +71,17 @@ export default function ImageUploader({
         id={inputId}
         type="file"
         accept="image/jpeg,image/png,image/webp"
+        disabled={disabled}
         onChange={(e) => handleFile(e.target.files?.[0])}
         className="sr-only"
       />
 
       {previewUrl ? (
-        <div className="space-y-3 rounded-[24px] border border-line bg-surface p-3.5 shadow-card-sm">
+        <div
+          className={`space-y-3 rounded-[24px] border border-line bg-surface p-3.5 shadow-card-sm ${
+            disabled ? 'opacity-75' : ''
+          }`}
+        >
           <div className={`overflow-hidden rounded-[14px] bg-brand-50 ${aspectClass}`}>
             <img
               src={previewUrl}
@@ -71,36 +91,54 @@ export default function ImageUploader({
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2.5 px-0.5">
             <p className="text-xs leading-snug text-ink-mute">{helperText}</p>
-            <Button
-              variant="tonal"
-              size="sm"
-              onClick={() => inputRef.current?.click()}
-              className="shrink-0"
-            >
-              Ganti gambar
-            </Button>
+            {!disabled ? (
+              <div className="flex shrink-0 flex-wrap items-center gap-2">
+                {onClear ? (
+                  <button
+                    type="button"
+                    onClick={handleClear}
+                    className="min-h-[44px] rounded-full px-3 text-xs font-semibold text-[#FCA5A5] hover:bg-[#38171E] hover:underline"
+                  >
+                    {clearLabel}
+                  </button>
+                ) : null}
+                <Button
+                  variant="tonal"
+                  size="sm"
+                  onClick={() => inputRef.current?.click()}
+                  className="shrink-0"
+                >
+                  Ganti gambar
+                </Button>
+              </div>
+            ) : null}
           </div>
         </div>
       ) : (
         <button
           type="button"
+          disabled={disabled}
           onClick={() => inputRef.current?.click()}
           onDragOver={(e) => {
+            if (disabled) return;
             e.preventDefault();
             setIsDragging(true);
           }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={(e) => {
+            if (disabled) return;
             e.preventDefault();
             setIsDragging(false);
             handleFile(e.dataTransfer.files?.[0]);
           }}
           className={`flex w-full flex-col items-center justify-center gap-3 rounded-[28px] border-2 border-dashed px-6 py-12 text-center motion-safe:transition-all motion-safe:duration-200 ease-[var(--ease-spring)] ${
-            isDragging
-              ? 'scale-[1.01] border-brand-600 bg-brand-50 shadow-card-sm'
-              : error
-                ? 'border-[#F87171] bg-[#38171E]/60'
-                : 'border-brand-200 bg-surface hover:border-brand-400 hover:bg-brand-50/50'
+            disabled
+              ? 'cursor-not-allowed border-line bg-surface/60 opacity-60'
+              : isDragging
+                ? 'scale-[1.01] border-brand-600 bg-brand-50 shadow-card-sm'
+                : error
+                  ? 'border-[#F87171] bg-[#38171E]/60'
+                  : 'border-brand-200 bg-surface hover:border-brand-400 hover:bg-brand-50/50'
           }`}
         >
           <span

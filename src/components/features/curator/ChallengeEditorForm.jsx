@@ -6,6 +6,7 @@ import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import FormField from '@/components/ui/FormField';
+import ImageUploader from '@/components/ui/ImageUploader';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/shared/api-client';
@@ -29,6 +30,9 @@ export default function ChallengeEditorForm({
     initialChallenge?.description || ''
   );
   const [rules, setRules] = useState(initialChallenge?.rules || '');
+  const [prize, setPrize] = useState(initialChallenge?.prize || '');
+  const [bannerFile, setBannerFile] = useState(null);
+  const [removeBanner, setRemoveBanner] = useState(false);
   const [categoryId, setCategoryId] = useState(
     initialChallenge?.category_id ? String(initialChallenge.category_id) : ''
   );
@@ -61,20 +65,29 @@ export default function ChallengeEditorForm({
     setLoading(true);
     try {
       if (isEdit) {
-        const payload = isOpen
-          ? { description, rules, end_date: endDate }
-          : {
-              title,
-              description,
-              rules,
-              category_id: categoryId ? Number(categoryId) : null,
-              start_date: startDate,
-              end_date: endDate,
-            };
+        let body;
+        if (isOpen) {
+          body = { description, rules, end_date: endDate };
+        } else {
+          const fd = new FormData();
+          fd.set('title', title);
+          fd.set('description', description);
+          fd.set('rules', rules);
+          fd.set('prize', prize);
+          fd.set('category_id', categoryId || '');
+          fd.set('start_date', startDate);
+          fd.set('end_date', endDate);
+          if (bannerFile) {
+            fd.set('banner', bannerFile);
+          } else if (removeBanner) {
+            fd.set('remove_banner', 'true');
+          }
+          body = fd;
+        }
 
         await apiFetch(
           `/api/curator/challenges/${initialChallenge.challenge_id}`,
-          { method: 'PATCH', body: payload }
+          { method: 'PATCH', body }
         );
         showToast({
           tone: 'success',
@@ -82,17 +95,22 @@ export default function ChallengeEditorForm({
           message: 'Detail tantangan telah diperbarui.',
         });
       } else {
+        const fd = new FormData();
+        fd.set('title', title);
+        fd.set('description', description);
+        fd.set('rules', rules);
+        fd.set('prize', prize);
+        fd.set('category_id', categoryId || '');
+        fd.set('start_date', startDate);
+        fd.set('end_date', endDate);
+        fd.set('publish', publishNow ? 'true' : 'false');
+        if (bannerFile) {
+          fd.set('banner', bannerFile);
+        }
+
         await apiFetch('/api/curator/challenges', {
           method: 'POST',
-          body: {
-            title,
-            description,
-            rules,
-            category_id: categoryId ? Number(categoryId) : null,
-            start_date: startDate,
-            end_date: endDate,
-            publish: publishNow,
-          },
+          body: fd,
         });
         showToast({
           tone: 'success',
@@ -182,8 +200,42 @@ export default function ChallengeEditorForm({
         </Alert>
       ) : null}
 
-      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!isReadOnly) submitChallenge(!isEdit);
+        }}
+        className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12"
+      >
         <div className="space-y-5 rounded-[28px] border border-line bg-surface p-6 shadow-card sm:p-8 lg:col-span-8">
+          <ImageUploader
+            label="Banner tantangan (opsional)"
+            aspectClass="aspect-[16/9]"
+            currentUrl={removeBanner ? null : initialChallenge?.banner_url || null}
+            disabled={isOpen || isReadOnly}
+            onFileSelect={(file) => {
+              setBannerFile(file);
+              setRemoveBanner(false);
+            }}
+            onClear={
+              !isOpen &&
+              !isReadOnly &&
+              (bannerFile || (!removeBanner && initialChallenge?.banner_url))
+                ? () => {
+                    setBannerFile(null);
+                    setRemoveBanner(true);
+                  }
+                : undefined
+            }
+            clearLabel="Hapus banner"
+            helperText={
+              isOpen
+                ? 'Banner terkunci selama tantangan berlangsung.'
+                : 'JPEG/PNG/WEBP, maks. 5 MB. Rasio 16:9 disarankan.'
+            }
+            error={fieldErrors.banner || fieldErrors.image}
+          />
+
           <FormField
             label="Judul tantangan"
             name="title"
@@ -254,6 +306,23 @@ export default function ChallengeEditorForm({
           </div>
 
           <FormField
+            label="Hadiah & Apresiasi (opsional)"
+            name="prize"
+            as="textarea"
+            rows={3}
+            value={prize}
+            onChange={(e) => setPrize(e.target.value)}
+            disabled={isOpen || isReadOnly}
+            placeholder="Contoh: Juara 1: Rp2.500.000 + Sertifikat Kurasi; Juara 2 & 3: Sorotan Galeri & Lencana Resmi."
+            helperText={
+              isOpen
+                ? 'Informasi hadiah terkunci selama tantangan berlangsung.'
+                : 'Maksimal 500 karakter.'
+            }
+            error={fieldErrors.prize}
+          />
+
+          <FormField
             label="Deskripsi tantangan"
             name="description"
             as="textarea"
@@ -285,7 +354,7 @@ export default function ChallengeEditorForm({
             <ul className="space-y-2 text-sm text-ink-soft list-disc pl-4">
               <li>Pastikan tanggal berakhir lebih akhir dari tanggal mulai.</li>
               <li>Tantangan <strong>Draft</strong> belum tampil ke publik.</li>
-              <li>Setelah dipublikasikan, judul dan kategori tidak dapat diubah.</li>
+              <li>Setelah dipublikasikan, judul, kategori, hadiah, dan banner terkunci.</li>
             </ul>
 
             {!isReadOnly ? (
@@ -369,7 +438,7 @@ export default function ChallengeEditorForm({
             </div>
           ) : null}
         </div>
-      </div>
+      </form>
 
       <ConfirmModal
         open={deleteOpen}

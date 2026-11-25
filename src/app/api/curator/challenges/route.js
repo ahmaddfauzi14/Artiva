@@ -2,7 +2,7 @@ import { ok, parsePagination, withHandler } from '@/lib/server/http';
 import { requireActiveCurator } from '@/lib/auth/guards';
 import { listCuratorChallenges } from '@/lib/repositories/curator-challenges';
 import { createCuratorChallenge } from '@/lib/services/challenges';
-import { createChallengeSchema } from '@/lib/validators/challenges';
+import { parseChallengeRequest } from '@/lib/validators/challenges';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -23,8 +23,11 @@ export const GET = withHandler(async (request) => {
 
 export const POST = withHandler(async (request) => {
   const curator = await requireActiveCurator();
-  const body = await request.json();
-  const input = createChallengeSchema.parse(body);
-  const challenge = await createCuratorChallenge(curator.user_id, input);
+  const { input, bannerFile } = await parseChallengeRequest(request);
+  const challenge = await createCuratorChallenge(
+    curator.user_id,
+    input,
+    bannerFile
+  );
   return ok({ challenge }, undefined, 201);
 });

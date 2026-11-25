@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { AppError } from '@/lib/server/http';
 
-const ALLOWED_FOLDERS = new Set(['artworks', 'avatars']);
+const ALLOWED_FOLDERS = new Set(['artworks', 'avatars', 'challenges']);
 
 const MIME_BY_EXT = {
   '.jpg': 'image/jpeg',

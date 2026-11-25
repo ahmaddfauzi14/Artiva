@@ -102,6 +102,8 @@ CREATE TABLE IF NOT EXISTS challenges (
   title        VARCHAR(150) NOT NULL,
   description  TEXT,
   rules        TEXT,
+  prize        TEXT,
+  banner_path  VARCHAR(255),
   start_date   DATE NOT NULL,
   end_date     DATE NOT NULL,
   status       challenge_status NOT NULL DEFAULT 'draft',

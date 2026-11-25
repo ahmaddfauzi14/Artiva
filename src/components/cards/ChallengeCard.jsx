@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Award01Icon } from '@hugeicons/core-free-icons';
 import Button from '@/components/ui/Button';
 import { useMotion } from '@/components/effects/MotionContext';
 import StatusBadge from '@/components/ui/StatusBadge';
@@ -31,6 +33,7 @@ export default function ChallengeCard({
     challenge.days_remaining <= 3;
 
   const periodText = formatDateRangeId(challenge.start_date, challenge.end_date);
+  const visualUrl = challenge.banner_url || challenge.cover_image_url;
 
   const handlePointerMove = (e) => {
     if (!isMotionActive) return;
@@ -49,9 +52,9 @@ export default function ChallengeCard({
         <div className="cq-card-body">
           <div className="flex min-w-0 flex-1 items-start gap-4">
             <div className="h-24 w-24 shrink-0 overflow-hidden rounded-[14px] bg-surface shadow-card-sm">
-              {challenge.cover_image_url ? (
+              {visualUrl ? (
                 <img
-                  src={challenge.cover_image_url}
+                  src={visualUrl}
                   alt={challenge.title}
                   loading="lazy"
                   className="h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-300 group-hover:scale-[1.04]"
@@ -97,6 +100,19 @@ export default function ChallengeCard({
                 ) : null}
               </p>
 
+              {challenge.prize ? (
+                <p className="inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-brand-700">
+                  <HugeiconsIcon
+                    icon={Award01Icon}
+                    size={14}
+                    strokeWidth={1.8}
+                    className="shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span className="truncate">Hadiah: {challenge.prize}</span>
+                </p>
+              ) : null}
+
               {challenge.description ? (
                 <p className="line-clamp-2 text-sm text-ink-soft">
                   {challenge.description}
@@ -138,9 +154,9 @@ export default function ChallengeCard({
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-12">
         {/* Panel Visual Kiri (~35%) */}
         <div className="relative aspect-[16/10] overflow-hidden md:aspect-auto md:min-h-[250px] md:col-span-4">
-          {challenge.cover_image_url ? (
+          {visualUrl ? (
             <img
-              src={challenge.cover_image_url}
+              src={visualUrl}
               alt={challenge.title}
               loading="lazy"
               className="h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-500 group-hover:scale-[1.03]"
@@ -188,6 +204,19 @@ export default function ChallengeCard({
               {challenge.description ||
                 'Tunjukkan interpretasi visual terbaikmu dan ikuti kurasi komunitas.'}
             </p>
+
+            {challenge.prize ? (
+              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-brand-700/35 bg-brand-700/10 px-3.5 py-1.5 text-xs font-semibold text-[#FFF2B2]">
+                <HugeiconsIcon
+                  icon={Award01Icon}
+                  size={15}
+                  strokeWidth={1.8}
+                  className="shrink-0 text-brand-700"
+                  aria-hidden="true"
+                />
+                <span className="truncate">Hadiah: {challenge.prize}</span>
+              </div>
+            ) : null}
 
             <p className="text-sm text-[#DCE6F5]">
               Kurator:{' '}

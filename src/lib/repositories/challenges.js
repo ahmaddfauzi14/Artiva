@@ -10,6 +10,7 @@ function mapChallengeRow(row) {
     title: row.title,
     description: row.description || '',
     rules: row.rules || '',
+    prize: row.prize || '',
     start_date: row.start_date,
     end_date: row.end_date,
     status: row.status,
@@ -17,6 +18,7 @@ function mapChallengeRow(row) {
     announced_at: row.announced_at || null,
     days_remaining: daysRemaining(row.end_date),
     submission_count: row.submission_count ?? 0,
+    banner_url: toUploadUrl(row.banner_path),
     cover_image_url: toUploadUrl(row.cover_image_path),
     category: row.category_id
       ? {
@@ -75,6 +77,8 @@ export async function listPublicChallenges({
        ch.title,
        ch.description,
        ch.rules,
+       ch.prize,
+       ch.banner_path,
        ch.start_date,
        ch.end_date,
        ch.status,
@@ -146,6 +150,8 @@ export async function findPublicChallengeById(challengeId) {
        ch.title,
        ch.description,
        ch.rules,
+       ch.prize,
+       ch.banner_path,
        ch.start_date,
        ch.end_date,
        ch.status,

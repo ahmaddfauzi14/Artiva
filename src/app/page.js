@@ -92,13 +92,19 @@ function getClosingPrimaryCta(user) {
 export default async function HomePage() {
   const user = await getPublicViewer();
 
-  const [categories, artworksData, openChallengesData, latestWinnersData] =
-    await Promise.all([
-      listActiveCategories(),
-      listPublicArtworks({ limit: 4 }),
-      listPublicChallenges({ status: 'open', limit: 1 }),
-      listLatestAnnouncedWinners(),
-    ]);
+  const [
+    categories,
+    artworksData,
+    popularArtworksData,
+    openChallengesData,
+    latestWinnersData,
+  ] = await Promise.all([
+    listActiveCategories(),
+    listPublicArtworks({ limit: 4 }),
+    listPublicArtworks({ sort: 'popular', limit: 4 }),
+    listPublicChallenges({ status: 'open', limit: 1 }),
+    listLatestAnnouncedWinners(),
+  ]);
 
   let featuredChallenge = openChallengesData.items[0] || null;
   if (!featuredChallenge) {
@@ -107,7 +113,11 @@ export default async function HomePage() {
   }
 
   const latestArtworks = artworksData.items || [];
-  const heroArtwork = latestArtworks.find((item) => Boolean(item.image_url)) || null;
+  const popularArtworks = popularArtworksData.items || [];
+  const heroArtwork =
+    latestArtworks.find((item) => Boolean(item.image_url)) ||
+    popularArtworks.find((item) => Boolean(item.image_url)) ||
+    null;
   const winners = latestWinnersData.winners || [];
 
   const heroCta = getHeroSecondaryCta(user);
@@ -283,7 +293,44 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* 3. Ubah ide jadi tantangan */}
+      {/* 3. Karya paling populer */}
+      <section aria-labelledby="karya-populer" className="space-y-5">
+        <SectionHeader
+          id="karya-populer"
+          eyebrow="PALING BANYAK DISUKAI"
+          title="Karya terpopuler di komunitas."
+          actionLabel="Lihat karya populer →"
+          actionHref="/artworks?sort=popular"
+        />
+
+        {popularArtworks.length === 0 ? (
+          <div className="flex flex-col items-start justify-between gap-4 rounded-[24px] bg-tint-sky p-5 shadow-tint-sky sm:flex-row sm:items-center sm:p-6">
+            <div className="space-y-1">
+              <p className="text-lg font-semibold text-ink">
+                Sorotan karya terpopuler akan tampil di sini.
+              </p>
+              <p className="text-sm text-ink-soft sm:text-base">
+                Jelajahi galeri dan berikan suka pada karya favoritmu dari kreator ARTIVA.
+              </p>
+            </div>
+            <Button
+              variant="secondary"
+              href="/artworks?sort=popular"
+              className="shrink-0"
+            >
+              Jelajahi galeri →
+            </Button>
+          </div>
+        ) : (
+          <div className="auto-grid-cards gap-5">
+            {popularArtworks.map((art, idx) => (
+              <ArtworkCard key={art.artwork_id} artwork={art} index={idx} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* 4. Ubah ide jadi tantangan */}
       <section className="space-y-5">
         <SectionHeader
           eyebrow="KOMPETISI TERKURASI"
