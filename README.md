@@ -150,23 +150,21 @@ Klik setiap modul di bawah ini untuk menjelajahi fungsionalitas ARTIVA secara in
 <a id="preview"></a>
 ## Preview
 
-<!-- Add application screenshots here -->
+<div align="center">
 
-> [!TIP]
-> Ruang ini disiapkan untuk menampilkan tangkapan layar aplikasi (*Home Showcase*, *Interactive Artwork Inspector*, *Challenge Winner Podium*, dan *Admin Dashboard Bento*). Tambahkan file gambar ke repositori atau unggah ke GitHub Issue/PR lalu tempelkan tautannya di sini.
+### 🏠 Beranda — Hero Editorial & Galeri Inspirasi
 
-<details>
-<summary><b>📸 Daftar Tampilan Utama yang Siap Didokumentasikan</b></summary>
+<img src="docs/screenshots/01-home-hero.jpg" alt="ARTIVA Home — Hero editorial dengan sorotan karya terbaru, pilar ekosistem, dan galeri inspirasi" width="100%" />
 
-| Halaman / Modul | Route | Sorotan Visual &amp; Interaksi |
-| :--- | :--- | :--- |
-| **Landing &amp; Showcase** | `/` | Hero editorial, `HomeSearchBox`, `CircularGallery`, karya populer, tantangan aktif, `WinnerPodium`, dan `FaqSection` interaktif |
-| **Galeri &amp; Detail Karya** | `/artworks`, `/artworks/[id]` | Filter kategori/tag, pencarian `pg_trgm`, inspektur Zoom/Pan/Lightbox, Like `PulseHeart`, Favorit, &amp; Komentar |
-| **Ruang Member** | `/me`, `/me/artworks`, `/me/submissions` | Unggah &amp; kelola karya portofolio, pantau riwayat submission tantangan, favorit, dan profil kreator |
-| **Ruang Kurator** | `/curator`, `/curator/verification` | Status verifikasi &amp; banding (maks. 3x) dengan upload CV, pembuatan tantangan ber-banner, peninjauan peserta, &amp; penetapan pemenang |
-| **Dashboard Admin** | `/dashboard/admin` | `AdminDashboardBento`, antrean aktivitas, approval Kurator (+ unduh CV), kelola kategori, pengguna, &amp; laporan |
+### 🖼️ Galeri Karya — CircularGallery & Filter Kategori
 
-</details>
+<img src="docs/screenshots/02-artwork-gallery.jpg" alt="ARTIVA Galeri — Eksplorasi karya dengan CircularGallery 3D, pencarian judul, dan filter kategori" width="100%" />
+
+### 🏆 Tantangan Kreatif — Kompetisi Terkurasi
+
+<img src="docs/screenshots/03-challenges.jpg" alt="ARTIVA Tantangan — Daftar tantangan terkurasi dengan banner, detail kurator, dan periode kompetisi" width="100%" />
+
+</div>
 
 ---
 
