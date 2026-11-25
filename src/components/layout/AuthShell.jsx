@@ -18,8 +18,8 @@ export default function AuthShell({
 
       <main className="mx-auto flex w-full max-w-7xl flex-1 items-center px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <div className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10">
-          {/* Panel Kiri: Tipografi Editorial + Pilar Ringkas */}
-          <div className="hidden lg:col-span-6 lg:flex lg:flex-col lg:justify-center lg:space-y-6 lg:pr-4">
+          {/* Panel Kiri: Tipografi Editorial + Pilar Ringkas (sticky dan tetap terpusat secara vertikal) */}
+          <div className="hidden lg:sticky lg:top-24 lg:col-span-6 lg:flex lg:min-h-[calc(100dvh-11.5rem)] lg:flex-col lg:justify-center lg:self-start lg:space-y-6 lg:pr-4">
             <div className="space-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-700">
                 {eyebrow}

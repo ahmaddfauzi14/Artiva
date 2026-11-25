@@ -53,20 +53,20 @@ export default function Footer() {
   return (
     <footer className="mt-auto border-t border-line bg-brand-900">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:items-start">
-          <div className="min-w-0 md:col-span-6 lg:col-span-7">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-10 lg:gap-12">
+          <div className="min-w-0">
             <Link href="/" className="inline-flex items-center">
               <ArtivaLogo size="md" />
             </Link>
             <h2 className="mt-3 text-lg font-semibold tracking-[-0.01em] text-ink">
               Ekosistem Kreatif ARTIVA
             </h2>
-            <p className="mt-1 max-w-lg text-sm leading-relaxed text-ink-soft">
+            <p className="mt-1 text-sm leading-relaxed text-ink-soft">
               Ruang bertemu karya, ide, dan apresiasi yang menyatukan portofolio digital, interaksi komunitas, dan tantangan kreatif terkurasi.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 md:col-span-6 lg:col-span-5">
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-[auto_auto] md:gap-8 lg:gap-10">
             <FooterLinkGroup
               id="footer-quick-links"
               title="Tautan Cepat"
