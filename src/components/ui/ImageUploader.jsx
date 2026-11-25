@@ -19,11 +19,21 @@ export default function ImageUploader({
   imagePositionClass = 'object-center',
 }) {
   const inputId = useId();
+  const helperId = `${inputId}-helper`;
+  const errorId = `${inputId}-error`;
   const inputRef = useRef(null);
   const [localPreviewUrl, setLocalPreviewUrl] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
 
   const previewUrl = localPreviewUrl || currentUrl;
+  const cleanLabel = label.replace(/\s*\(.*?\)\s*/g, '').trim();
+  const previewAlt = cleanLabel
+    ? `Pratinjau ${cleanLabel.toLowerCase()}`
+    : 'Pratinjau gambar yang dipilih';
+  const describedBy =
+    [error ? errorId : null, helperText ? helperId : null]
+      .filter(Boolean)
+      .join(' ') || undefined;
 
   useEffect(() => {
     return () => {
@@ -56,7 +66,7 @@ export default function ImageUploader({
   };
 
   return (
-    <div className="space-y-2">
+    <div className="w-full space-y-2 @container/uploader">
       <label htmlFor={inputId} className="block text-sm font-semibold text-ink">
         {label}
         {required ? (
@@ -72,32 +82,39 @@ export default function ImageUploader({
         type="file"
         accept="image/jpeg,image/png,image/webp"
         disabled={disabled}
+        aria-invalid={error ? 'true' : undefined}
+        aria-describedby={describedBy}
         onChange={(e) => handleFile(e.target.files?.[0])}
         className="sr-only"
       />
 
       {previewUrl ? (
         <div
-          className={`space-y-3 rounded-[24px] border border-line bg-surface p-3.5 shadow-card-sm ${
+          className={`w-full space-y-3 rounded-[24px] border border-line bg-surface p-3.5 shadow-card-sm @[420px]/uploader:p-4 ${
             disabled ? 'opacity-75' : ''
           }`}
         >
-          <div className={`overflow-hidden rounded-[14px] bg-brand-50 ${aspectClass}`}>
-            <img
-              src={previewUrl}
-              alt="Pratinjau gambar yang dipilih"
-              className={`h-full w-full object-cover ${imagePositionClass}`}
-            />
-          </div>
+          <img
+            src={previewUrl}
+            alt={previewAlt}
+            className={`block w-full rounded-[14px] bg-brand-50 object-cover ${aspectClass} ${imagePositionClass}`}
+          />
           <div className="flex flex-wrap items-center justify-between gap-2.5 px-0.5">
-            <p className="text-xs leading-snug text-ink-mute">{helperText}</p>
+            {helperText ? (
+              <p
+                id={helperId}
+                className="min-w-0 text-xs leading-snug text-ink-mute text-pretty"
+              >
+                {helperText}
+              </p>
+            ) : null}
             {!disabled ? (
-              <div className="flex shrink-0 flex-wrap items-center gap-2">
+              <div className="ms-auto flex shrink-0 flex-wrap items-center gap-2">
                 {onClear ? (
                   <button
                     type="button"
                     onClick={handleClear}
-                    className="min-h-[44px] rounded-full px-3 text-xs font-semibold text-[#FCA5A5] hover:bg-[#38171E] hover:underline"
+                    className="min-h-[44px] min-w-[44px] rounded-full px-3 text-xs font-semibold text-[#FCA5A5] hover:bg-[#38171E] hover:underline"
                   >
                     {clearLabel}
                   </button>
@@ -118,6 +135,7 @@ export default function ImageUploader({
         <button
           type="button"
           disabled={disabled}
+          aria-describedby={describedBy}
           onClick={() => inputRef.current?.click()}
           onDragOver={(e) => {
             if (disabled) return;
@@ -157,13 +175,24 @@ export default function ImageUploader({
             <p className="text-base font-semibold text-ink">
               Seret gambar ke sini atau pilih file
             </p>
-            <p className="text-[0.8125rem] text-ink-mute">{helperText}</p>
+            {helperText ? (
+              <p
+                id={helperId}
+                className="text-[0.8125rem] text-ink-mute text-pretty"
+              >
+                {helperText}
+              </p>
+            ) : null}
           </div>
         </button>
       )}
 
       {error ? (
-        <p role="alert" className="text-[0.8125rem] font-medium text-[#FCA5A5]">
+        <p
+          id={errorId}
+          role="alert"
+          className="text-[0.8125rem] font-medium text-[#FCA5A5]"
+        >
           {error}
         </p>
       ) : null}

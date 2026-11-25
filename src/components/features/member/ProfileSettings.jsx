@@ -121,17 +121,15 @@ export default function ProfileSettings({ user }) {
           </Alert>
         ) : null}
 
-        <div className="max-w-[340px]">
-          <ImageUploader
-            label="Foto avatar"
-            currentUrl={user.avatar_url}
-            onFileSelect={setAvatarFile}
-            error={profileFields.avatar || profileFields.image}
-            aspectClass="aspect-square"
-            imagePositionClass="object-top"
-            helperText="JPEG/PNG/WEBP, maks. 5 MB"
-          />
-        </div>
+        <ImageUploader
+          label="Foto avatar"
+          currentUrl={user.avatar_url}
+          onFileSelect={setAvatarFile}
+          error={profileFields.avatar || profileFields.image}
+          aspectClass="aspect-[4/5]"
+          imagePositionClass="object-center"
+          helperText="JPEG/PNG/WEBP, maks. 5 MB"
+        />
 
         <FormField
           label="Username"
