@@ -58,7 +58,7 @@ export default function MemberSubmissions({ initialSubmissions = [] }) {
         <EmptyState
           title="Saatnya mencoba tantangan pertamamu."
           description="Kamu belum mengirimkan karya ke tantangan mana pun. Pilih tantangan terbuka dan kirim karyamu."
-          actionLabel="Jelajahi tantangan →"
+          actionLabel="Jelajahi tantangan"
           actionHref="/me/submissions/challenges"
         />
       ) : (
@@ -151,7 +151,7 @@ export default function MemberSubmissions({ initialSubmissions = [] }) {
 
                 <div className="flex shrink-0 items-center gap-2">
                   <Button variant="tonal" size="sm" href={challengeDetailHref}>
-                    Lihat tantangan →
+                    Lihat tantangan
                   </Button>
                   {canWithdraw ? (
                     <Button

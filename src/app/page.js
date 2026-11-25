@@ -24,12 +24,12 @@ export const dynamic = 'force-dynamic';
  */
 function getHeroSecondaryCta(user) {
   if (user?.role === 'member') {
-    return { label: 'Karya saya →', href: '/me/artworks' };
+    return { label: 'Karya saya', href: '/me/artworks' };
   }
   if (user?.role === 'curator') {
     const isActive = user.status === 'active';
     return {
-      label: isActive ? 'Kelola tantangan →' : 'Status verifikasi →',
+      label: isActive ? 'Kelola tantangan' : 'Status verifikasi',
       href: isActive ? '/curator/challenges' : '/curator/verification',
     };
   }
@@ -81,11 +81,11 @@ function getFirstStepConfig(user) {
  */
 function getClosingPrimaryCta(user) {
   if (user.role === 'member') {
-    return { label: 'Karya saya →', href: '/me/artworks' };
+    return { label: 'Karya saya', href: '/me/artworks' };
   }
   const isActive = user.status === 'active';
   return {
-    label: isActive ? 'Kelola tantangan →' : 'Status verifikasi →',
+    label: isActive ? 'Kelola tantangan' : 'Status verifikasi',
     href: isActive ? '/curator/challenges' : '/curator/verification',
   };
 }
@@ -124,9 +124,9 @@ export default async function HomePage() {
   const curatorEmptyAction =
     user?.role === 'curator'
       ? user.status === 'active'
-        ? { label: 'Buat tantangan →', href: '/curator/challenges/new' }
-        : { label: 'Status verifikasi →', href: '/curator/verification' }
-      : { label: 'Ajukan sebagai Kurator →', href: '/register/curator' };
+        ? { label: 'Buat tantangan', href: '/curator/challenges/new' }
+        : { label: 'Status verifikasi', href: '/curator/verification' }
+      : { label: 'Ajukan sebagai Kurator', href: '/register/curator' };
 
   return (
     <PublicShell user={user} mainClassName="space-y-10 py-6 sm:space-y-12 sm:py-8">
@@ -145,7 +145,7 @@ export default async function HomePage() {
 
           <div className="flex flex-wrap items-center gap-3 pt-1">
             <Button variant="primary" size="lg" href="/artworks">
-              Jelajahi karya →
+              Jelajahi karya
             </Button>
             <Button variant="secondary" size="lg" href={heroCta.href}>
               {heroCta.label}
@@ -279,7 +279,7 @@ export default async function HomePage() {
           <EmptyState
             title="Galeri menanti karya pertamamu"
             description="Jadilah kreator pertama yang membagikan karya digital ke komunitas ARTIVA."
-            actionLabel="Unggah karya pertama →"
+            actionLabel="Unggah karya pertama"
             actionHref={
               user?.role === 'member' ? '/me/artworks/new' : '/register/member'
             }
@@ -344,7 +344,7 @@ export default async function HomePage() {
               </p>
             </div>
             <Button variant="secondary" href="/challenges" className="shrink-0">
-              Jelajahi tantangan →
+              Jelajahi tantangan
             </Button>
           </div>
         )}
@@ -419,7 +419,7 @@ export default async function HomePage() {
                 {getClosingPrimaryCta(user).label}
               </Button>
               <Button variant="secondary" size="lg" href="/challenges">
-                Lihat tantangan →
+                Lihat tantangan
               </Button>
             </div>
           </div>
@@ -439,7 +439,7 @@ export default async function HomePage() {
               </div>
               <div>
                 <Button variant="primary" size="lg" href="/register/member">
-                  Daftar sebagai Member →
+                  Daftar sebagai Member
                 </Button>
               </div>
             </div>
@@ -458,7 +458,7 @@ export default async function HomePage() {
               </div>
               <div className="space-y-1.5">
                 <Button variant="secondary" href="/register/curator">
-                  Ajukan sebagai Kurator →
+                  Ajukan sebagai Kurator
                 </Button>
                 <p className="text-xs text-ink-mute">
                   Pengajuan ditinjau dan diverifikasi oleh admin.

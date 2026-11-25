@@ -21,7 +21,7 @@ export default async function NotFoundPage() {
       </p>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <Button variant="primary" href="/">
-          Kembali ke Beranda →
+          Kembali ke Beranda
         </Button>
         <Button variant="secondary" href="/artworks">
           Jelajahi karya

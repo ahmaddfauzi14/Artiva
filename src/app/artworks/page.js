@@ -13,12 +13,12 @@ export const metadata = {
 
 function getBannerCta(user) {
   if (user?.role === 'member') {
-    return { label: 'Unggah karya →', href: '/me/artworks/new' };
+    return { label: 'Unggah karya', href: '/me/artworks/new' };
   }
   if (user) {
-    return { label: 'Jelajahi tantangan →', href: '/challenges' };
+    return { label: 'Jelajahi tantangan', href: '/challenges' };
   }
-  return { label: 'Gabung sebagai Member →', href: '/register/member' };
+  return { label: 'Gabung sebagai Member', href: '/register/member' };
 }
 
 export default async function ArtworksPage({ searchParams }) {

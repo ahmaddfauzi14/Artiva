@@ -68,10 +68,10 @@ export default function RegisterMemberForm() {
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button variant="primary" href="/">
-            Masuk ke Beranda →
+            Masuk ke Beranda
           </Button>
           <Button variant="secondary" href="/artworks">
-            Jelajahi karya →
+            Jelajahi karya
           </Button>
         </div>
       </div>

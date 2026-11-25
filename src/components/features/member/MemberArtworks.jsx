@@ -80,7 +80,7 @@ export default function MemberArtworks({ initialArtworks = [] }) {
         <EmptyState
           title="Belum ada karya yang diunggah"
           description="Unggah karya pertamamu sekarang agar bisa tampil di galeri dan mengikuti tantangan."
-          actionLabel="Tambah karya →"
+          actionLabel="Tambah karya"
           actionHref="/me/artworks/new"
         />
       ) : (

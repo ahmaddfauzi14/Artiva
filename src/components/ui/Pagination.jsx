@@ -27,7 +27,7 @@ export default function Pagination({ page, limit, total, onPageChange }) {
           onClick={() => onPageChange(page - 1)}
           className="min-h-[44px] rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink shadow-card-sm transition-colors hover:border-brand-200 hover:bg-brand-50 disabled:pointer-events-none disabled:opacity-45"
         >
-          ← Sebelumnya
+          Sebelumnya
         </button>
 
         {start > 1 ? (
@@ -89,7 +89,7 @@ export default function Pagination({ page, limit, total, onPageChange }) {
           onClick={() => onPageChange(page + 1)}
           className="min-h-[44px] rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink shadow-card-sm transition-colors hover:border-brand-200 hover:bg-brand-50 disabled:pointer-events-none disabled:opacity-45"
         >
-          Berikutnya →
+          Berikutnya
         </button>
       </div>
     </nav>

@@ -14,7 +14,7 @@ export default function AdminNotFoundPage() {
       </p>
       <div className="mt-8">
         <Button variant="primary" href="/dashboard/admin">
-          Kembali ke Dashboard Admin →
+          Kembali ke Dashboard Admin
         </Button>
       </div>
     </div>

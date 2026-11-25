@@ -264,7 +264,7 @@ export default function ProfileSettings({ user }) {
             size="sm"
             href={`/creators/${user.username}`}
           >
-            Lihat profil publik →
+            Lihat profil publik
           </Button>
         </div>
       </div>

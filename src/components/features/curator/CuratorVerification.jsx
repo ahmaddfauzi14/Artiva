@@ -584,7 +584,7 @@ export default function CuratorVerification({ verification: initialVerification 
         <div className="flex flex-wrap items-center gap-3">
           {status === 'approved' ? (
             <Button variant="primary" href="/curator/challenges">
-              Kelola tantangan →
+              Kelola tantangan
             </Button>
           ) : status === 'pending' ? (
             <Button

@@ -104,7 +104,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
           size="sm"
           href={`/curator/challenges/${ch.challenge_id}/submissions`}
         >
-          Lihat submission ({ch.submission_count}) →
+          Lihat submission ({ch.submission_count})
         </Button>
       ) : null}
 
@@ -114,7 +114,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
           size="sm"
           href={`/curator/challenges/${ch.challenge_id}/winners`}
         >
-          Tentukan pemenang →
+          Tentukan pemenang
         </Button>
       ) : null}
 
@@ -124,7 +124,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
           size="sm"
           href={`/curator/challenges/${ch.challenge_id}/winners`}
         >
-          Lihat pengumuman →
+          Lihat pengumuman
         </Button>
       ) : null}
 
@@ -186,7 +186,7 @@ export default function CuratorChallenges({ initialChallenges = [] }) {
         <EmptyState
           title="Belum ada tantangan dibuat"
           description="Buat tantangan tematik pertamamu untuk mengajak kreator berpartisipasi."
-          actionLabel="Buat tantangan →"
+          actionLabel="Buat tantangan"
           actionHref="/curator/challenges/new"
         />
       ) : statusFilter === 'all' ? (

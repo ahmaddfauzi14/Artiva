@@ -152,7 +152,7 @@ export default function ProfileOverview({ user, editHref }) {
             size="sm"
             href={`/creators/${user.username}`}
           >
-            Lihat profil publik →
+            Lihat profil publik
           </Button>
         </div>
       </section>

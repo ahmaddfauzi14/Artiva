@@ -113,10 +113,10 @@ export default function RegisterCuratorForm() {
         </Alert>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button variant="primary" href="/curator/verification">
-            Lihat status verifikasi →
+            Lihat status verifikasi
           </Button>
           <Button variant="secondary" href="/">
-            Kembali ke beranda →
+            Kembali ke beranda
           </Button>
         </div>
       </div>

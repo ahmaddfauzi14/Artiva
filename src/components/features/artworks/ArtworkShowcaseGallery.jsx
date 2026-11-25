@@ -150,11 +150,11 @@ export function ArtworkSpotlightCard({
       <div className="flex shrink-0 flex-wrap items-center gap-3">
         {showCreatorInfo && creatorUsername ? (
           <Button variant="secondary" href={`/creators/${creatorUsername}`}>
-            Kontak kreator →
+            Kontak kreator
           </Button>
         ) : null}
         <Button variant="primary" href={`/artworks/${artwork.artwork_id}`}>
-          Lihat detail &amp; apresiasi →
+          Lihat detail &amp; apresiasi
         </Button>
       </div>
     </article>

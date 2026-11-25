@@ -226,7 +226,7 @@ export default function AdminCuratorDetail({ initialVerification }) {
                         rel="noopener noreferrer"
                         className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-100"
                       >
-                        Pratinjau PDF →
+                        Pratinjau PDF
                       </a>
                     ) : null}
                     <a

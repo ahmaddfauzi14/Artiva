@@ -20,7 +20,7 @@ export default async function MemberProfileEditPage() {
         subtitle="Perbarui tampilan profil kreator serta keamanan email dan kata sandimu."
         rightSlot={
           <Button variant="secondary" size="sm" href="/me/profile">
-            ← Kembali ke profil
+            Kembali ke profil
           </Button>
         }
       />

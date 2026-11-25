@@ -138,8 +138,8 @@ export default function ChallengeCard({
                 href={challengeHref}
               >
                 {challenge.status === 'open'
-                  ? 'Lihat & ikut tantangan →'
-                  : 'Lihat detail →'}
+                  ? 'Lihat & ikut tantangan'
+                  : 'Lihat detail'}
               </Button>
             </div>
           )}
@@ -232,7 +232,7 @@ export default function ChallengeCard({
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Button variant="primary" href={challengeHref}>
-              Lihat detail tantangan →
+              Lihat detail tantangan
             </Button>
             <p className="text-xs text-[#C4D2E8]">
               Khusus Member · Karya berstatus Dipublikasikan

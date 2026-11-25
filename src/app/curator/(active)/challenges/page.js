@@ -22,7 +22,7 @@ export default async function CuratorChallengesPage() {
         eyebrow="MANAJEMEN TANTANGAN"
         title="Tantangan"
         subtitle="Kelola seluruh tantangan kreatif yang kamu buat, publikasikan draft, pantau karya masuk, dan umumkan pemenang."
-        actionLabel="Buat tantangan →"
+        actionLabel="Buat tantangan"
         actionHref="/curator/challenges/new"
       />
       <CuratorChallenges initialChallenges={result.items} />

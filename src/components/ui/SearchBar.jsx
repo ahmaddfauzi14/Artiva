@@ -57,7 +57,7 @@ export default function SearchBar({
         type="submit"
         className="inline-flex h-10 shrink-0 items-center gap-1 rounded-full bg-grad-primary px-4 text-sm font-semibold text-white shadow-btn motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:-translate-y-px"
       >
-        Cari →
+        Cari
       </button>
     </form>
   );

@@ -27,7 +27,7 @@ export default async function MemberFavoritesPage() {
         subtitle="Kumpulan karya komunitas yang kamu simpan sebagai favorit."
         rightSlot={
           <Button variant="secondary" href="/artworks">
-            Jelajahi karya →
+            Jelajahi karya
           </Button>
         }
       />
@@ -36,7 +36,7 @@ export default async function MemberFavoritesPage() {
         <EmptyState
           title="Simpan yang menginspirasimu."
           description="Belum ada karya favorit tersimpan. Jelajahi galeri dan tandai karya yang paling berkesan."
-          actionLabel="Jelajahi karya →"
+          actionLabel="Jelajahi karya"
           actionHref="/artworks"
         />
       ) : (

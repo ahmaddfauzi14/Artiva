@@ -41,14 +41,14 @@ function getHeroChallengeCta(user) {
   if (user?.role === 'curator') {
     const isActive = user.status === 'active';
     return {
-      label: isActive ? 'Buat tantangan →' : 'Status verifikasi →',
+      label: isActive ? 'Buat tantangan' : 'Status verifikasi',
       href: isActive ? '/curator/challenges/new' : '/curator/verification',
     };
   }
   if (user?.role === 'member') {
-    return { label: 'Siapkan karya saya →', href: '/me/artworks' };
+    return { label: 'Siapkan karya saya', href: '/me/artworks' };
   }
-  return { label: 'Gabung sebagai Member →', href: '/register/member' };
+  return { label: 'Gabung sebagai Member', href: '/register/member' };
 }
 
 export default async function ChallengesPage({ searchParams }) {

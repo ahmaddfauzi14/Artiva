@@ -88,7 +88,7 @@ function CreatorBackFace({
             rel="noopener noreferrer"
             className="w-full justify-center"
           >
-            Kunjungi portofolio eksternal ↗
+            Kunjungi portofolio eksternal
           </Button>
         ) : null}
         <Button

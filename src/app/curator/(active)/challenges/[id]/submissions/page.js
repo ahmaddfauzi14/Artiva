@@ -44,9 +44,9 @@ export default async function CuratorChallengeSubmissionsPage({ params }) {
         subtitle="Tinjau seluruh karya peserta yang masuk pada tantangan ini."
         actionLabel={
           challenge.status === 'closed'
-            ? 'Tentukan pemenang →'
+            ? 'Tentukan pemenang'
             : challenge.status === 'announced'
-              ? 'Lihat pengumuman →'
+              ? 'Lihat pengumuman'
               : undefined
         }
         actionHref={

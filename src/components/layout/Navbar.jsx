@@ -487,7 +487,7 @@ export default function Navbar({ user = null }) {
                     Baru di ARTIVA?
                   </span>
                   <Button variant="secondary" size="sm" href="/register/member">
-                    Buat akun →
+                    Buat akun
                   </Button>
                 </div>
               ) : (
@@ -496,7 +496,7 @@ export default function Navbar({ user = null }) {
                     Sudah punya akun?
                   </span>
                   <Button variant="secondary" size="sm" href="/login">
-                    Masuk →
+                    Masuk
                   </Button>
                 </div>
               )

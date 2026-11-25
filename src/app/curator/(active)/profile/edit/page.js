@@ -20,7 +20,7 @@ export default async function CuratorProfileEditPage() {
         subtitle="Perbarui identitas kurator, bio organisasi, serta keamanan email dan kata sandimu."
         rightSlot={
           <Button variant="secondary" size="sm" href="/curator/profile">
-            ← Kembali ke profil
+            Kembali ke profil
           </Button>
         }
       />

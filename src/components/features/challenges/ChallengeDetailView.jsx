@@ -121,7 +121,7 @@ export default function ChallengeDetailView({
                   size="lg"
                   href={resolvedSubmitHref}
                 >
-                  Ikuti tantangan →
+                  Ikuti tantangan
                 </Button>
               ) : !viewer ? (
                 <Button
@@ -129,7 +129,7 @@ export default function ChallengeDetailView({
                   size="lg"
                   href={`/login?next=${encodeURIComponent(resolvedSubmitHref)}`}
                 >
-                  Masuk untuk ikut →
+                  Masuk untuk ikut
                 </Button>
               ) : null
             ) : challenge.status === 'open' && challenge.start_date > today ? (
@@ -209,7 +209,7 @@ export default function ChallengeDetailView({
             }
             actionLabel={
               isOpenWindow && viewer?.role === 'member'
-                ? 'Ikuti tantangan →'
+                ? 'Ikuti tantangan'
                 : undefined
             }
             actionHref={

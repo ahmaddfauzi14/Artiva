@@ -139,7 +139,7 @@ export default function CuratorWinners({
             size="sm"
             href={`/challenges/${challenge.challenge_id}`}
           >
-            Lihat halaman publik →
+            Lihat halaman publik
           </Button>
         </div>
 
@@ -171,7 +171,7 @@ export default function CuratorWinners({
         <EmptyState
           title="Belum ada karya peserta aktif"
           description="Tidak terdapat submission berstatus Terkirim dan karya Dipublikasikan untuk ditetapkan sebagai pemenang."
-          actionLabel="Lihat semua submission →"
+          actionLabel="Lihat semua submission"
           actionHref={`/curator/challenges/${challenge.challenge_id}/submissions`}
         />
       ) : (

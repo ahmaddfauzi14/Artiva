@@ -124,7 +124,7 @@ export default function ChallengeSubmitForm({
               ? `Hanya karya berstatus Dipublikasikan dengan kategori ${challenge.category.name} yang dapat didaftarkan ke tantangan ini. Unggah karya baru atau periksa status karyamu di halaman Karya saya.`
               : 'Hanya karya berstatus Dipublikasikan yang dapat didaftarkan ke tantangan ini. Unggah karya baru atau publikasikan karyamu di halaman Karya saya.'
           }
-          actionLabel="Unggah karya baru →"
+          actionLabel="Unggah karya baru"
           actionHref="/me/artworks/new"
         />
       ) : (
@@ -188,7 +188,7 @@ export default function ChallengeSubmitForm({
                       size="sm"
                       href="/me/submissions"
                     >
-                      Lihat submission saya →
+                      Lihat submission saya
                     </Button>
                     <Link
                       href="/me/artworks/new"
@@ -394,7 +394,7 @@ export default function ChallengeSubmitForm({
                         disabled={!selectedArtwork}
                         onClick={() => setConfirmOpen(true)}
                       >
-                        Ajukan karya terpilih →
+                        Ajukan karya terpilih
                       </Button>
                     </div>
                   </div>

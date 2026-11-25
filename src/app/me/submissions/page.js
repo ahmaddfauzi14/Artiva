@@ -28,7 +28,7 @@ export default async function MemberSubmissionsPage() {
             variant="secondary"
             href="/me/submissions/challenges?status=open"
           >
-            Lihat tantangan terbuka →
+            Lihat tantangan terbuka
           </Button>
         }
       />

@@ -22,7 +22,7 @@ export default async function MemberArtworksPage() {
         eyebrow="PORTOFOLIO MEMBER"
         title="Karya saya"
         subtitle="Kelola karya, dari sketsa pertama sampai siap dipublikasikan."
-        actionLabel="Tambah karya →"
+        actionLabel="Tambah karya"
         actionHref="/me/artworks/new"
       />
       <MemberArtworks initialArtworks={myArtworks.items} />
