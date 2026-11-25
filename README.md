@@ -393,7 +393,9 @@ Artiva/
 <a id="usage"></a>
 ## Usage
 
-Alur penggunaan **ARTIVA** terbagi berdasarkan peran pengguna (*Role-Based Access Control*) yang divalidasi di sisi halaman (`src/lib/auth/page-guards.js`) dan API (`src/lib/auth/guards.js`):
+Alur penggunaan **ARTIVA** terbagi berdasarkan peran pengguna (*Role-Based Access Control*) yang divalidasi di sisi halaman (`src/lib/auth/page-guards.js`) dan API (`src/lib/auth/guards.js`).
+
+### 🔄 Alur Ekosistem Terpadu
 
 ```mermaid
 flowchart LR
@@ -415,6 +417,125 @@ flowchart LR
 
     AD["🛡️ Admin"] -->|"Moderasi Laporan, Kategori & Akun"| G
 ```
+
+### 🧭 Flowchart Detail per Role
+
+Klik setiap role di bawah ini untuk melihat alur penggunaan secara detail:
+
+<details open>
+<summary><b>🌐 1. Flowchart Public User (Pengunjung Tanpa Login)</b></summary>
+
+```mermaid
+flowchart TD
+    Start(["Mulai: Kunjungi Beranda (/)"]) --> Explore{"Pilih Jalur Eksplorasi"}
+
+    Explore -->|"Cari / Jelajahi Karya"| Gallery["Galeri Publik (/artworks)"]
+    Gallery --> FilterArt["Filter Kategori, Tag, & Pencarian Judul (pg_trgm)"]
+    FilterArt --> DetailArt["Detail Karya (/artworks/[id])"]
+    DetailArt --> Inspect["Inspeksi Karya: Zoom, Pan, Lightbox & Baca Komentar"]
+    DetailArt --> CreatorProf["Kunjungi Profil Kreator (/creators/[username])"]
+
+    Explore -->|"Jelajahi Kompetisi"| Challenges["Daftar Tantangan (/challenges)"]
+    Challenges --> FilterCh["Filter Status: Open / Closed / Announced"]
+    FilterCh --> DetailCh["Detail Tantangan (/challenges/[id])"]
+    DetailCh --> ViewEntries["Lihat Karya Peserta & Winner Podium"]
+
+    Explore -->|"Ingin Berinteraksi / Berpartisipasi"| AuthChoice{"Sudah Punya Akun?"}
+    AuthChoice -->|"Sudah"| Login["Masuk (/login)"]
+    AuthChoice -->|"Daftar Kreator"| RegMember["Daftar Member (/register/member)"]
+    AuthChoice -->|"Daftar Kurator"| RegCurator["Daftar Kurator (/register/curator)"]
+```
+
+</details>
+
+<details>
+<summary><b>🧑‍🎨 2. Flowchart Member (Kreator &amp; Peserta Komunitas)</b></summary>
+
+```mermaid
+flowchart TD
+    Auth(["Masuk (/login) atau Daftar (/register/member)"]) --> Active["Akun Member Active (/me)"]
+    Active --> Menu{"Pilih Aktivitas Member"}
+
+    Menu -->|"Kelola Portofolio"| MyArt["Karya Saya (/me/artworks)"]
+    MyArt --> Upload["Tambah Karya (/me/artworks/new): Upload Gambar, Kategori & Tag"]
+    Upload --> Vis{"Atur Visibilitas"}
+    Vis -->|"published"| Pub["Tampil di Galeri Publik & Siap Ikut Tantangan"]
+    Vis -->|"hidden"| Hid["Disembunyikan dari Publik"]
+    MyArt --> EditDel["Edit (/me/artworks/[id]/edit) atau Hapus Karya"]
+
+    Menu -->|"Interaksi Komunitas"| ArtPage["Buka Detail Karya (/artworks/[id])"]
+    ArtPage --> Interact["Like (PulseHeart), Simpan Favorit (/me/favorites), & Komentar"]
+    ArtPage --> Report["Laporkan Pelanggaran Karya (spam/plagiarism/inappropriate/copyright)"]
+
+    Menu -->|"Ikut Tantangan"| ChPage["Buka Tantangan Open (/challenges/[id])"]
+    ChPage --> SubmitForm["Ajukan Karya (/challenges/[id]/submit): Pilih Karya Published (Zero Re-Upload)"]
+    SubmitForm --> SubStatus["Status: submitted (Pantau di /me/submissions)"]
+    SubStatus --> WithdrawCheck{"Masih Open & Belum Announced?"}
+    WithdrawCheck -->|"Tarik Pengajuan"| Withdraw["Withdraw Submission (Dapat Diajukan Ulang)"]
+    WithdrawCheck -->|"Tunggu Hasil"| Announced["Pengumuman Pemenang di Winner Podium"]
+
+    Menu -->|"Atur Profil"| Prof["Profil & Akun (/me/profile & /me/profile/edit)"]
+```
+
+</details>
+
+<details>
+<summary><b>🏛️ 3. Flowchart Curator (Penyelenggara Tantangan)</b></summary>
+
+```mermaid
+flowchart TD
+    Reg(["Daftar Kurator (/register/curator) + Upload CV (PDF/DOC/DOCX)"]) --> Pending["Status Awal: pending (/curator/verification)"]
+    Pending --> Review{"Hasil Verifikasi Admin"}
+
+    Review -->|"approved"| Active["Akun Kurator Active (/curator)"]
+    Review -->|"rejected"| Rejected["Status: rejected + Catatan Penolakan Admin"]
+    Rejected --> Choice{"Tindakan Calon Kurator"}
+    Choice -->|"Banding (Maks. 3x)"| Appeal["Perbarui Profil, Upload CV Baru & Kirim Banding"]
+    Appeal --> Pending
+    Choice -->|"Batalkan Pendaftaran"| DeleteAcc["Hapus Akun Permanen"]
+
+    Active --> CMenu{"Aktivitas Kurator Aktif"}
+    CMenu -->|"Profil"| CProf["Kelola Profil Kurator (/curator/profile)"]
+    CMenu -->|"Tantangan"| CList["Kelola Tantangan (/curator/challenges)"]
+
+    CList --> NewCh["Buat Tantangan (/curator/challenges/new) + Banner -> Status: draft"]
+    NewCh --> Publish["Publikasikan Tantangan -> Status: open"]
+    Publish --> MonitorSub["Tinjau Karya Peserta (/curator/challenges/[id]/submissions)"]
+    MonitorSub --> Deadline{"Melewati end_date (APP_TIMEZONE)?"}
+    Deadline -->|"Otomatis oleh Server"| Closed["Status: closed (Siap Penjurian)"]
+    Closed --> PickWinners["Tetapkan 1–3 Pemenang Unik (/curator/challenges/[id]/winners)"]
+    PickWinners --> Final["Status: announced -> Tampil di Winner Podium"]
+```
+
+</details>
+
+<details>
+<summary><b>🛡️ 4. Flowchart Admin (Tata Kelola &amp; Moderasi)</b></summary>
+
+```mermaid
+flowchart TD
+    AdminLogin(["Login Akun Admin (/login)"]) --> Dash["Dashboard Admin (/dashboard/admin): Bento Stats & Activity Queue"]
+    Dash --> AMenu{"Pilih Modul Tata Kelola"}
+
+    AMenu -->|"Verifikasi Kurator"| CurList["Daftar Pengajuan (/dashboard/admin/curators)"]
+    CurList --> CurDetail["Detail Pengajuan (/dashboard/admin/curators/[id]): Tinjau Profil, Banding & Unduh CV"]
+    CurDetail --> CurDec{"Keputusan Admin"}
+    CurDec -->|"Approve"| ApproveCur["Setujui -> Akun Kurator Menjadi active"]
+    CurDec -->|"Reject + Catatan"| RejectCur["Tolak -> Calon Kurator Dapat Banding (Maks. 3x)"]
+
+    AMenu -->|"Moderasi Laporan"| RepList["Daftar Laporan (/dashboard/admin/reports)"]
+    RepList --> RepDetail["Detail Laporan (/dashboard/admin/reports/[id])"]
+    RepDetail --> RepDec{"Keputusan Laporan"}
+    RepDec -->|"Resolve + Catatan"| ResolveRep["Tindak Karya (hidden / removed) -> Status: resolved"]
+    RepDec -->|"Dismiss + Catatan"| DismissRep["Tolak Laporan -> Status: dismissed"]
+
+    AMenu -->|"Manajemen Pengguna"| UserList["Daftar Pengguna (/dashboard/admin/users)"]
+    UserList --> UserDetail["Detail Pengguna (/dashboard/admin/users/[id]): Suspend / Aktifkan / Hapus Akun"]
+
+    AMenu -->|"Manajemen Kategori"| CatPage["Kategori Karya (/dashboard/admin/categories): Tambah, Edit, Aktif/Nonaktifkan"]
+```
+
+</details>
 
 ### Matriks Hak Akses Pengguna
 
