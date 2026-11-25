@@ -186,7 +186,7 @@ Klik setiap modul di bawah ini untuk menjelajahi fungsionalitas ARTIVA secara in
 - **Tools**: Node.js `v20+`, npm, ESLint `^9` (`eslint-config-next`), Local Filesystem Storage (`storage/uploads/`) dengan verifikasi *magic-bytes*, Git & GitHub
 
 <details>
-<summary><b>🗄️ Klik untuk melihat rincian skema &amp; diagram ERD 14 tabel PostgreSQL (<code>db/migrations/001_init.sql</code>)</b></summary>
+<summary><b>🗄️ Klik untuk melihat rincian skema &amp; diagram ERD 14 tabel PostgreSQL (<code>src/db/migrations/001_init.sql</code>)</b></summary>
 
 | Domain | Tabel | Fungsi Utama |
 | :--- | :--- | :--- |
@@ -450,9 +450,6 @@ Struktur direktori berikut telah disesuaikan dengan susunan terbaru project **AR
 
 ```text
 Artiva/
-├── db/
-│   └── migrations/
-│       └── 001_init.sql                # Skema 14 tabel PostgreSQL, 8 ENUM, & indeks pg_trgm
 ├── public/
 │   ├── images/
 │   │   └── artiva-logo.png             # Logo & ikon aplikasi ARTIVA
@@ -513,6 +510,9 @@ Artiva/
 │   │   │   └── member/                 # ArtworkEditorForm, MemberArtworks, MemberSubmissions, ProfileOverview, ProfileSettings
 │   │   ├── layout/                     # AccountNavPills, ArtivaLogo, AuthShell, DashboardShell, Footer, LegalPageLayout, Navbar, PageHeader, PublicShell, SectionHeader, Sidebar
 │   │   └── ui/                         # Alert, Avatar, Button, Chip, ConfirmModal, DataTable, DocumentUploader, EmptyState, FormField, ImageUploader, Pagination, SearchBar, Select, SidebarPrimitive, Skeleton, StatusBadge, Toast
+│   ├── db/
+│   │   └── migrations/
+│   │       └── 001_init.sql            # Skema 14 tabel PostgreSQL, 8 ENUM, & indeks pg_trgm
 │   └── lib/
 │       ├── auth/                       # guards.js, page-guards.js, password.js, session.js
 │       ├── repositories/               # Query SQL berparameter (admin, artworks, categories, challenges, curator-challenges, interactions, reports, submissions, users, verifications)
@@ -795,7 +795,7 @@ Seluruh 30 akun di bawah berstatus `active` (`role: member`). Dapat login normal
 | `npm run build` | Membangun production build |
 | `npm run start` | Menjalankan production server hasil build |
 | `npm run lint` | Menjalankan pemeriksaan kode dengan ESLint |
-| `node scripts/migrate.js` | Menerapkan migrasi skema PostgreSQL dari `db/migrations/` |
+| `node scripts/migrate.js` | Menerapkan migrasi skema PostgreSQL dari `src/db/migrations/` |
 | `node scripts/seed.js` | Mengisi 6 kategori awal dan akun Admin default secara idempoten |
 | `node scripts/seed-dummy.js` | Mengisi dataset demo lengkap (karya, kreator, kurator, tantangan, CV, &amp; laporan) |
 

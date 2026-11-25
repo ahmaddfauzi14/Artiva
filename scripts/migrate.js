@@ -21,7 +21,7 @@ async function runMigrations() {
   }
 
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  const migrationsDir = path.resolve(process.cwd(), 'db/migrations');
+  const migrationsDir = path.resolve(process.cwd(), 'src/db/migrations');
 
   try {
     await pool.query(`
