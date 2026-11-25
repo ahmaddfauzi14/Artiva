@@ -205,7 +205,10 @@ export default async function ChallengeDetailPage({ params }) {
             eyebrow="PEMENANG RESMI"
             title="Karya yang mencuri perhatian."
           />
-          <WinnerPodium winners={winners} />
+          <WinnerPodium
+            winners={winners}
+            artworkHrefPrefix={`/challenges/${challenge.challenge_id}/artworks`}
+          />
         </section>
       ) : null}
 
@@ -242,6 +245,7 @@ export default async function ChallengeDetailPage({ params }) {
                 key={sub.submission_id}
                 artwork={sub.artwork}
                 index={idx}
+                href={`/challenges/${challenge.challenge_id}/artworks/${sub.artwork.artwork_id}`}
               />
             ))}
           </div>

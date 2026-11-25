@@ -147,7 +147,11 @@ export default function CuratorWinners({
           Pemenang tantangan ini sudah diumumkan secara resmi dan tidak dapat diubah kembali.
         </Alert>
 
-        <WinnerPodium winners={winners} showModerationWarning />
+        <WinnerPodium
+          winners={winners}
+          showModerationWarning
+          artworkHrefPrefix={`/curator/challenges/${challenge.challenge_id}/winners`}
+        />
       </div>
     );
   }

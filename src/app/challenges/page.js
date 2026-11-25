@@ -157,7 +157,10 @@ export default async function ChallengesPage({ searchParams }) {
             eyebrow="APRESIASI UNTUK KREATIVITAS"
             title="Karya yang mencuri perhatian."
           />
-          <WinnerPodium winners={latestWinnersData.winners} />
+          <WinnerPodium
+            winners={latestWinnersData.winners}
+            artworkHrefPrefix="/challenges/artworks"
+          />
         </section>
       ) : null}
 

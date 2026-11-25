@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Alert from '@/components/ui/Alert';
 import Avatar from '@/components/ui/Avatar';
@@ -28,6 +29,8 @@ export default function ArtworkDetail({
   canInteract = false,
   canReport = false,
 }) {
+  const pathname = usePathname();
+  const router = useRouter();
   const { showToast } = useToast();
 
   const [liked, setLiked] = useState(Boolean(initialArtwork.viewer?.liked));
@@ -140,6 +143,7 @@ export default function ArtworkDetail({
       );
       setLiked(res.data.liked);
       setLikeCount(res.data.like_count);
+      router.refresh();
     } catch (err) {
       showToast({ tone: 'error', message: err.message });
     } finally {
@@ -164,6 +168,7 @@ export default function ArtworkDetail({
           ? 'Karya disimpan ke daftar favoritmu.'
           : 'Karya dihapus dari daftar favorit.',
       });
+      router.refresh();
     } catch (err) {
       showToast({ tone: 'error', message: err.message });
     } finally {
@@ -381,7 +386,7 @@ export default function ArtworkDetail({
                     pillColor="#162950"
                     textColor="#F7F3E6"
                     idleText="Suka"
-                    likedText="Disukai"
+                    likedText="Suka"
                     label={liked ? 'Batal sukai karya' : 'Sukai karya'}
                   />
                   <PulseHeart
@@ -396,7 +401,7 @@ export default function ArtworkDetail({
                     pillColor="#162950"
                     textColor="#F7F3E6"
                     idleText="Favorit"
-                    likedText="Disimpan"
+                    likedText="Favorit"
                     label={favorited ? 'Hapus dari simpanan' : 'Simpan karya'}
                   />
                 </div>
@@ -426,7 +431,7 @@ export default function ArtworkDetail({
                     <span>
                       Ingin menyukai, menyimpan favorit, atau memberi komentar?{' '}
                       <Link
-                        href={`/login?next=/artworks/${initialArtwork.artwork_id}`}
+                        href={`/login?next=${encodeURIComponent(pathname || `/artworks/${initialArtwork.artwork_id}`)}`}
                         className="font-semibold underline"
                       >
                         Masuk sebagai Member →

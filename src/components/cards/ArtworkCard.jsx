@@ -58,6 +58,7 @@ export default function ArtworkCard({
   artwork,
   index = 0,
   mode = 'public',
+  href,
   aspectClass,
   masonry = false,
   onToggleStatus,
@@ -73,9 +74,10 @@ export default function ArtworkCard({
 
   const isModerated =
     mode === 'public' && artwork.status && artwork.status !== 'published';
+  const detailHref = href || `/artworks/${artwork.artwork_id}`;
   const editHref = `/me/artworks/${artwork.artwork_id}/edit`;
   const publicOrEditHref =
-    artwork.status === 'published' ? `/artworks/${artwork.artwork_id}` : editHref;
+    artwork.status === 'published' ? detailHref : editHref;
 
   if (mode === 'horizontal') {
     return (
@@ -227,7 +229,7 @@ export default function ArtworkCard({
 
   return (
     <Link
-      href={`/artworks/${artwork.artwork_id}`}
+      href={detailHref}
       onPointerMove={updateSpotlightPosition}
       style={{ '--tilt': `${tiltDeg}deg` }}
       className={`spotlight-surface group block rounded-[24px] border border-line bg-surface p-3 ${tintClass} ${

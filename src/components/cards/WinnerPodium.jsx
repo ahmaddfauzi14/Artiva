@@ -116,6 +116,7 @@ function LaurelWreath({ rank, compact = false, className = '' }) {
 export default function WinnerPodium({
   winners = [],
   showModerationWarning = false,
+  artworkHrefPrefix = '/artworks',
   className = '',
 }) {
   const { isMotionActive } = useMotion();
@@ -174,7 +175,7 @@ export default function WinnerPodium({
             const isLinked =
               !winner.is_moderated && Boolean(winner.artwork?.artwork_id);
             const artworkHref = isLinked
-              ? `/artworks/${winner.artwork.artwork_id}`
+              ? `${artworkHrefPrefix}/${winner.artwork.artwork_id}`
               : null;
             const artworkTitle = winner.artwork?.title || 'Karya pemenang';
             const creatorName = winner.creator?.display_name || 'Kreator ARTIVA';

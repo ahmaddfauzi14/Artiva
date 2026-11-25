@@ -46,7 +46,12 @@ export default async function MemberFavoritesPage() {
           }`}
         >
           {favorites.map((art, idx) => (
-            <ArtworkCard key={art.artwork_id} artwork={art} index={idx} />
+            <ArtworkCard
+              key={art.artwork_id}
+              artwork={art}
+              index={idx}
+              href={`/me/favorites/${art.artwork_id}`}
+            />
           ))}
         </div>
       )}
