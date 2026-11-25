@@ -192,7 +192,7 @@ Klik setiap modul di bawah ini untuk menjelajahi fungsionalitas ARTIVA secara in
 - **Tools**: Node.js `v20+`, npm, ESLint `^9` (`eslint-config-next`), Local Filesystem Storage (`storage/uploads/`) dengan verifikasi *magic-bytes*, Git & GitHub
 
 <details>
-<summary><b>🗄️ Klik untuk melihat rincian skema 14 tabel PostgreSQL (<code>db/migrations/001_init.sql</code>)</b></summary>
+<summary><b>🗄️ Klik untuk melihat rincian skema &amp; diagram ERD 14 tabel PostgreSQL (<code>db/migrations/001_init.sql</code>)</b></summary>
 
 | Domain | Tabel | Fungsi Utama |
 | :--- | :--- | :--- |
@@ -200,6 +200,161 @@ Klik setiap modul di bawah ini untuk menjelajahi fungsionalitas ARTIVA secara in
 | **Karya &amp; Taksonomi** | `categories`, `artworks`, `tags`, `artwork_tags` | Katalog kategori, metadata karya &amp; `image_path`, status publikasi (`published`, `hidden`, `removed`), serta relasi *many-to-many* tag karya. |
 | **Komunitas &amp; Moderasi** | `likes`, `favorites`, `comments`, `reports` | Apresiasi like/favorit (composite PK), komentar (`visible`/`deleted`), dan pelaporan pelanggaran (`pending`, `resolved`, `dismissed`). |
 | **Tantangan &amp; Pemenang** | `challenges`, `submissions`, `winners` | Tantangan Kurator (`draft`, `open`, `closed`, `announced`), pengajuan karya unik per tantangan (`submitted`/`withdrawn`), dan penetapan peringkat 1–3 unik. |
+
+```mermaid
+erDiagram
+    users ||--o| profiles : "memiliki (user_id)"
+    users ||--o{ curator_verifications : "mengajukan (user_id)"
+    users |o--o{ curator_verifications : "meninjau (reviewed_by)"
+    users ||--o{ artworks : "mengunggah (user_id)"
+    users ||--o{ likes : "menyukai (user_id)"
+    users ||--o{ favorites : "menyimpan (user_id)"
+    users ||--o{ comments : "menulis (user_id)"
+    users ||--o{ challenges : "membuat (curator_id)"
+    users ||--o{ reports : "melaporkan (reporter_id)"
+    users |o--o{ reports : "menangani (handled_by)"
+
+    categories ||--o{ artworks : "mengkategorikan (category_id)"
+    categories |o--o{ challenges : "opsional (category_id)"
+
+    artworks ||--o{ artwork_tags : "memiliki (artwork_id)"
+    tags ||--o{ artwork_tags : "digunakan (tag_id)"
+    artworks ||--o{ likes : "disukai (artwork_id)"
+    artworks ||--o{ favorites : "difavoritkan (artwork_id)"
+    artworks ||--o{ comments : "dikomentari (artwork_id)"
+    artworks ||--o{ submissions : "diajukan (artwork_id)"
+    artworks ||--o{ reports : "dilaporkan (artwork_id)"
+
+    challenges ||--o{ submissions : "menerima (challenge_id)"
+    challenges ||--o{ winners : "menetapkan (challenge_id)"
+    submissions ||--o| winners : "menang (submission_id)"
+
+    users {
+        serial user_id PK
+        varchar username UK
+        varchar email UK
+        varchar password_hash
+        user_role role
+        user_status status
+        timestamptz created_at
+    }
+
+    profiles {
+        serial profile_id PK
+        int user_id FK,UK
+        varchar display_name
+        text bio
+        varchar avatar_path
+        varchar website
+    }
+
+    curator_verifications {
+        serial verification_id PK
+        int user_id FK
+        int reviewed_by FK
+        verification_status status
+        text note
+        text appeal_note
+        varchar cv_path
+        timestamptz submitted_at
+        timestamptz reviewed_at
+    }
+
+    categories {
+        serial category_id PK
+        varchar name UK
+        varchar slug UK
+        text description
+        boolean is_active
+    }
+
+    artworks {
+        serial artwork_id PK
+        int user_id FK
+        int category_id FK
+        varchar title
+        text description
+        varchar image_path
+        artwork_status status
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    tags {
+        serial tag_id PK
+        varchar name UK
+    }
+
+    artwork_tags {
+        int artwork_id PK,FK
+        int tag_id PK,FK
+    }
+
+    likes {
+        int user_id PK,FK
+        int artwork_id PK,FK
+        timestamptz created_at
+    }
+
+    favorites {
+        int user_id PK,FK
+        int artwork_id PK,FK
+        timestamptz created_at
+    }
+
+    comments {
+        serial comment_id PK
+        int artwork_id FK
+        int user_id FK
+        text content
+        comment_status status
+        timestamptz created_at
+    }
+
+    challenges {
+        serial challenge_id PK
+        int curator_id FK
+        int category_id FK
+        varchar title
+        text description
+        text rules
+        text prize
+        varchar banner_path
+        date start_date
+        date end_date
+        challenge_status status
+        timestamptz created_at
+    }
+
+    submissions {
+        serial submission_id PK
+        int challenge_id FK
+        int artwork_id FK
+        submission_status status
+        timestamptz submitted_at
+        timestamptz withdrawn_at
+    }
+
+    winners {
+        serial winner_id PK
+        int challenge_id FK
+        int submission_id FK,UK
+        smallint rank
+        timestamptz announced_at
+    }
+
+    reports {
+        serial report_id PK
+        int reporter_id FK
+        int artwork_id FK
+        int handled_by FK
+        varchar reason
+        text description
+        report_status status
+        text resolution_note
+        timestamptz created_at
+    }
+```
 
 </details>
 
