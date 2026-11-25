@@ -152,17 +152,9 @@ Klik setiap modul di bawah ini untuk menjelajahi fungsionalitas ARTIVA secara in
 
 <div align="center">
 
-### 🏠 Beranda — Hero Editorial & Galeri Inspirasi
+<img src="docs/screenshots/preview.gif" alt="ARTIVA Preview — Beranda Hero, Galeri Karya CircularGallery, dan Tantangan Kreatif Terkurasi" width="100%" />
 
-<img src="docs/screenshots/01-home-hero.jpg" alt="ARTIVA Home — Hero editorial dengan sorotan karya terbaru, pilar ekosistem, dan galeri inspirasi" width="100%" />
-
-### 🖼️ Galeri Karya — CircularGallery & Filter Kategori
-
-<img src="docs/screenshots/02-artwork-gallery.jpg" alt="ARTIVA Galeri — Eksplorasi karya dengan CircularGallery 3D, pencarian judul, dan filter kategori" width="100%" />
-
-### 🏆 Tantangan Kreatif — Kompetisi Terkurasi
-
-<img src="docs/screenshots/03-challenges.jpg" alt="ARTIVA Tantangan — Daftar tantangan terkurasi dengan banner, detail kurator, dan periode kompetisi" width="100%" />
+*Beranda Hero · Galeri & CircularGallery · Tantangan Terkurasi*
 
 </div>
 
