@@ -36,10 +36,12 @@ CREATE TABLE IF NOT EXISTS curator_verifications (
   status          verification_status NOT NULL DEFAULT 'pending',
   note            TEXT,
   appeal_note     TEXT,
+  cv_path         VARCHAR(255),
   submitted_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
   reviewed_at     TIMESTAMPTZ
 );
 ALTER TABLE curator_verifications ADD COLUMN IF NOT EXISTS appeal_note TEXT;
+ALTER TABLE curator_verifications ADD COLUMN IF NOT EXISTS cv_path VARCHAR(255);
 CREATE UNIQUE INDEX IF NOT EXISTS uq_cv_one_pending ON curator_verifications(user_id) WHERE status = 'pending';
 CREATE INDEX IF NOT EXISTS idx_cv_user_submitted ON curator_verifications(user_id, submitted_at DESC, verification_id DESC);
 

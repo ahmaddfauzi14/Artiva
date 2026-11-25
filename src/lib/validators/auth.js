@@ -31,6 +31,16 @@ const websiteField = z
     'Tautan situs harus diawali http:// atau https://.'
   );
 
+export const requiredWebsiteField = z
+  .string({ error: 'Tautan portofolio wajib diisi.' })
+  .trim()
+  .min(1, 'Tautan portofolio wajib diisi.')
+  .max(255, 'Tautan portofolio maksimal 255 karakter.')
+  .refine(
+    (val) => /^https?:\/\/.+/i.test(val),
+    'Tautan portofolio harus diawali http:// atau https://.'
+  );
+
 export const registerMemberSchema = z.object({
   username: usernameField,
   email: emailField,
@@ -57,7 +67,7 @@ export const registerCuratorSchema = z.object({
     .trim()
     .min(10, 'Bio minimal 10 karakter agar Admin dapat meninjau pengajuanmu.')
     .max(1000, 'Bio maksimal 1000 karakter.'),
-  website: websiteField,
+  website: requiredWebsiteField,
 });
 
 export const loginSchema = z.object({

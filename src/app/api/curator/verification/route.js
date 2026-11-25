@@ -24,9 +24,28 @@ export const POST = withHandler(async (request) => {
     windowMs: 60_000,
   });
 
-  const body = await request.json();
-  const input = submitCuratorAppealSchema.parse(body);
-  const verification = await submitCuratorAppeal(user.user_id, input);
+  const contentType = request.headers.get('content-type') || '';
+  let raw;
+  let cvFile = null;
+
+  if (contentType.includes('multipart/form-data')) {
+    const formData = await request.formData();
+    raw = {
+      display_name: formData.get('display_name') ?? '',
+      bio: formData.get('bio') ?? '',
+      website: formData.get('website') ?? '',
+      appeal_note: formData.get('appeal_note') ?? '',
+    };
+    const fileEntry = formData.get('cv');
+    if (fileEntry && typeof fileEntry === 'object' && fileEntry.size > 0) {
+      cvFile = fileEntry;
+    }
+  } else {
+    raw = await request.json();
+  }
+
+  const input = submitCuratorAppealSchema.parse(raw);
+  const verification = await submitCuratorAppeal(user.user_id, input, cvFile);
 
   return ok({ verification }, undefined, 201);
 });

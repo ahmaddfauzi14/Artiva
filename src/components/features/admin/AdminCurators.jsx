@@ -71,6 +71,7 @@ export default function AdminCurators({
           </div>
           <p className="text-xs text-ink-mute truncate">
             @{row.username} · {row.email}
+            {row.has_cv ? ` · CV ${String(row.cv_ext || 'DOC').toUpperCase()}` : ''}
           </p>
         </div>
       ),

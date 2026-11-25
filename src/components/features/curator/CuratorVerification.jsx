@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
+import DocumentUploader from '@/components/ui/DocumentUploader';
 import FormField from '@/components/ui/FormField';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { useToast } from '@/components/ui/Toast';
@@ -26,6 +27,7 @@ export default function CuratorVerification({ verification: initialVerification 
   const [submittingAppeal, setSubmittingAppeal] = useState(false);
   const [appealError, setAppealError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
+  const [appealCvFile, setAppealCvFile] = useState(null);
   const [appealForm, setAppealForm] = useState({
     display_name: initialVerification?.display_name || '',
     bio: initialVerification?.bio || '',
@@ -74,6 +76,7 @@ export default function CuratorVerification({ verification: initialVerification 
       website: verification?.website || '',
       appeal_note: '',
     });
+    setAppealCvFile(null);
     setAppealError('');
     setFieldErrors({});
     setAppealOpen(true);
@@ -108,9 +111,14 @@ export default function CuratorVerification({ verification: initialVerification 
       nextFieldErrors.bio =
         'Bio minimal 10 karakter agar Admin dapat meninjau pengajuanmu.';
     }
-    if (website && !/^https?:\/\/.+/i.test(website)) {
+    if (!website) {
+      nextFieldErrors.website = 'Tautan portofolio wajib diisi.';
+    } else if (!/^https?:\/\/.+/i.test(website)) {
       nextFieldErrors.website =
-        'Tautan situs harus diawali http:// atau https://.';
+        'Tautan portofolio harus diawali http:// atau https://.';
+    }
+    if (!verification?.has_cv && !appealCvFile) {
+      nextFieldErrors.cv = 'File CV (PDF atau Word) wajib diunggah.';
     }
     if (appealNote.length < 10) {
       nextFieldErrors.appeal_note =
@@ -126,14 +134,18 @@ export default function CuratorVerification({ verification: initialVerification 
     setFieldErrors({});
     setSubmittingAppeal(true);
     try {
+      const fd = new FormData();
+      fd.set('display_name', displayName);
+      fd.set('bio', bio);
+      fd.set('website', website);
+      fd.set('appeal_note', appealNote);
+      if (appealCvFile) {
+        fd.set('cv', appealCvFile);
+      }
+
       const res = await apiFetch('/api/curator/verification', {
         method: 'POST',
-        body: {
-          display_name: displayName,
-          bio,
-          website,
-          appeal_note: appealNote,
-        },
+        body: fd,
       });
       if (res.data?.verification) {
         setVerification(res.data.verification);
@@ -381,14 +393,44 @@ export default function CuratorVerification({ verification: initialVerification 
             />
 
             <FormField
-              label="Situs web / portofolio (opsional)"
+              label="Tautan portofolio / situs web"
               name="website"
               type="url"
               value={appealForm.website}
               onChange={handleAppealChange('website')}
-              placeholder="https://example.com"
-              helperText="Gunakan tautan yang diawali http:// atau https:// agar dapat diverifikasi Admin."
+              placeholder="https://portofolio-kamu.com"
+              helperText="Wajib diawali http:// atau https:// agar dapat diverifikasi Admin."
+              inputProps={{
+                autoCorrect: 'off',
+                autoCapitalize: 'none',
+                spellCheck: false,
+              }}
               error={fieldErrors.website}
+              required
+            />
+
+            <DocumentUploader
+              label={
+                verification?.has_cv
+                  ? 'Perbarui dokumen CV (Word atau PDF, opsional)'
+                  : 'Dokumen CV Kurator (Word atau PDF)'
+              }
+              name="cv"
+              file={appealCvFile}
+              existingUrl={verification?.cv_url || null}
+              existingExt={verification?.cv_ext || null}
+              required={!verification?.has_cv}
+              onFileSelect={(file) => {
+                setAppealCvFile(file);
+                if (fieldErrors.cv) {
+                  setFieldErrors((prev) => {
+                    const next = { ...prev };
+                    delete next.cv;
+                    return next;
+                  });
+                }
+              }}
+              error={fieldErrors.cv}
             />
 
             <FormField
@@ -473,7 +515,7 @@ export default function CuratorVerification({ verification: initialVerification 
               {safeWebsite ? (
                 <div>
                   <p className="text-xs font-semibold uppercase text-ink-mute">
-                    Situs Web / Portofolio
+                    Tautan Portofolio / Situs Web
                   </p>
                   <a
                     href={safeWebsite}
@@ -483,6 +525,34 @@ export default function CuratorVerification({ verification: initialVerification 
                   >
                     {safeWebsite}
                   </a>
+                </div>
+              ) : null}
+              {verification.has_cv && verification.cv_url ? (
+                <div>
+                  <p className="text-xs font-semibold uppercase text-ink-mute">
+                    Dokumen CV
+                  </p>
+                  <div className="mt-1 flex flex-wrap items-center gap-2.5">
+                    <span className="inline-flex rounded-full bg-brand-50 px-2.5 py-0.5 text-[0.6875rem] font-semibold uppercase text-brand-700">
+                      {verification.cv_ext || 'CV'}
+                    </span>
+                    {verification.cv_ext === 'pdf' ? (
+                      <a
+                        href={verification.cv_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-brand-700 hover:underline"
+                      >
+                        Lihat CV →
+                      </a>
+                    ) : null}
+                    <a
+                      href={`${verification.cv_url}?download=1`}
+                      className="font-semibold text-ink-soft hover:text-brand-700 hover:underline"
+                    >
+                      Unduh CV
+                    </a>
+                  </div>
                 </div>
               ) : null}
             </div>

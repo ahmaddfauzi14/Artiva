@@ -1,16 +1,23 @@
 import { withTransaction } from '@/lib/server/db';
 import { AppError } from '@/lib/server/http';
-import { deleteUploadedFile } from '@/lib/server/uploads';
+import {
+  deleteUploadedFile,
+  saveValidatedDocument,
+  validateUploadedDocument,
+} from '@/lib/server/uploads';
 import { getErrorMessage } from '@/lib/shared/error-messages';
 import { MAX_CURATOR_APPEALS } from '@/lib/validators/verifications';
 import { updateProfileRow } from '@/lib/repositories/users';
 import {
   activateCuratorUser,
   createCuratorAppealRow,
+  findAdminCvRecord,
   findAdminVerificationById,
+  findCuratorCvRecord,
   findLatestVerificationByUserId,
   findVerificationHistoryByUserId,
   hardDeleteRejectedCuratorRow,
+  listCuratorCvPathsByUserId,
   lockCuratorUserRow,
   lockVerificationRow,
   markVerificationApproved,
@@ -25,69 +32,122 @@ export async function getCuratorVerificationDetail(userId) {
   return verification;
 }
 
-export async function submitCuratorAppeal(userId, input) {
-  return withTransaction(async (client) => {
-    const userRow = await lockCuratorUserRow(userId, client);
-    if (!userRow || userRow.role !== 'curator') {
-      throw new AppError(404, 'NOT_FOUND', 'Akun Kurator tidak ditemukan.');
-    }
-    if (userRow.status !== 'pending') {
-      throw new AppError(
-        409,
-        'INVALID_STATE',
-        'Aju banding hanya dapat dilakukan oleh akun Kurator yang belum aktif.'
+export async function getCuratorVerificationCv(userId, verificationId = null) {
+  const record = await findCuratorCvRecord(userId, verificationId);
+  if (!record || !record.cv_path) {
+    throw new AppError(404, 'NOT_FOUND', 'File CV tidak ditemukan.');
+  }
+  return record;
+}
+
+export async function getAdminVerificationCv(verificationId) {
+  const record = await findAdminCvRecord(verificationId);
+  if (!record || !record.cv_path) {
+    throw new AppError(404, 'NOT_FOUND', 'File CV tidak ditemukan.');
+  }
+  return record;
+}
+
+export async function submitCuratorAppeal(userId, input, cvFile = null) {
+  const hasNewCv = Boolean(
+    cvFile && typeof cvFile.arrayBuffer === 'function' && cvFile.size > 0
+  );
+  const validatedCv = hasNewCv
+    ? await validateUploadedDocument(cvFile, 'cv')
+    : null;
+  let savedCvPath = null;
+
+  try {
+    return await withTransaction(async (client) => {
+      const userRow = await lockCuratorUserRow(userId, client);
+      if (!userRow || userRow.role !== 'curator') {
+        throw new AppError(404, 'NOT_FOUND', 'Akun Kurator tidak ditemukan.');
+      }
+      if (userRow.status !== 'pending') {
+        throw new AppError(
+          409,
+          'INVALID_STATE',
+          'Aju banding hanya dapat dilakukan oleh akun Kurator yang belum aktif.'
+        );
+      }
+
+      const history = await findVerificationHistoryByUserId(userId, client);
+      if (history.length === 0) {
+        throw new AppError(404, 'NOT_FOUND', 'Data verifikasi tidak ditemukan.');
+      }
+
+      const latest = history[history.length - 1];
+      if (latest.status === 'pending') {
+        throw new AppError(
+          409,
+          'INVALID_STATE',
+          'Pengajuan verifikasi atau banding kamu masih dalam antrean peninjauan Admin.'
+        );
+      }
+      if (latest.status !== 'rejected') {
+        throw new AppError(
+          409,
+          'INVALID_STATE',
+          'Aju banding hanya dapat dilakukan apabila pengajuan terakhir berstatus Ditolak.'
+        );
+      }
+
+      const appealsUsed = Math.max(0, history.length - 1);
+      if (appealsUsed >= MAX_CURATOR_APPEALS) {
+        throw new AppError(
+          409,
+          'APPEAL_LIMIT_REACHED',
+          getErrorMessage('APPEAL_LIMIT_REACHED')
+        );
+      }
+
+      let nextCvPath = null;
+      if (validatedCv) {
+        savedCvPath = await saveValidatedDocument(validatedCv, 'cvs');
+        nextCvPath = savedCvPath;
+      } else {
+        const prevCv = await findCuratorCvRecord(
+          userId,
+          latest.verification_id,
+          client
+        );
+        nextCvPath = prevCv?.cv_path || null;
+      }
+
+      if (!nextCvPath) {
+        throw new AppError(
+          400,
+          'INVALID_FILE',
+          'File CV (PDF atau Word) wajib diunggah untuk mengajukan banding.',
+          { cv: 'File CV (PDF atau Word) wajib diunggah.' }
+        );
+      }
+
+      await updateProfileRow(
+        userId,
+        {
+          displayName: input.display_name,
+          bio: input.bio,
+          website: input.website,
+          avatarPath: null,
+        },
+        client
       );
+
+      await createCuratorAppealRow(userId, input.appeal_note, nextCvPath, client);
+
+      return findLatestVerificationByUserId(userId, client);
+    });
+  } catch (err) {
+    if (savedCvPath) {
+      await deleteUploadedFile(savedCvPath);
     }
-
-    const history = await findVerificationHistoryByUserId(userId, client);
-    if (history.length === 0) {
-      throw new AppError(404, 'NOT_FOUND', 'Data verifikasi tidak ditemukan.');
-    }
-
-    const latest = history[history.length - 1];
-    if (latest.status === 'pending') {
-      throw new AppError(
-        409,
-        'INVALID_STATE',
-        'Pengajuan verifikasi atau banding kamu masih dalam antrean peninjauan Admin.'
-      );
-    }
-    if (latest.status !== 'rejected') {
-      throw new AppError(
-        409,
-        'INVALID_STATE',
-        'Aju banding hanya dapat dilakukan apabila pengajuan terakhir berstatus Ditolak.'
-      );
-    }
-
-    const appealsUsed = Math.max(0, history.length - 1);
-    if (appealsUsed >= MAX_CURATOR_APPEALS) {
-      throw new AppError(
-        409,
-        'APPEAL_LIMIT_REACHED',
-        getErrorMessage('APPEAL_LIMIT_REACHED')
-      );
-    }
-
-    await updateProfileRow(
-      userId,
-      {
-        displayName: input.display_name,
-        bio: input.bio,
-        website: input.website || null,
-        avatarPath: null,
-      },
-      client
-    );
-
-    await createCuratorAppealRow(userId, input.appeal_note, client);
-
-    return findLatestVerificationByUserId(userId, client);
-  });
+    throw err;
+  }
 }
 
 export async function deleteRejectedCuratorAccount(userId) {
-  let avatarToDelete = null;
+  let filesToDelete = [];
 
   const result = await withTransaction(async (client) => {
     await lockCuratorUserRow(userId, client);
@@ -103,7 +163,9 @@ export async function deleteRejectedCuratorAccount(userId) {
       );
     }
 
-    avatarToDelete = latest.avatar_path || null;
+    const cvPaths = await listCuratorCvPathsByUserId(userId, client);
+    filesToDelete = [latest.avatar_path, ...cvPaths].filter(Boolean);
+
     const deleted = await hardDeleteRejectedCuratorRow(userId, client);
     if (!deleted) {
       throw new AppError(409, 'INVALID_STATE', 'Akun tidak dapat dihapus.');
@@ -111,8 +173,8 @@ export async function deleteRejectedCuratorAccount(userId) {
     return { deleted_user_id: deleted.user_id };
   });
 
-  if (avatarToDelete) {
-    await deleteUploadedFile(avatarToDelete);
+  for (const filePath of new Set(filesToDelete)) {
+    await deleteUploadedFile(filePath);
   }
 
   return result;

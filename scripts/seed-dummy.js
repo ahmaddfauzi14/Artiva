@@ -425,6 +425,7 @@ const REAL_USERS = [
     verification: {
       status: 'approved',
       note: 'Disetujui sebagai Dewan Kurasi Arsip utama ARTIVA.',
+      cv_path: 'cvs/cv-kurator-galeri.pdf',
       submittedHoursAgo: 720,
       reviewedHoursAgo: 700,
     },
@@ -441,6 +442,7 @@ const REAL_USERS = [
     verification: {
       status: 'approved',
       note: 'Rekam jejak kurasi pameran seni rupa terverifikasi dengan lengkap.',
+      cv_path: 'cvs/cv-kurator-seni-rupa.pdf',
       submittedHoursAgo: 620,
       reviewedHoursAgo: 600,
     },
@@ -457,6 +459,7 @@ const REAL_USERS = [
     verification: {
       status: 'approved',
       note: 'Portofolio kurasi fotografi dokumenter dan katalog arsip memenuhi syarat.',
+      cv_path: 'cvs/cv-kurator-fotografi.pdf',
       submittedHoursAgo: 540,
       reviewedHoursAgo: 520,
     },
@@ -473,6 +476,7 @@ const REAL_USERS = [
     verification: {
       status: 'approved',
       note: 'Pengalaman kurasi desain produk digital dan komunitas 3D terbuka terverifikasi.',
+      cv_path: 'cvs/cv-kurator-digital.pdf',
       submittedHoursAgo: 480,
       reviewedHoursAgo: 460,
     },
@@ -490,6 +494,7 @@ const REAL_USERS = [
     verification: {
       status: 'pending',
       note: null,
+      cv_path: 'cvs/cv-rendra-baskara.pdf',
       submittedHoursAgo: 18,
       reviewedHoursAgo: null,
     },
@@ -506,6 +511,7 @@ const REAL_USERS = [
     verification: {
       status: 'pending',
       note: null,
+      cv_path: 'cvs/cv-larasati-dewi.pdf',
       submittedHoursAgo: 11,
       reviewedHoursAgo: null,
     },
@@ -524,6 +530,7 @@ const REAL_USERS = [
         status: 'rejected',
         note: 'Mohon lengkapi ringkasan pengalaman pameran dan sertakan tautan portofolio kurasi yang bisa ditinjau.',
         appeal_note: null,
+        cv_path: 'cvs/cv-dimas-pratama.pdf',
         submittedHoursAgo: 48,
         reviewedHoursAgo: 30,
       },
@@ -532,6 +539,7 @@ const REAL_USERS = [
         note: null,
         appeal_note:
           'Bio telah dilengkapi dengan rekam jejak 4 pameran kolektif media interaktif serta tautan portofolio kurasi aktif.',
+        cv_path: 'cvs/cv-dimas-pratama.pdf',
         submittedHoursAgo: 5,
         reviewedHoursAgo: null,
       },
@@ -546,12 +554,13 @@ const REAL_USERS = [
     display_name: 'Fajar Nugroho',
     bio: 'Tertarik menyelenggarakan lomba desain di ARTIVA.',
     avatar_path: 'avatars/toulouse-lautrec.jpg',
-    website: null,
+    website: 'https://artiva.local/portofolio/fajar',
     verifications: [
       {
         status: 'rejected',
         note: 'Portofolio kurasi belum menyertakan tautan rekam jejak pameran, publikasi, atau katalog yang dapat diverifikasi.',
         appeal_note: null,
+        cv_path: 'cvs/cv-fajar-nugroho.pdf',
         submittedHoursAgo: 96,
         reviewedHoursAgo: 72,
       },
@@ -565,12 +574,13 @@ const REAL_USERS = [
     display_name: 'Citra Pramesti',
     bio: 'Kolektor seni digital pemula yang ingin mencoba membuat kompetisi ilustrasi.',
     avatar_path: 'avatars/claude-monet.jpg',
-    website: null,
+    website: 'https://artiva.local/portofolio/citra',
     verifications: [
       {
         status: 'rejected',
         note: 'Profil dan bio pengajuan terlalu singkat dan belum mencantumkan bidang spesialisasi kurasi secara spesifik.',
         appeal_note: null,
+        cv_path: 'cvs/cv-citra-pramesti.pdf',
         submittedHoursAgo: 210,
         reviewedHoursAgo: 196,
       },
@@ -579,6 +589,7 @@ const REAL_USERS = [
         note: 'Banding ke-1 belum menyertakan tautan situs, katalog, atau bukti pengalaman penyelenggaraan kegiatan seni.',
         appeal_note:
           'Saya sudah memperjelas minat di bidang ilustrasi digital dan siap menyelenggarakan tantangan komunitas.',
+        cv_path: 'cvs/cv-citra-pramesti.pdf',
         submittedHoursAgo: 170,
         reviewedHoursAgo: 156,
       },
@@ -587,6 +598,7 @@ const REAL_USERS = [
         note: 'Banding ke-2 masih belum melampirkan referensi komunitas atau portofolio kurasi yang dapat diverifikasi.',
         appeal_note:
           'Saya berencana mengadakan tantangan bulanan kecil untuk ilustrator pemula dengan penilaian transparan.',
+        cv_path: 'cvs/cv-citra-pramesti.pdf',
         submittedHoursAgo: 130,
         reviewedHoursAgo: 118,
       },
@@ -595,6 +607,7 @@ const REAL_USERS = [
         note: 'Banding ke-3 belum memenuhi kriteria verifikasi kurator karena belum ada rekam jejak kurasi maupun tautan portofolio terverifikasi.',
         appeal_note:
           'Mohon dipertimbangkan kembali, saya berkomitmen mengikuti seluruh pedoman penyelenggaraan tantangan ARTIVA.',
+        cv_path: 'cvs/cv-citra-pramesti.pdf',
         submittedHoursAgo: 92,
         reviewedHoursAgo: 80,
       },
@@ -613,6 +626,7 @@ const REAL_USERS = [
     verification: {
       status: 'approved',
       note: 'Sempat disetujui sebelum ditangguhkan oleh Admin.',
+      cv_path: 'cvs/cv-bagas-santoso.pdf',
       submittedHoursAgo: 400,
       reviewedHoursAgo: 380,
     },
@@ -1609,6 +1623,19 @@ async function runDummySeed() {
     if (!fs.existsSync(filePath)) {
       throw new Error(`File avatar tidak ditemukan: ${filePath}`);
     }
+    const verifs = Array.isArray(u.verifications)
+      ? u.verifications
+      : u.verification
+        ? [u.verification]
+        : [];
+    for (const v of verifs) {
+      if (v.cv_path) {
+        const cvFull = path.resolve(uploadRoot, v.cv_path);
+        if (!fs.existsSync(cvFull)) {
+          throw new Error(`File CV kurator tidak ditemukan: ${cvFull}`);
+        }
+      }
+    }
   }
 
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -1713,6 +1740,7 @@ async function runDummySeed() {
               : null;
           const reviewer = v.status === 'pending' ? null : adminId;
           const appealNote = v.appeal_note ?? null;
+          const cvPath = v.cv_path ?? null;
 
           if (canUpdateInPlace) {
             await client.query(
@@ -1721,14 +1749,16 @@ async function runDummySeed() {
                    status = $2::verification_status,
                    note = $3,
                    appeal_note = $4,
-                   submitted_at = $5,
-                   reviewed_at = $6
-               WHERE verification_id = $7`,
+                   cv_path = COALESCE(cv_path, $5),
+                   submitted_at = $6,
+                   reviewed_at = $7
+               WHERE verification_id = $8`,
               [
                 reviewer,
                 v.status,
                 v.note ?? null,
                 appealNote,
+                cvPath,
                 submittedAt,
                 reviewedAt,
                 existingRows[idx].verification_id,
@@ -1736,14 +1766,15 @@ async function runDummySeed() {
             );
           } else {
             await client.query(
-              `INSERT INTO curator_verifications (user_id, reviewed_by, status, note, appeal_note, submitted_at, reviewed_at)
-               VALUES ($1, $2, $3::verification_status, $4, $5, $6, $7)`,
+              `INSERT INTO curator_verifications (user_id, reviewed_by, status, note, appeal_note, cv_path, submitted_at, reviewed_at)
+               VALUES ($1, $2, $3::verification_status, $4, $5, $6, $7, $8)`,
               [
                 userId,
                 reviewer,
                 v.status,
                 v.note ?? null,
                 appealNote,
+                cvPath,
                 submittedAt,
                 reviewedAt,
               ]

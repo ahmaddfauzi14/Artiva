@@ -2,7 +2,24 @@ import { query } from '@/lib/server/db';
 import { toUploadUrl } from '@/lib/shared/format';
 import { MAX_CURATOR_APPEALS } from '@/lib/validators/verifications';
 
-export async function findVerificationHistoryByUserId(userId, client = null) {
+function mapCvMeta(cvPath, url) {
+  if (!cvPath) {
+    return { has_cv: false, cv_ext: null, cv_url: null };
+  }
+  const dotIdx = cvPath.lastIndexOf('.');
+  const cvExt = dotIdx >= 0 ? cvPath.slice(dotIdx + 1).toLowerCase() : null;
+  return {
+    has_cv: true,
+    cv_ext: cvExt,
+    cv_url: url,
+  };
+}
+
+export async function findVerificationHistoryByUserId(
+  userId,
+  client = null,
+  { isAdmin = false } = {}
+) {
   const { rows } = await query(
     `SELECT
        cv.verification_id,
@@ -11,6 +28,7 @@ export async function findVerificationHistoryByUserId(userId, client = null) {
        cv.status,
        cv.note,
        cv.appeal_note,
+       cv.cv_path,
        cv.submitted_at,
        cv.reviewed_at,
        ru.username AS reviewer_username,
@@ -24,8 +42,14 @@ export async function findVerificationHistoryByUserId(userId, client = null) {
     client
   );
 
-  return rows.map((row, idx) => ({
+  return rows.map(({ cv_path: cvPath, ...row }, idx) => ({
     ...row,
+    ...mapCvMeta(
+      cvPath,
+      isAdmin
+        ? `/api/admin/curator-verifications/${row.verification_id}/cv`
+        : `/api/curator/verification/cv?verification_id=${row.verification_id}`
+    ),
     attempt_number: idx + 1,
     appeal_number: idx,
     is_appeal: idx > 0,
@@ -41,6 +65,7 @@ export async function findLatestVerificationByUserId(userId, client = null) {
        cv.status,
        cv.note,
        cv.appeal_note,
+       cv.cv_path,
        cv.submitted_at,
        cv.reviewed_at,
        u.username,
@@ -59,9 +84,10 @@ export async function findLatestVerificationByUserId(userId, client = null) {
     [userId],
     client
   );
-  const row = rows[0];
-  if (!row) return null;
+  const rawRow = rows[0];
+  if (!rawRow) return null;
 
+  const { cv_path: cvPath, ...row } = rawRow;
   const historyAsc = await findVerificationHistoryByUserId(userId, client);
   const totalAttempts = historyAsc.length;
   const appealCount = Math.max(0, totalAttempts - 1);
@@ -72,6 +98,7 @@ export async function findLatestVerificationByUserId(userId, client = null) {
 
   return {
     ...row,
+    ...mapCvMeta(cvPath, '/api/curator/verification/cv'),
     avatar_url: toUploadUrl(row.avatar_path),
     attempt_number: currentAttempt,
     appeal_number: Math.max(0, currentAttempt - 1),
@@ -127,6 +154,7 @@ export async function listAdminVerifications({
          cv.status,
          cv.note,
          cv.appeal_note,
+         cv.cv_path,
          cv.submitted_at,
          cv.reviewed_at,
          u.username,
@@ -168,8 +196,12 @@ export async function listAdminVerifications({
 
   const total = listRes.rows[0]?.total_count ?? 0;
   return {
-    items: listRes.rows.map((row) => ({
+    items: listRes.rows.map(({ cv_path: cvPath, ...row }) => ({
       ...row,
+      ...mapCvMeta(
+        cvPath,
+        `/api/admin/curator-verifications/${row.verification_id}/cv`
+      ),
       appeal_number: Math.max(0, (row.attempt_number ?? 1) - 1),
     })),
     counts: countsRes.rows[0] || { pending: 0, approved: 0, rejected: 0 },
@@ -186,6 +218,7 @@ export async function findAdminVerificationById(verificationId, client = null) {
        cv.status,
        cv.note,
        cv.appeal_note,
+       cv.cv_path,
        cv.submitted_at,
        cv.reviewed_at,
        u.username,
@@ -209,10 +242,13 @@ export async function findAdminVerificationById(verificationId, client = null) {
     client
   );
 
-  const row = rows[0];
-  if (!row) return null;
+  const rawRow = rows[0];
+  if (!rawRow) return null;
 
-  const historyAsc = await findVerificationHistoryByUserId(row.user_id, client);
+  const { cv_path: cvPath, ...row } = rawRow;
+  const historyAsc = await findVerificationHistoryByUserId(row.user_id, client, {
+    isAdmin: true,
+  });
   const totalAttempts = historyAsc.length;
   const appealCount = Math.max(0, totalAttempts - 1);
   const attemptNumber =
@@ -221,6 +257,10 @@ export async function findAdminVerificationById(verificationId, client = null) {
 
   return {
     ...row,
+    ...mapCvMeta(
+      cvPath,
+      `/api/admin/curator-verifications/${row.verification_id}/cv`
+    ),
     avatar_url: toUploadUrl(row.avatar_path),
     attempt_number: attemptNumber,
     appeal_number: Math.max(0, attemptNumber - 1),
@@ -230,6 +270,55 @@ export async function findAdminVerificationById(verificationId, client = null) {
     remaining_appeals: Math.max(0, MAX_CURATOR_APPEALS - appealCount),
     history: [...historyAsc].reverse(),
   };
+}
+
+export async function findCuratorCvRecord(
+  userId,
+  verificationId = null,
+  client = null
+) {
+  const params = [userId];
+  let whereExtra = '';
+  if (verificationId) {
+    params.push(verificationId);
+    whereExtra = 'AND cv.verification_id = $2';
+  }
+
+  const { rows } = await query(
+    `SELECT cv.verification_id, cv.cv_path, u.username
+     FROM curator_verifications cv
+     JOIN users u ON u.user_id = cv.user_id
+     WHERE cv.user_id = $1 ${whereExtra}
+     ORDER BY cv.submitted_at DESC, cv.verification_id DESC
+     LIMIT 1`,
+    params,
+    client
+  );
+  return rows[0] || null;
+}
+
+export async function findAdminCvRecord(verificationId, client = null) {
+  const { rows } = await query(
+    `SELECT cv.verification_id, cv.cv_path, u.username
+     FROM curator_verifications cv
+     JOIN users u ON u.user_id = cv.user_id
+     WHERE cv.verification_id = $1
+     LIMIT 1`,
+    [verificationId],
+    client
+  );
+  return rows[0] || null;
+}
+
+export async function listCuratorCvPathsByUserId(userId, client = null) {
+  const { rows } = await query(
+    `SELECT DISTINCT cv_path
+     FROM curator_verifications
+     WHERE user_id = $1 AND cv_path IS NOT NULL`,
+    [userId],
+    client
+  );
+  return rows.map((r) => r.cv_path).filter(Boolean);
 }
 
 export async function lockCuratorUserRow(userId, client) {
@@ -244,12 +333,17 @@ export async function lockCuratorUserRow(userId, client) {
   return rows[0] || null;
 }
 
-export async function createCuratorAppealRow(userId, appealNote, client) {
+export async function createCuratorAppealRow(
+  userId,
+  appealNote,
+  cvPath = null,
+  client
+) {
   const { rows } = await query(
-    `INSERT INTO curator_verifications (user_id, status, appeal_note)
-     VALUES ($1, 'pending', $2)
-     RETURNING verification_id, user_id, reviewed_by, status, note, appeal_note, submitted_at, reviewed_at`,
-    [userId, appealNote],
+    `INSERT INTO curator_verifications (user_id, status, appeal_note, cv_path)
+     VALUES ($1, 'pending', $2, $3)
+     RETURNING verification_id, user_id, reviewed_by, status, note, appeal_note, cv_path, submitted_at, reviewed_at`,
+    [userId, appealNote, cvPath || null],
     client
   );
   return rows[0];

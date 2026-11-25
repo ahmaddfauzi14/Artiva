@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
+import DocumentUploader from '@/components/ui/DocumentUploader';
 import FormField from '@/components/ui/FormField';
 import RoleSelector from '@/components/features/auth/RoleSelector';
 import {
@@ -13,40 +14,80 @@ import {
 import { useRegisterDraft } from '@/components/features/auth/register-draft';
 import { apiFetch } from '@/lib/shared/api-client';
 
+const ALLOWED_CV_EXTENSIONS = new Set(['pdf', 'doc', 'docx']);
+const MAX_CV_BYTES = 5 * 1024 * 1024;
+
 export default function RegisterCuratorForm() {
   const { draft, onFieldChange, clearDraft } = useRegisterDraft();
   const [bio, setBio] = useState('');
   const [website, setWebsite] = useState('');
+  const [cvFile, setCvFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
   const [createdUser, setCreatedUser] = useState(null);
 
+  const handleCvSelect = (file) => {
+    setCvFile(file);
+    if (fieldErrors.cv) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next.cv;
+        return next;
+      });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
-    setFieldErrors({});
 
+    const nextErrors = {};
     if (draft.password !== draft.confirm_password) {
-      setFieldErrors({
-        confirm_password: 'Konfirmasi kata sandi tidak cocok.',
-      });
-      setErrorMsg('Periksa kembali kata sandi dan konfirmasinya.');
+      nextErrors.confirm_password = 'Konfirmasi kata sandi tidak cocok.';
+    }
+
+    const cleanWebsite = website.trim();
+    if (!cleanWebsite) {
+      nextErrors.website = 'Tautan portofolio wajib diisi.';
+    } else if (!/^https?:\/\/.+/i.test(cleanWebsite)) {
+      nextErrors.website =
+        'Tautan portofolio harus diawali http:// atau https://.';
+    }
+
+    if (!cvFile) {
+      nextErrors.cv = 'File CV (PDF atau Word) wajib diunggah.';
+    } else {
+      const ext = cvFile.name?.split('.').pop()?.toLowerCase() || '';
+      if (!ALLOWED_CV_EXTENSIONS.has(ext)) {
+        nextErrors.cv =
+          'Format CV harus berupa PDF (.pdf) atau Word (.doc, .docx).';
+      } else if (cvFile.size > MAX_CV_BYTES) {
+        nextErrors.cv = 'Ukuran file CV melebihi batas maksimal 5 MB.';
+      }
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setFieldErrors(nextErrors);
+      setErrorMsg('Periksa kembali data pendaftaran dan kelengkapan dokumenmu.');
       return;
     }
 
+    setFieldErrors({});
     setLoading(true);
     try {
+      const fd = new FormData();
+      fd.set('username', draft.username);
+      fd.set('email', draft.email);
+      fd.set('display_name', draft.display_name);
+      fd.set('bio', bio);
+      fd.set('website', cleanWebsite);
+      fd.set('password', draft.password);
+      fd.set('cv', cvFile);
+
       const res = await apiFetch('/api/auth/register/curator', {
         method: 'POST',
-        body: {
-          username: draft.username,
-          email: draft.email,
-          display_name: draft.display_name,
-          bio,
-          website,
-          password: draft.password,
-        },
+        body: fd,
       });
       clearDraft();
       setCreatedUser(res.data.user);
@@ -131,12 +172,29 @@ export default function RegisterCuratorForm() {
         />
 
         <FormField
-          label="Situs web / portofolio (opsional)"
+          label="Tautan portofolio / situs web"
           name="website"
+          type="url"
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
-          placeholder="https://example.com"
+          placeholder="https://portofolio-kamu.com"
+          helperText="Wajib diawali http:// atau https:// (mis. Behance, ArtStation, atau situs portofolio)."
+          inputProps={{
+            autoCorrect: 'off',
+            autoCapitalize: 'none',
+            spellCheck: false,
+          }}
           error={fieldErrors.website}
+          required
+        />
+
+        <DocumentUploader
+          label="Dokumen CV Kurator (Word atau PDF)"
+          name="cv"
+          file={cvFile}
+          onFileSelect={handleCvSelect}
+          error={fieldErrors.cv}
+          required
         />
 
         <RegisterPasswordFields

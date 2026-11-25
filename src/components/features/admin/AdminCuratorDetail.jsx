@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Download01Icon, File01Icon } from '@hugeicons/core-free-icons';
 import Alert from '@/components/ui/Alert';
 import Avatar from '@/components/ui/Avatar';
 import Button from '@/components/ui/Button';
@@ -167,7 +169,7 @@ export default function AdminCuratorDetail({ initialVerification }) {
             {safeWebsite ? (
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.06em] text-ink-mute">
-                  Situs Web / Portofolio
+                  Tautan Portofolio / Situs Web
                 </p>
                 <a
                   href={safeWebsite}
@@ -178,7 +180,76 @@ export default function AdminCuratorDetail({ initialVerification }) {
                   {safeWebsite}
                 </a>
               </div>
-            ) : null}
+            ) : (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-ink-mute">
+                  Tautan Portofolio / Situs Web
+                </p>
+                <p className="mt-1 text-sm text-ink-mute">
+                  Belum mencantumkan tautan portofolio.
+                </p>
+              </div>
+            )}
+
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.06em] text-ink-mute">
+                Dokumen CV Kurator
+              </p>
+              {verification.has_cv && verification.cv_url ? (
+                <div className="mt-2 flex flex-wrap items-center justify-between gap-3 rounded-[16px] border border-line bg-canvas p-3.5">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span
+                      aria-hidden="true"
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-700"
+                    >
+                      <HugeiconsIcon
+                        icon={File01Icon}
+                        size={18}
+                        strokeWidth={1.8}
+                        aria-hidden="true"
+                      />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-ink">
+                        CV Calon Kurator
+                      </p>
+                      <p className="text-xs uppercase text-ink-mute">
+                        Format {verification.cv_ext || 'dokumen'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex shrink-0 flex-wrap items-center gap-2">
+                    {verification.cv_ext === 'pdf' ? (
+                      <a
+                        href={verification.cv_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-100"
+                      >
+                        Pratinjau PDF →
+                      </a>
+                    ) : null}
+                    <a
+                      href={`${verification.cv_url}?download=1`}
+                      download
+                      className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-brand-700 shadow-card-sm transition-colors hover:border-brand-200 hover:shadow-card"
+                    >
+                      <HugeiconsIcon
+                        icon={Download01Icon}
+                        size={15}
+                        strokeWidth={1.8}
+                        aria-hidden="true"
+                      />
+                      <span>Unduh CV</span>
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-1 text-sm text-ink-mute">
+                  Tidak ada lampiran dokumen CV pada pengajuan ini.
+                </p>
+              )}
+            </div>
           </div>
 
           <VerificationHistoryList

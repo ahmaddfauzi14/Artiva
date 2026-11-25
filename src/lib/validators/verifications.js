@@ -1,17 +1,7 @@
 import { z } from 'zod';
+import { requiredWebsiteField } from '@/lib/validators/auth';
 
 export const MAX_CURATOR_APPEALS = 3;
-
-const websiteField = z
-  .string()
-  .trim()
-  .max(255, 'Tautan situs maksimal 255 karakter.')
-  .optional()
-  .default('')
-  .refine(
-    (val) => !val || /^https?:\/\/.+/i.test(val),
-    'Tautan situs harus diawali http:// atau https://.'
-  );
 
 export const rejectVerificationSchema = z.object({
   note: z
@@ -32,7 +22,7 @@ export const submitCuratorAppealSchema = z.object({
     .trim()
     .min(10, 'Bio minimal 10 karakter agar Admin dapat meninjau pengajuanmu.')
     .max(1000, 'Bio maksimal 1000 karakter.'),
-  website: websiteField,
+  website: requiredWebsiteField,
   appeal_note: z
     .string({ error: 'Catatan banding wajib diisi.' })
     .trim()

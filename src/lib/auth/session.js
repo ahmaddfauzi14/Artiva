@@ -79,12 +79,13 @@ export async function getCurrentUser() {
        cv.status AS verification_status,
        cv.note AS verification_note,
        cv.appeal_note AS verification_appeal_note,
+       cv.cv_path AS verification_cv_path,
        cv.submitted_at AS verification_submitted_at,
        cv.reviewed_at AS verification_reviewed_at
      FROM users u
      LEFT JOIN profiles p ON p.user_id = u.user_id
      LEFT JOIN LATERAL (
-       SELECT verification_id, status, note, appeal_note, submitted_at, reviewed_at
+       SELECT verification_id, status, note, appeal_note, cv_path, submitted_at, reviewed_at
        FROM curator_verifications
        WHERE user_id = u.user_id
        ORDER BY submitted_at DESC, verification_id DESC
@@ -117,6 +118,10 @@ export async function getCurrentUser() {
             status: row.verification_status,
             note: row.verification_note || null,
             appeal_note: row.verification_appeal_note || null,
+            has_cv: Boolean(row.verification_cv_path),
+            cv_url: row.verification_cv_path
+              ? '/api/curator/verification/cv'
+              : null,
             submitted_at: row.verification_submitted_at,
             reviewed_at: row.verification_reviewed_at,
           }

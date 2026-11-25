@@ -124,6 +124,21 @@ export default function VerificationHistoryList({
                     {item.note}
                   </p>
                 ) : null}
+
+                {item.has_cv && item.cv_url ? (
+                  <p className="pt-0.5 text-xs">
+                    <a
+                      href={`${item.cv_url}${item.cv_ext === 'pdf' ? '' : '?download=1'}`}
+                      target={item.cv_ext === 'pdf' ? '_blank' : undefined}
+                      rel={item.cv_ext === 'pdf' ? 'noopener noreferrer' : undefined}
+                      className="font-semibold text-brand-700 hover:underline"
+                    >
+                      {item.cv_ext === 'pdf'
+                        ? 'Lihat CV terlampir (PDF) →'
+                        : `Unduh CV terlampir (${String(item.cv_ext || 'DOC').toUpperCase()})`}
+                    </a>
+                  </p>
+                ) : null}
               </li>
             );
           })}

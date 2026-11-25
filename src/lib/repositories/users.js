@@ -19,12 +19,13 @@ export async function findUserForLogin(identifier, client = null) {
        cv.status AS verification_status,
        cv.note AS verification_note,
        cv.appeal_note AS verification_appeal_note,
+       cv.cv_path AS verification_cv_path,
        cv.submitted_at AS verification_submitted_at,
        cv.reviewed_at AS verification_reviewed_at
      FROM users u
      LEFT JOIN profiles p ON p.user_id = u.user_id
      LEFT JOIN LATERAL (
-       SELECT verification_id, status, note, appeal_note, submitted_at, reviewed_at
+       SELECT verification_id, status, note, appeal_note, cv_path, submitted_at, reviewed_at
        FROM curator_verifications
        WHERE user_id = u.user_id
        ORDER BY submitted_at DESC, verification_id DESC
@@ -63,7 +64,17 @@ export async function findProfileByUserId(userId, client = null) {
 }
 
 export async function createUserWithProfile(
-  { username, email, passwordHash, role, status, displayName, bio, website },
+  {
+    username,
+    email,
+    passwordHash,
+    role,
+    status,
+    displayName,
+    bio,
+    website,
+    cvPath = null,
+  },
   client
 ) {
   const userRes = await query(
@@ -86,10 +97,10 @@ export async function createUserWithProfile(
   let verification = null;
   if (role === 'curator') {
     const verRes = await query(
-      `INSERT INTO curator_verifications (user_id, status)
-       VALUES ($1, 'pending')
-       RETURNING verification_id, status, note, appeal_note, submitted_at, reviewed_at`,
-      [user.user_id],
+      `INSERT INTO curator_verifications (user_id, status, cv_path)
+       VALUES ($1, 'pending', $2)
+       RETURNING verification_id, status, note, appeal_note, cv_path, submitted_at, reviewed_at`,
+      [user.user_id, cvPath || null],
       client
     );
     verification = verRes.rows[0];

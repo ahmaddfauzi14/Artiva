@@ -7,6 +7,8 @@ import { toUploadUrl } from '@/lib/shared/format';
 import {
   deleteUploadedFile,
   saveUploadedImage,
+  saveValidatedDocument,
+  validateUploadedDocument,
 } from '@/lib/server/uploads';
 import {
   createUserWithProfile,
@@ -34,13 +36,28 @@ function toPublicSessionUser(row) {
     avatar_url: toUploadUrl(row.avatar_path),
     website: row.website || '',
     verification: row.verification
-      ? row.verification
+      ? {
+          verification_id: row.verification.verification_id,
+          status: row.verification.status,
+          note: row.verification.note || null,
+          appeal_note: row.verification.appeal_note || null,
+          has_cv: Boolean(row.verification.cv_path),
+          cv_url: row.verification.cv_path
+            ? '/api/curator/verification/cv'
+            : null,
+          submitted_at: row.verification.submitted_at,
+          reviewed_at: row.verification.reviewed_at,
+        }
       : row.role === 'curator' && row.verification_id
         ? {
             verification_id: row.verification_id,
             status: row.verification_status,
             note: row.verification_note || null,
             appeal_note: row.verification_appeal_note || null,
+            has_cv: Boolean(row.verification_cv_path),
+            cv_url: row.verification_cv_path
+              ? '/api/curator/verification/cv'
+              : null,
             submitted_at: row.verification_submitted_at,
             reviewed_at: row.verification_reviewed_at,
           }
@@ -57,24 +74,37 @@ async function registerWithRole({
   displayName,
   bio = null,
   website = null,
+  validatedCv = null,
 }) {
   const passwordHash = await hashPassword(password);
+  const cvPath = validatedCv
+    ? await saveValidatedDocument(validatedCv, 'cvs')
+    : null;
 
-  const created = await withTransaction(async (client) =>
-    createUserWithProfile(
-      {
-        username,
-        email,
-        passwordHash,
-        role,
-        status,
-        displayName,
-        bio,
-        website,
-      },
-      client
-    )
-  );
+  let created;
+  try {
+    created = await withTransaction(async (client) =>
+      createUserWithProfile(
+        {
+          username,
+          email,
+          passwordHash,
+          role,
+          status,
+          displayName,
+          bio,
+          website,
+          cvPath,
+        },
+        client
+      )
+    );
+  } catch (err) {
+    if (cvPath) {
+      await deleteUploadedFile(cvPath);
+    }
+    throw err;
+  }
 
   const token = await signSessionToken({
     userId: created.user_id,
@@ -95,7 +125,8 @@ export async function registerMember(input) {
   });
 }
 
-export async function registerCurator(input) {
+export async function registerCurator(input, cvFile) {
+  const validatedCv = await validateUploadedDocument(cvFile, 'cv');
   return registerWithRole({
     username: input.username,
     email: input.email,
@@ -104,7 +135,8 @@ export async function registerCurator(input) {
     status: 'pending',
     displayName: input.display_name,
     bio: input.bio,
-    website: input.website || null,
+    website: input.website,
+    validatedCv,
   });
 }
 
