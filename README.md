@@ -154,26 +154,20 @@ Klik setiap modul di bawah ini untuk menjelajahi fungsionalitas ARTIVA secara in
 
 <img src="docs/screenshots/preview.gif" alt="ARTIVA Preview — Beranda Hero, Galeri Karya CircularGallery, dan Tantangan Kreatif Terkurasi" width="100%" />
 
-<<<<<<< HEAD
 *Beranda Hero · Galeri & CircularGallery · Tantangan Terkurasi*
-=======
+
 <img width="1066" height="666" alt="1" src="https://github.com/user-attachments/assets/ac46eabe-c5a4-44bc-8579-739467c9bf98" />
 <img width="1628" height="4619" alt="landingpage_2_11zon" src="https://github.com/user-attachments/assets/9ffd29c7-c819-44f6-8052-3e6b81e51692" />
-
 
 ### 🖼️ Galeri Karya — CircularGallery & Filter Kategori
 
 <img width="1066" height="666" alt="2" src="https://github.com/user-attachments/assets/f09bfa08-2f7d-4e1d-bf01-d7e117e2791c" />
 <img width="2804" height="3234" alt="jelajahi" src="https://github.com/user-attachments/assets/65c98dda-ed85-4761-b40e-3a34921307fb" />
 
-
-
 ### 🏆 Tantangan Kreatif — Kompetisi Terkurasi
 
 <img width="1066" height="666" alt="Pi7_GIF_CMP (2)" src="https://github.com/user-attachments/assets/e8cce001-656b-4052-bd52-6d2f5d8797ea" />
 <img width="495" height="1731" alt="tantangan_1_11zon" src="https://github.com/user-attachments/assets/e5536628-796b-4294-b232-2ccf4eb9ce1c" />
-
->>>>>>> 6940d1a7ece5e57e5be262ca084338761af15044
 
 </div>
 
