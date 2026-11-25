@@ -154,10 +154,16 @@ export default function CuratorVerification({ verification: initialVerification 
   };
 
   const handleLogout = async () => {
+    if (loggingOut) return;
     setLoggingOut(true);
     try {
       await apiFetch('/api/auth/logout', { method: 'POST' });
-      router.push('/login');
+      showToast({
+        tone: 'info',
+        title: 'Sesi berakhir',
+        message: 'Kamu telah keluar dari akun ARTIVA.',
+      });
+      router.replace('/');
       router.refresh();
     } catch (err) {
       showToast({ tone: 'error', message: err.message });

@@ -168,7 +168,7 @@ export default function Navbar({ user = null }) {
         title: 'Sesi berakhir',
         message: 'Kamu telah keluar dari akun ARTIVA.',
       });
-      router.push('/login');
+      router.replace('/');
       router.refresh();
     } catch (err) {
       showToast({ tone: 'error', message: err.message });
