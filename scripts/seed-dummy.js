@@ -689,6 +689,367 @@ const REAL_ARTWORKS = [
     status: 'removed',
     hoursAgo: 510,
   },
+  // 36 Karya nyata tambahan untuk seluruh akun kreator aktif yang sudah ada (tanpa menambah akun baru)
+  {
+    username: 'pieter_bruegel',
+    category_slug: 'lukisan',
+    title: 'The Tower of Babel — Menara Babel (1563)',
+    description:
+      'Lukisan cat minyak di atas panel kayu ek (114 × 155 cm) karya Pieter Bruegel the Elder tahun 1563 yang menggambarkan pembangunan Menara Babel raksasa dengan detail rekayasa arsitektur mirip Koloseum Romawi dan ribuan pekerja di pelabuhan sibuk. Koleksi Kunsthistorisches Museum, Wina (Public Domain).',
+    image_path: 'artworks/bruegel-tower-of-babel.jpg',
+    tags: ['renaisans-utara', 'arsitektur', 'cat-minyak', 'panorama'],
+    hoursAgo: 506,
+  },
+  {
+    username: 'diego_velazquez',
+    category_slug: 'lukisan',
+    title: 'La Rendición de Breda — The Surrender of Breda (1634–1635)',
+    description:
+      'Lukisan sejarah Barok monumental (cat minyak di atas kanvas, 307 × 367 cm) karya Diego Velázquez untuk Istana Buen Retiro, Madrid. Menonjolkan gestur ksatria penuh empati antara Ambrosio Spinola dan Justinus van Nassau berlatar deretan tombak vertikal dramatis. Koleksi Museo del Prado (Public Domain).',
+    image_path: 'artworks/velazquez-surrender-breda.jpg',
+    tags: ['barok', 'lukisan-sejarah', 'cat-minyak', 'prado'],
+    hoursAgo: 498,
+  },
+  {
+    username: 'rembrandt_vanrijn',
+    category_slug: 'lukisan',
+    title: 'The Anatomy Lesson of Dr. Nicolaes Tulp (1632)',
+    description:
+      'Potret kelompok cat minyak di atas kanvas (169,5 × 216,5 cm) karya Rembrandt van Rijn tahun 1632 untuk Serikat Ahli Bedah Amsterdam. Cahaya chiaroscuro terpusat menyorot ekspresi penuh rasa ingin tahu para dokter yang menyimak demonstrasi anatomi lengan bawah. Koleksi Mauritshuis, Den Haag (Public Domain).',
+    image_path: 'artworks/rembrandt-anatomy-lesson.jpg',
+    tags: ['zaman-keemasan-belanda', 'chiaroscuro', 'cat-minyak', 'potret'],
+    hoursAgo: 490,
+  },
+  {
+    username: 'sandro_botticelli',
+    category_slug: 'lukisan',
+    title: 'Primavera — Alegori Musim Semi (c. 1477–1482)',
+    description:
+      'Mahakarya tempera di atas panel kayu (202 × 314 cm) karya Sandro Botticelli yang menampilkan taman jeruk mitologis dengan Venus di pusat komposisi, Tiga Gratia menari gemulai, serta ratusan spesies flora yang dilukis dengan ketelitian botanis. Koleksi Gallerie degli Uffizi, Firenze (Public Domain).',
+    image_path: 'artworks/botticelli-primavera.jpg',
+    tags: ['renaisans', 'tempera', 'mitologi', 'uffizi'],
+    hoursAgo: 482,
+  },
+  {
+    username: 'leonardo_davinci',
+    category_slug: 'lukisan',
+    title: 'Lady with an Ermine — Wanita dengan Cerpelai (c. 1489–1491)',
+    description:
+      'Potret cat minyak di atas panel kayu kenari (54 × 39 cm) karya Leonardo da Vinci yang melukis Cecilia Gallerani dengan pose memutar dinamis, permainan cahaya lembut sfumato, dan ekspresi hidup yang menjadi terobosan potret Renaisans. Koleksi Czartoryski Museum, Kraków (Public Domain).',
+    image_path: 'artworks/davinci-lady-ermine.jpg',
+    tags: ['renaisans', 'potret', 'sfumato', 'cat-minyak'],
+    hoursAgo: 474,
+  },
+  {
+    username: 'leonardo_davinci',
+    category_slug: 'ilustrasi',
+    title: 'L\'Uomo Vitruviano — Vitruvian Man (c. 1490)',
+    description:
+      'Ilustrasi pena, tinta, dan sapuan warna di atas kertas (34,6 × 25,5 cm) karya Leonardo da Vinci yang memadukan seni, matematika, dan anatomi berdasarkan risalah arsitek Romawi Vitruvius tentang proporsi ideal tubuh manusia dalam lingkaran dan persegi. Koleksi Gallerie dell\'Accademia, Venesia (Public Domain).',
+    image_path: 'artworks/davinci-vitruvian-man.jpg',
+    tags: ['ilustrasi-ilmiah', 'anatomi', 'renaisans', 'tinta-pena'],
+    hoursAgo: 466,
+  },
+  {
+    username: 'johannes_vermeer',
+    category_slug: 'lukisan',
+    title: 'Het Melkmeisje — The Milkmaid (c. 1658–1660)',
+    description:
+      'Lukisan cat minyak di atas kanvas (45,5 × 41 cm) karya Johannes Vermeer yang merayakan ketenangan kerja sehari-hari lewat kilau cahaya alami jendela samping, tekstur roti yang dilukis dengan titik-titik cahaya (pointillé), serta kontras pigmen kuning timah dan biru ultramarine. Koleksi Rijksmuseum, Amsterdam (Public Domain).',
+    image_path: 'artworks/vermeer-milkmaid.jpg',
+    tags: ['zaman-keemasan-belanda', 'cat-minyak', 'cahaya-alami', 'interior'],
+    hoursAgo: 458,
+  },
+  {
+    username: 'johannes_vermeer',
+    category_slug: 'lukisan',
+    title: 'Gezicht op Delft — View of Delft (c. 1660–1661)',
+    description:
+      'Panorama kota cat minyak di atas kanvas (96,5 × 115,7 cm) karya Johannes Vermeer yang menangkap pantulan tenang kanal Delft, langit awan luas, dan sorotan sinar matahari di menara Nieuwe Kerk. Koleksi Mauritshuis, Den Haag (Public Domain).',
+    image_path: 'artworks/vermeer-view-of-delft.jpg',
+    tags: ['zaman-keemasan-belanda', 'lanskap', 'cat-minyak', 'delft'],
+    hoursAgo: 450,
+  },
+  {
+    username: 'caspar_friedrich',
+    category_slug: 'lukisan',
+    title: 'Das Eismeer — The Sea of Ice (1823–1824)',
+    description:
+      'Lukisan cat minyak di atas kanvas (96,7 × 126,9 cm) karya Caspar David Friedrich yang menampilkan tumpukan lempeng es tajam menjulang menelan bangkai kapal ekspedisi kutub—sebuah alegori Romantisisme tentang keagungan alam yang tak tertaklukkan. Koleksi Hamburger Kunsthalle (Public Domain).',
+    image_path: 'artworks/friedrich-sea-of-ice.jpg',
+    tags: ['romantisisme', 'lanskap', 'cat-minyak', 'musim-dingin'],
+    hoursAgo: 442,
+  },
+  {
+    username: 'georges_seurat',
+    category_slug: 'lukisan',
+    title: 'Studi untuk Bathers at Asnières (1883–1884)',
+    description:
+      'Studi cat minyak warna bercahaya karya Georges Seurat untuk komposisi monumental "Une Baignade, Asnières". Memperlihatkan sapuan warna terpisah balayeé yang menjadi cikal bakal metode Neo-Impresionisme dan pembagian spektrum optik. Sumber: Wikimedia Commons (Lisensi CC BY 3.0).',
+    image_path: 'artworks/seurat-bathers-asnieres.jpg',
+    tags: ['pasca-impresionisme', 'studi-warna', 'cat-minyak', 'optik-warna'],
+    hoursAgo: 434,
+  },
+  {
+    username: 'edvard_munch',
+    category_slug: 'lukisan',
+    title: 'The Dance of Life — Tarian Kehidupan (1899–1900)',
+    description:
+      'Lukisan cat minyak di atas kanvas (125,5 × 190,5 cm) karya Edvard Munch yang menjadi bagian sentral siklus "Frieze of Life". Tiga figur perempuan berpakaian putih, merah, dan hitam di tepi pantai malam melambangkan fase muda, gairah hidup, dan perenungan usia. Koleksi Nasjonalmuseet, Oslo (Public Domain).',
+    image_path: 'artworks/munch-dance-of-life.jpg',
+    tags: ['ekspresionisme', 'simbolisme', 'cat-minyak', 'narasi-visual'],
+    hoursAgo: 416,
+  },
+  {
+    username: 'claude_monet',
+    category_slug: 'lukisan',
+    title: 'Woman with a Parasol — Madame Monet dan Putranya (1875)',
+    description:
+      'Lukisan cat minyak en plein air (100 × 81 cm) karya Claude Monet tahun 1875 di Argenteuil. Sudut pandang rendah menengadah ke langit berawan menangkap hembusan angin pada gaun putih Camille Monet dan pendaran cahaya matahari musim panas. Koleksi National Gallery of Art, Washington (Public Domain).',
+    image_path: 'artworks/monet-woman-parasol.jpg',
+    tags: ['impresionisme', 'cat-minyak', 'potret', 'cahaya-alami'],
+    hoursAgo: 404,
+  },
+  {
+    username: 'gustav_klimt',
+    category_slug: 'lukisan',
+    title: 'Portrait of Adele Bloch-Bauer I — The Woman in Gold (1907)',
+    description:
+      'Potret monumental cat minyak, perak, dan lembaran daun emas di atas kanvas (138 × 138 cm) karya Gustav Klimt pada puncak Fase Emas di Wina. Menggabungkan wajah realis halus dengan lautan ornamen geometris spiral, mata Horus, dan mosaik emas bergaya Bizantium. Koleksi Neue Galerie, New York (Public Domain).',
+    image_path: 'artworks/klimt-adele-bloch-bauer.jpg',
+    tags: ['simbolisme', 'daun-emas', 'vienna-secession', 'potret'],
+    hoursAgo: 392,
+  },
+  {
+    username: 'vincent_vangogh',
+    category_slug: 'lukisan',
+    title: 'Café Terrace at Night — Teras Kafe di Malam Hari (1888)',
+    description:
+      'Lukisan cat minyak di atas kanvas (80,7 × 65,3 cm) yang dilukis Vincent van Gogh langsung di ruang terbuka Place du Forum, Arles pada September 1888 tanpa memakai pigmen hitam. Kontras cahaya lentera kuning hangat terhadap langit malam biru berbintang menjadi penanda awal seri malamnya. Koleksi Kröller-Müller Museum (CC0).',
+    image_path: 'artworks/vangogh-cafe-terrace.jpg',
+    tags: ['pasca-impresionisme', 'langit-malam', 'cat-minyak', 'impasto'],
+    hoursAgo: 380,
+  },
+  {
+    username: 'raden_saleh',
+    category_slug: 'lukisan',
+    title: 'Merapi, Eruption by Night — Letusan Merapi di Malam Hari (1865)',
+    description:
+      'Lukisan cat minyak Romantisisme karya Raden Saleh tahun 1865 yang mengabadikan kegagahan letusan Gunung Merapi di tengah malam gelap. Cahaya lava membara dan kilatan awan panas menerangi siluet pepohonan serta desa di lereng gunung dengan dramatisasi khas pelukis maestro Nusantara. Sumber: Wikimedia Commons (Public Domain).',
+    image_path: 'artworks/raden-saleh-merapi.jpg',
+    tags: ['romantisisme', 'sejarah-nusantara', 'cat-minyak', 'lanskap'],
+    hoursAgo: 368,
+  },
+  {
+    username: 'katsushika_hokusai',
+    category_slug: 'ilustrasi',
+    title: 'Sanka Hakuu — Rainstorm Beneath the Summit (c. 1830–1832)',
+    description:
+      'Cetak balok kayu polikrom ukiyo-e (ōban yoko-e) karya Katsushika Hokusai dari seri "Thirty-Six Views of Mount Fuji". Mengontraskan puncak Gunung Fuji yang menjulang tenang di atas awan cerah dengan badai petir zig-zag tajam di kaki gunung. Sumber: Wikimedia Commons (Public Domain).',
+    image_path: 'artworks/hokusai-storm-below-summit.jpg',
+    tags: ['ukiyo-e', 'cetak-kayu', 'gunung-fuji', 'ilustrasi-klasik'],
+    hoursAgo: 356,
+  },
+  {
+    username: 'utagawa_hiroshige',
+    category_slug: 'ilustrasi',
+    title: 'Taman Plum Kameido — Panoramic View of Kameido (c. 1850-an)',
+    description:
+      'Panel cetak balok kayu polikrom ukiyo-e karya Utagawa Hiroshige yang menggambarkan paviliun pengamatan bunga plum mekar di Kameido, Edo. Memperlihatkan komposisi cabang pohon plum meliuk dinamis dan atmosfer musim semi khas Jepang. Koleksi LACMA (Public Domain).',
+    image_path: 'artworks/hiroshige-plum-estate.jpg',
+    tags: ['ukiyo-e', 'cetak-kayu', 'flora', 'ilustrasi-klasik'],
+    hoursAgo: 344,
+  },
+  {
+    username: 'ernst_haeckel',
+    category_slug: 'ilustrasi',
+    title: 'Kunstformen der Natur — Plate 85: Ascidiae (1904)',
+    description:
+      'Pelat litografi ilmiah berwarna nomor 85 dari Kunstformen der Natur karya Ernst Haeckel yang memvisualisasikan koloni tunikata laut (Ascidiae) dengan ketajaman struktur transparan, gradasi warna organik, dan keseimbangan komposisi simetris. Sumber: Wikimedia Commons (Public Domain).',
+    image_path: 'artworks/haeckel-ascidiae.jpg',
+    tags: ['ilustrasi-ilmiah', 'litografi', 'biologi-laut', 'detail-tinggi'],
+    hoursAgo: 332,
+  },
+  {
+    username: 'arthur_rackham',
+    category_slug: 'ilustrasi',
+    title: 'Titania Lying Asleep — A Midsummer Night\'s Dream (1908)',
+    description:
+      'Ilustrasi tinta pena dan cat air karya Arthur Rackham untuk edisi 1908 drama klasik William Shakespeare "A Midsummer Night\'s Dream". Menghidupkan hutan peri bermandikan cahaya senja dengan akar pohon berkelok, mahkota bunga, serta detail karakter dongeng penuh imajinasi. Sumber: Wikimedia Commons (Public Domain).',
+    image_path: 'artworks/rackham-midsummer-night.jpg',
+    tags: ['ilustrasi-buku', 'cat-air', 'fantasi', 'ilustrasi-klasik'],
+    hoursAgo: 320,
+  },
+  {
+    username: 'kassian_cephas',
+    category_slug: 'fotografi',
+    title: 'Candi Prambanan — Dokumentasi Arkeologi KITLV (1889–1890)',
+    description:
+      'Fotografi dokumentasi arsitektur bersejarah karya Kassian Cephas (1889–1890) yang merekam kondisi awal kompleks Candi Prambanan (Candi Loro Jonggrang) di Yogyakarta sebelum pemugaran modern. Kekayaan tekstur batu candi dan skala ruangnya menjadi arsip tak ternilai warisan Nusantara. Arsip KITLV 40240 / Leiden University Libraries (Public Domain).',
+    image_path: 'artworks/cephas-prambanan.jpg',
+    tags: ['prambanan', 'fotografi-dokumenter', 'sejarah-nusantara', 'arsip'],
+    hoursAgo: 308,
+  },
+  {
+    username: 'ansel_adams',
+    category_slug: 'fotografi',
+    title: 'Curved Cliff, Grand Canyon National Park (1941–1942)',
+    description:
+      'Fotografi lanskap monokrom karya Ansel Adams di Taman Nasional Grand Canyon, Arizona, dalam proyek dokumentasi taman nasional Departemen Dalam Negeri AS. Menampilkan kurva dinding tebing batu berlapis dengan kontras gelap-terang dramatis khas Zone System. Arsip National Archives (NARA 519898, Public Domain).',
+    image_path: 'artworks/adams-grand-canyon.jpg',
+    tags: ['fotografi-alam', 'hitam-putih', 'zone-system', 'lanskap'],
+    hoursAgo: 296,
+  },
+  {
+    username: 'dorothea_lange',
+    category_slug: 'fotografi',
+    title: 'Toward Los Angeles, California — Arsip FSA (1937)',
+    description:
+      'Foto dokumenter ikonik karya Dorothea Lange pada Maret 1937 untuk Farm Security Administration yang memotret dua pekerja migran berjalan menyusuri jalan raya California melewati papan iklan kereta api bertuliskan "Next time try the train, Relax". Arsip Library of Congress (Public Domain).',
+    image_path: 'artworks/lange-toward-los-angeles.jpg',
+    tags: ['fotografi-dokumenter', 'hitam-putih', 'sejarah', 'humanisme'],
+    hoursAgo: 284,
+  },
+  {
+    username: 'alfred_stieglitz',
+    category_slug: 'fotografi',
+    title: 'The Terminal, New York (1893)',
+    description:
+      'Fotografi jalanan klasik karya Alfred Stieglitz yang dipotret pada hari bersalju dingin tahun 1893 di depan kantor pos New York dengan kamera genggam. Kepulan uap panas dari kuda penarik trem di tengah kabut salju menjadi contoh awal fotografi ekspresif bergaya puitis. Koleksi Cleveland Museum of Art (Public Domain).',
+    image_path: 'artworks/stieglitz-the-terminal.jpg',
+    tags: ['fotografi-dokumenter', 'hitam-putih', 'modernisme', 'musim-dingin'],
+    hoursAgo: 272,
+  },
+  {
+    username: 'nasa_archive',
+    category_slug: 'fotografi',
+    title: 'The Blue Marble — Misi Apollo 17 (7 Desember 1972)',
+    description:
+      'Potret utuh planet Bumi paling terkenal sepanjang sejarah, diambil oleh kru misi Apollo 17 pada jarak sekitar 29.000 km menggunakan kamera Hasselblad 70mm. Memperlihatkan benua Afrika, Semenanjung Arab, Madagaskar, dan tudung es Antarktika secara jernih di ruang angkasa. Arsip NASA AS17-148-22727 (Public Domain).',
+    image_path: 'artworks/nasa-blue-marble.jpg',
+    tags: ['fotografi-antariksa', 'apollo-17', 'sejarah', 'nasa'],
+    hoursAgo: 260,
+  },
+  {
+    username: 'nasa_archive',
+    category_slug: 'fotografi',
+    title: 'Pillars of Creation — Nebula Elang Teleskop Hubble (2014)',
+    description:
+      'Citra astronomi definisi tinggi dari Wide Field Camera 3 Teleskop Luar Angkasa Hubble (2014) yang memperlihatkan pilar raksasa gas antarbintang dan debu kosmik di Nebula Elang (M16), berjarak sekitar 6.500 tahun cahaya dari Bumi—lokasi kelahiran bintang-bintang baru. Arsip NASA / ESA Hubble (Public Domain).',
+    image_path: 'artworks/nasa-pillars-of-creation.jpg',
+    tags: ['fotografi-antariksa', 'astronomi', 'hubble', 'nasa'],
+    hoursAgo: 248,
+  },
+  {
+    username: 'alphonse_mucha',
+    category_slug: 'desain-grafis',
+    title: 'Gismonda — Poster Litografi Sarah Bernhardt (1894)',
+    description:
+      'Poster litografi monumental berformat vertikal ramping (216 × 74,2 cm) karya Alphonse Mucha untuk pementasan teater "Gismonda" yang dibintangi aktris legendaris Sarah Bernhardt di Paris. Palet pastel lembut, tipografi lengkung khas mozaik Bizantium, dan bingkai floralnya meluncurkan tren global Art Nouveau. Sumber: Wikimedia Commons (Public Domain).',
+    image_path: 'artworks/mucha-gismonda.jpg',
+    tags: ['art-nouveau', 'poster-klasik', 'litografi', 'tipografi'],
+    hoursAgo: 236,
+  },
+  {
+    username: 'toulouse_lautrec',
+    category_slug: 'desain-grafis',
+    title: 'Divan Japonais — Poster Litografi Kabaret Paris (1893)',
+    description:
+      'Poster litografi warna karya Henri de Toulouse-Lautrec tahun 1893 untuk café-concert Le Divan Japonais di Montmartre. Menonjolkan siluet gaun hitam tegas Jane Avril di latar depan, pemotongan bingkai asimetris bergaya cetakan Jepang, dan kontras tipografi grafis yang berani. Koleksi Musée Toulouse-Lautrec, Albi (Public Domain).',
+    image_path: 'artworks/lautrec-divan-japonais.jpg',
+    tags: ['poster-klasik', 'litografi', 'montmartre', 'tipografi'],
+    hoursAgo: 224,
+  },
+  {
+    username: 'steinlen_art',
+    category_slug: 'desain-grafis',
+    title: 'Lait Pur de la Vingeanne Stérilisé (1894)',
+    description:
+      'Poster iklan litografi warna karya Théophile-Alexandre Steinlen tahun 1894 yang menggambarkan anak perempuan berpakaian merah meminum susu dikelilingi tiga kucing penuh rasa ingin tahu. Dikenal karena garis kontur ekspresif, kehangatan cerita visual, dan tipografi poster bergaya Belle Époque. Arsip BnF Gallica (Public Domain).',
+    image_path: 'artworks/steinlen-lait-pur.jpg',
+    tags: ['poster-klasik', 'litografi', 'belle-epoque', 'ilustrasi-klasik'],
+    hoursAgo: 212,
+  },
+  {
+    username: 'jules_cheret',
+    category_slug: 'desain-grafis',
+    title: 'Folies-Bergère: La Loïe Fuller (1893)',
+    description:
+      'Poster litografi kromolitografi karya Jules Chéret tahun 1893 yang mengabadikan tarian serpentin ikonik penari Amerika Loïe Fuller di panggung Folies-Bergère, Paris. Aliran kain sutra melingkar yang disinari lampu warna-warni diwujudkan lewat gradasi pigmen cerah dan gerakan tipografi lincah. Sumber: Wikimedia Commons (Public Domain).',
+    image_path: 'artworks/cheret-folies-bergere.jpg',
+    tags: ['poster-klasik', 'litografi', 'belle-epoque', 'tipografi'],
+    hoursAgo: 200,
+  },
+  {
+    username: 'blender_studio',
+    category_slug: '3d-art',
+    title: 'Charge — Adegan Film Pendek Terbuka Blender 3.4 (2022)',
+    description:
+      'Karya resmi splash screen Blender 3.4 dari film pendek aksi terbuka "Charge" produksi Blender Studio (2022). Menonjolkan pencahayaan sinematik dramatis, desain karakter futuristik berdetail tinggi, serta efek partikel dan shader realistis yang seluruh file sumbernya dibagikan terbuka. Sumber: Wikimedia Commons (Lisensi CC BY 4.0).',
+    image_path: 'artworks/blender-34-charge.png',
+    tags: ['blender-cycles', 'open-movie', 'render-3d', 'sinematik'],
+    hoursAgo: 188,
+  },
+  {
+    username: 'blender_studio',
+    category_slug: '3d-art',
+    title: 'Splash Render Blender 4.3 — Eksplorasi 3D Terbuka (2024)',
+    description:
+      'Karya render 3D resmi splash screen rilis Blender 4.3 (2024) yang memamerkan kemampuan Grease Pencil 3, sistem pencahayaan EEVEE Next dan Cycles, serta perpaduan gaya ilustratif dan ruang tiga dimensi yang kaya kedalaman atmosfer. Sumber: Wikimedia Commons (Lisensi CC BY 4.0).',
+    image_path: 'artworks/blender-43-splash.png',
+    tags: ['blender-cycles', 'render-3d', 'pencahayaan', 'open-movie'],
+    hoursAgo: 176,
+  },
+  {
+    username: 'open_design_lab',
+    category_slug: 'ui-ux',
+    title: 'KDE Plasma 6 — Lingkungan Desktop Breeze Modern',
+    description:
+      'Antarmuka nyata lingkungan desktop sumber terbuka KDE Plasma 6 dengan bahasa desain Breeze terbaru. Menampilkan panel mengambang adaptif, konsistensi ruang kosong, hierarki tipografi tajam, serta integrasi pengaturan sistem yang modular. Sumber: Wikimedia Commons (Lisensi GPL).',
+    image_path: 'artworks/kde-plasma-6-ui.png',
+    tags: ['ui-design', 'sistem-desain', 'open-source-ui', 'desktop-ui'],
+    hoursAgo: 164,
+  },
+  {
+    username: 'open_design_lab',
+    category_slug: 'ui-ux',
+    title: 'Inkscape 1.3 — Ruang Kerja Ilustrasi Vektor Terbuka',
+    description:
+      'Tampilan nyata ruang kerja aplikasi desain grafis vektor sumber terbuka Inkscape 1.3. Memperlihatkan tata letak bilah alat presisi, panel lapisan dan properti terstruktur, manajemen palet warna, serta dukungan standar SVG penuh untuk kreator grafis. Sumber: Wikimedia Commons (Lisensi CC BY-SA 3.0).',
+    image_path: 'artworks/inkscape-13-ui.png',
+    tags: ['ui-ux', 'open-source-ui', 'desktop-ui', 'vektor'],
+    hoursAgo: 152,
+  },
+  {
+    username: 'open_design_lab',
+    category_slug: 'ui-ux',
+    title: 'Krita 5 — Kanvas Lukis Digital Sumber Terbuka',
+    description:
+      'Tampilan antarmuka Krita 5, aplikasi lukis digital dan animasi sumber terbuka untuk ilustrator profesional. Menonjolkan tema gelap ramah mata agar fokus tertuju pada warna kanvas, docker preset kuas, roda warna cepat, dan manajemen lapisan non-destruktif. Sumber: Wikimedia Commons (Lisensi CC BY-SA 4.0).',
+    image_path: 'artworks/krita-5-ui.png',
+    tags: ['ui-ux', 'open-source-ui', 'sistem-desain', 'desktop-ui'],
+    hoursAgo: 140,
+  },
+  {
+    username: 'auguste_rodin',
+    category_slug: 'lainnya',
+    title: 'Le Baiser — The Kiss (1882–1889)',
+    description:
+      'Patung terkenal karya Auguste Rodin yang awalnya dirancang sebagai bagian dari gerbang "The Gates of Hell", menggambarkan pasangan Paolo Malatesta dan Francesca da Rimini dari karya Dante Alighieri dalam komposisi anatomi penuh kehalusan emosi. Sumber foto dokumentasi: Wikimedia Commons (Lisensi CC BY 2.0).',
+    image_path: 'artworks/rodin-the-kiss.jpg',
+    tags: ['seni-patung', 'musee-rodin', 'klasik', 'anatomi'],
+    hoursAgo: 128,
+  },
+  {
+    username: 'michelangelo_b',
+    category_slug: 'lainnya',
+    title: 'Pietà — Patung Marmer Carrara Basilika Santo Petrus (1498–1499)',
+    description:
+      'Mahakarya pahatan marmer Carrara karya Michelangelo Buonarroti yang diselesaikan saat usianya baru 24 tahun (tinggi 174 cm, lebar 195 cm). Terkenal karena kehalusan lipatan kain yang tampak alami, komposisi piramidal seimbang, dan satu-satunya patung yang ditandatangani langsung oleh Michelangelo. Koleksi Basilika Santo Petrus, Vatikan (Foto: CC BY 2.5).',
+    image_path: 'artworks/michelangelo-pieta.jpg',
+    tags: ['seni-patung', 'renaisans', 'marmer-carrara', 'klasik'],
+    hoursAgo: 116,
+  },
   // 10 Karya nyata baru tambahan (published)
   {
     username: 'open_design_lab',
@@ -1488,6 +1849,35 @@ async function runDummySeed() {
       ['sandro_botticelli', 'David — Patung Marmer Carrara (1501–1504)'],
       ['open_design_lab', 'Watercolor Café — Render 3D Blender 4.0 (2023)'],
       ['blender_studio', 'GNOME Files 47 — Sistem Antarmuka Libadwaita Modern'],
+      ['vincent_vangogh', 'Merapi, Eruption by Night — Letusan Merapi di Malam Hari (1865)'],
+      ['caspar_friedrich', 'Merapi, Eruption by Night — Letusan Merapi di Malam Hari (1865)'],
+      ['kurator_galeri', 'Merapi, Eruption by Night — Letusan Merapi di Malam Hari (1865)'],
+      ['raden_saleh', 'Café Terrace at Night — Teras Kafe di Malam Hari (1888)'],
+      ['claude_monet', 'Café Terrace at Night — Teras Kafe di Malam Hari (1888)'],
+      ['rembrandt_vanrijn', 'Het Melkmeisje — The Milkmaid (c. 1658–1660)'],
+      ['leonardo_davinci', 'Het Melkmeisje — The Milkmaid (c. 1658–1660)'],
+      ['ansel_adams', 'Candi Prambanan — Dokumentasi Arkeologi KITLV (1889–1890)'],
+      ['raden_saleh', 'Candi Prambanan — Dokumentasi Arkeologi KITLV (1889–1890)'],
+      ['dorothea_lange', 'The Blue Marble — Misi Apollo 17 (7 Desember 1972)'],
+      ['kassian_cephas', 'The Blue Marble — Misi Apollo 17 (7 Desember 1972)'],
+      ['ansel_adams', 'Pillars of Creation — Nebula Elang Teleskop Hubble (2014)'],
+      ['utagawa_hiroshige', 'Sanka Hakuu — Rainstorm Beneath the Summit (c. 1830–1832)'],
+      ['katsushika_hokusai', 'Taman Plum Kameido — Panoramic View of Kameido (c. 1850-an)'],
+      ['toulouse_lautrec', 'Gismonda — Poster Litografi Sarah Bernhardt (1894)'],
+      ['steinlen_art', 'Gismonda — Poster Litografi Sarah Bernhardt (1894)'],
+      ['alphonse_mucha', 'Divan Japonais — Poster Litografi Kabaret Paris (1893)'],
+      ['jules_cheret', 'Lait Pur de la Vingeanne Stérilisé (1894)'],
+      ['open_design_lab', 'Charge — Adegan Film Pendek Terbuka Blender 3.4 (2022)'],
+      ['blender_studio', 'KDE Plasma 6 — Lingkungan Desktop Breeze Modern'],
+      ['blender_studio', 'Krita 5 — Kanvas Lukis Digital Sumber Terbuka'],
+      ['auguste_rodin', 'Pietà — Patung Marmer Carrara Basilika Santo Petrus (1498–1499)'],
+      ['michelangelo_b', 'Le Baiser — The Kiss (1882–1889)'],
+      ['sandro_botticelli', 'Lady with an Ermine — Wanita dengan Cerpelai (c. 1489–1491)'],
+      ['johannes_vermeer', 'The Anatomy Lesson of Dr. Nicolaes Tulp (1632)'],
+      ['pieter_bruegel', 'Primavera — Alegori Musim Semi (c. 1477–1482)'],
+      ['diego_velazquez', 'The Tower of Babel — Menara Babel (1563)'],
+      ['gustav_klimt', 'The Dance of Life — Tarian Kehidupan (1899–1900)'],
+      ['edvard_munch', 'Portrait of Adele Bloch-Bauer I — The Woman in Gold (1907)'],
     ];
 
     for (const [uname, title] of likeEntries) {
@@ -1507,6 +1897,11 @@ async function runDummySeed() {
       ['vincent_vangogh', 'The Great Wave off Kanagawa (c. 1831)'],
       ['kassian_cephas', 'The Tetons and the Snake River (1942)'],
       ['blender_studio', 'Kunstformen der Natur — Plate 8: Discomedusae (1904)'],
+      ['kurator_galeri', 'Merapi, Eruption by Night — Letusan Merapi di Malam Hari (1865)'],
+      ['kurator_fotografi', 'Candi Prambanan — Dokumentasi Arkeologi KITLV (1889–1890)'],
+      ['kurator_digital', 'KDE Plasma 6 — Lingkungan Desktop Breeze Modern'],
+      ['johannes_vermeer', 'Café Terrace at Night — Teras Kafe di Malam Hari (1888)'],
+      ['alphonse_mucha', 'Divan Japonais — Poster Litografi Kabaret Paris (1893)'],
     ];
     for (const [uname, title] of favEntries) {
       const uid = u(uname);
@@ -1591,6 +1986,48 @@ async function runDummySeed() {
         username: 'raden_saleh',
         content:
           'Komposisi Rückenfigur di puncak kabut sangat kuat menghadirkan rasa kontemplatif khas Romantisisme.',
+      },
+      {
+        artwork: 'Merapi, Eruption by Night — Letusan Merapi di Malam Hari (1865)',
+        username: 'caspar_friedrich',
+        content:
+          'Kontras pendaran lava di tengah malam gelap Jawa memperlihatkan penguasaan pencahayaan Romantisisme yang dahsyat.',
+      },
+      {
+        artwork: 'Café Terrace at Night — Teras Kafe di Malam Hari (1888)',
+        username: 'claude_monet',
+        content:
+          'Keberanian melukis adegan malam tanpa pigmen hitam membuat seluruh bidang terasa bergetar oleh cahaya hangat.',
+      },
+      {
+        artwork: 'Candi Prambanan — Dokumentasi Arkeologi KITLV (1889–1890)',
+        username: 'ansel_adams',
+        content:
+          'Dokumentasi arkeologi yang luar biasa berharga—ketajaman tekstur batu candi dan skala arsitekturnya terekam sempurna.',
+      },
+      {
+        artwork: 'The Blue Marble — Misi Apollo 17 (7 Desember 1972)',
+        username: 'kassian_cephas',
+        content:
+          'Perspektif utuh planet Bumi ini mengingatkan betapa kecil sekaligus berharganya ruang hidup kita bersama.',
+      },
+      {
+        artwork: 'Gismonda — Poster Litografi Sarah Bernhardt (1894)',
+        username: 'toulouse_lautrec',
+        content:
+          'Format memanjang vertikal dan harmoni ornamen pastelnya benar-benar membuka babak baru desain poster Paris.',
+      },
+      {
+        artwork: 'KDE Plasma 6 — Lingkungan Desktop Breeze Modern',
+        username: 'blender_studio',
+        content:
+          'Tata letak panel mengambang dan hierarki tipografinya sangat bersih untuk alur kerja kreatif harian.',
+      },
+      {
+        artwork: 'Pietà — Patung Marmer Carrara Basilika Santo Petrus (1498–1499)',
+        username: 'auguste_rodin',
+        content:
+          'Kelenturan lipatan kain pada marmer keras ini tetap menjadi standar tertinggi seni pahat sepanjang masa.',
       },
       // Komentar berstatus deleted (untuk kelengkapan variasi status moderasi komentar)
       {
@@ -1934,6 +2371,118 @@ async function runDummySeed() {
         'Sprite Fright — Render 3D Blender 3.0 (2021)',
       ],
       withdrawn: ['Spring — Adegan Film Pendek Terbuka Blender 2.80 (2019)'],
+    });
+
+    // Tantangan Closed ke-3 (Kurator Galeri — Lintas Kategori, siap ditetapkan pemenangnya)
+    await ensureChallenge({
+      curatorUsername: 'kurator_galeri',
+      categorySlug: null,
+      title: 'Antologi Mahakarya & Inovasi Visual Lintas Media',
+      description:
+        'Tantangan lintas kategori yang telah melewati batas akhir pengiriman dan kini siap dinilai oleh Dewan Kurasi Arsip ARTIVA untuk menentukan 1 hingga 3 pemenang terbaik.',
+      rules:
+        '1. Terbuka untuk seluruh kategori kreatif (Lukisan, Fotografi, Ilustrasi, Desain Grafis, 3D Art, UI/UX, dan Lainnya).\n2. Dewan kurasi menetapkan 1 hingga 3 karya terbaik berdasarkan kekuatan narasi, komposisi, dan inovasi teknis.',
+      startOffset: -28,
+      endOffset: -3,
+      status: 'closed',
+      submissions: [
+        'Merapi, Eruption by Night — Letusan Merapi di Malam Hari (1865)',
+        'Café Terrace at Night — Teras Kafe di Malam Hari (1888)',
+        'The Blue Marble — Misi Apollo 17 (7 Desember 1972)',
+        'Sanka Hakuu — Rainstorm Beneath the Summit (c. 1830–1832)',
+        'Gismonda — Poster Litografi Sarah Bernhardt (1894)',
+        'Charge — Adegan Film Pendek Terbuka Blender 3.4 (2022)',
+        'Pietà — Patung Marmer Carrara Basilika Santo Petrus (1498–1499)',
+      ],
+      withdrawn: ['Gezicht op Delft — View of Delft (c. 1660–1661)'],
+    });
+
+    // Tantangan Closed ke-4 (Kurator Galeri — Khusus Ilustrasi, siap ditetapkan pemenangnya)
+    await ensureChallenge({
+      curatorUsername: 'kurator_galeri',
+      categorySlug: 'ilustrasi',
+      title: 'Narasi Garis, Fantasi & Ilustrasi Klasik Dunia',
+      description:
+        'Kompetisi kurasi khusus ilustrasi cetak kayu, ilustrasi ilmiah, sketsa anatomi, hingga dongeng cat air yang telah ditutup dan siap ditetapkan pemenangnya.',
+      rules:
+        '1. Khusus kategori Ilustrasi.\n2. Penilaian menekankan ketajaman garis, daya cerita, dan keselarasan komposisi visual.',
+      startOffset: -24,
+      endOffset: -2,
+      status: 'closed',
+      submissions: [
+        'Sanka Hakuu — Rainstorm Beneath the Summit (c. 1830–1832)',
+        'Taman Plum Kameido — Panoramic View of Kameido (c. 1850-an)',
+        'L\'Uomo Vitruviano — Vitruvian Man (c. 1490)',
+        'Titania Lying Asleep — A Midsummer Night\'s Dream (1908)',
+        'Kunstformen der Natur — Plate 85: Ascidiae (1904)',
+        'A Mad Tea-Party — Ilustrasi Alice in Wonderland (1907)',
+      ],
+    });
+
+    // Tantangan Closed ke-5 (Kurator Fotografi — Khusus Fotografi, siap ditetapkan pemenangnya)
+    await ensureChallenge({
+      curatorUsername: 'kurator_fotografi',
+      categorySlug: 'fotografi',
+      title: 'Jejak Cahaya, Arsitektur & Cakrawala Semesta',
+      description:
+        'Tantangan fotografi arkeologi, lanskap alam, dokumenter kemanusiaan, dan citra antariksa yang masa pengumpulannya telah selesai dan menunggu pengumuman pemenang.',
+      rules:
+        '1. Khusus kategori Fotografi.\n2. Kurator memilih hingga 3 karya dengan kekuatan dokumentasi, rentang tonal, dan dampak visual terbaik.',
+      startOffset: -26,
+      endOffset: -3,
+      status: 'closed',
+      submissions: [
+        'Candi Prambanan — Dokumentasi Arkeologi KITLV (1889–1890)',
+        'Curved Cliff, Grand Canyon National Park (1941–1942)',
+        'Toward Los Angeles, California — Arsip FSA (1937)',
+        'The Blue Marble — Misi Apollo 17 (7 Desember 1972)',
+        'Pillars of Creation — Nebula Elang Teleskop Hubble (2014)',
+        'The Terminal, New York (1893)',
+      ],
+    });
+
+    // Tantangan Closed ke-6 (Kurator Seni Rupa — Khusus Desain Grafis, siap ditetapkan pemenangnya)
+    await ensureChallenge({
+      curatorUsername: 'kurator_seni_rupa',
+      categorySlug: 'desain-grafis',
+      title: 'Keemasan Poster Litografi & Tipografi Belle Époque',
+      description:
+        'Ajang kurasi poster litografi, tipografi dekoratif, dan komposisi grafis klasik yang kini berada pada tahap penjurian akhir untuk penentuan pemenang.',
+      rules:
+        '1. Khusus kategori Desain Grafis.\n2. Menilai keterbacaan tipografi, harmoni warna, dan daya tarik visual poster.',
+      startOffset: -22,
+      endOffset: -2,
+      status: 'closed',
+      submissions: [
+        'Gismonda — Poster Litografi Sarah Bernhardt (1894)',
+        'Divan Japonais — Poster Litografi Kabaret Paris (1893)',
+        'Lait Pur de la Vingeanne Stérilisé (1894)',
+        'Folies-Bergère: La Loïe Fuller (1893)',
+        'Tournée du Chat Noir (1896)',
+        'Moulin Rouge: La Goulue (1891)',
+      ],
+    });
+
+    // Tantangan Closed ke-7 (Kurator Digital — Khusus UI/UX, siap ditetapkan pemenangnya)
+    await ensureChallenge({
+      curatorUsername: 'kurator_digital',
+      categorySlug: 'ui-ux',
+      title: 'Antarmuka Terbuka & Ergonomi Ruang Kerja Digital',
+      description:
+        'Tantangan kurasi antarmuka aplikasi dan sistem desain sumber terbuka yang telah selesai menerima karya dan siap ditetapkan 1 hingga 3 pemenangnya.',
+      rules:
+        '1. Khusus kategori UI/UX.\n2. Kurator menilai kejelasan hierarki informasi, konsistensi komponen, dan kenyamanan alur kerja pengguna.',
+      startOffset: -21,
+      endOffset: -2,
+      status: 'closed',
+      submissions: [
+        'KDE Plasma 6 — Lingkungan Desktop Breeze Modern',
+        'Inkscape 1.3 — Ruang Kerja Ilustrasi Vektor Terbuka',
+        'Krita 5 — Kanvas Lukis Digital Sumber Terbuka',
+        'Penpot — Ruang Kerja Desain & Prototipe Sumber Terbuka',
+        'elementary OS 8 — Sistem Desain Desktop Pantheon',
+        'GNOME Files 47 — Sistem Antarmuka Libadwaita Modern',
+      ],
     });
 
     // Tantangan Draft ke-1 (Kurator Digital)
