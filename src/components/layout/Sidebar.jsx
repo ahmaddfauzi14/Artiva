@@ -3,9 +3,27 @@
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import {
+  IconFlag,
+  IconLayoutDashboard,
+  IconLogout,
+  IconShieldCheck,
+  IconTag,
+  IconUsers,
+  IconX,
+} from '@tabler/icons-react';
 import ArtivaLogo from '@/components/layout/ArtivaLogo';
 import Avatar from '@/components/ui/Avatar';
-import Button from '@/components/ui/Button';
+import {
+  Sidebar as WensitySidebar,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarItem,
+  SidebarNav,
+  SidebarSection,
+  SidebarToggle,
+  useSidebar,
+} from '@/components/ui/sidebar';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/shared/api-client';
 import { getStatusMeta } from '@/lib/shared/status-styles';
@@ -18,109 +36,140 @@ const ROLE_TITLE = {
   admin: 'Admin',
 };
 
-function MenuGlyph({ name }) {
-  const props = {
-    className: 'h-4 w-4 shrink-0',
-    viewBox: '0 0 20 20',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: '1.8',
-    'aria-hidden': 'true',
+function renderMenuIcon(name) {
+  const iconProps = {
+    className: 'size-[18px]',
+    stroke: 1.75,
+    'aria-hidden': true,
   };
 
   switch (name) {
     case 'grid':
-      return (
-        <svg {...props}>
-          <rect x="3" y="3" width="6" height="6" rx="1.5" />
-          <rect x="11" y="3" width="6" height="6" rx="1.5" />
-          <rect x="3" y="11" width="6" height="6" rx="1.5" />
-          <rect x="11" y="11" width="6" height="6" rx="1.5" />
-        </svg>
-      );
-    case 'frame':
-      return (
-        <svg {...props}>
-          <rect x="3" y="4" width="14" height="12" rx="2" />
-          <path d="M6 13l3-3 2.5 2.5L14 10l2 3" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      );
-    case 'trophy':
-      return (
-        <svg {...props}>
-          <path d="M6 4h8v4a4 4 0 01-8 0V4z" />
-          <path d="M10 12v4M7 16h6M4 5h2v3a2 2 0 01-2-2V5zM14 5h2v1a2 2 0 01-2 2V5z" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      );
-    case 'send':
-      return (
-        <svg {...props}>
-          <path d="M17 3L9 11M17 3l-5 14-3-6-6-3 14-5z" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      );
-    case 'heart':
-      return (
-        <svg {...props}>
-          <path d="M10 16.5s-6-3.8-6-8.2A3.3 3.3 0 019.5 5.6L10 6.2l.5-.6A3.3 3.3 0 0116 8.3c0 4.4-6 8.2-6 8.2z" strokeLinejoin="round" />
-        </svg>
-      );
-    case 'user':
-      return (
-        <svg {...props}>
-          <circle cx="10" cy="7" r="3" />
-          <path d="M4.5 16.5a5.5 5.5 0 0111 0" strokeLinecap="round" />
-        </svg>
-      );
+      return <IconLayoutDashboard {...iconProps} />;
     case 'shield':
-      return (
-        <svg {...props}>
-          <path d="M10 2.5l6 2.5v4.5c0 4-2.5 6.8-6 8-3.5-1.2-6-4-6-8V5l6-2.5z" strokeLinejoin="round" />
-          <path d="M7.5 10l1.8 1.8L12.8 8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      );
+      return <IconShieldCheck {...iconProps} />;
     case 'users':
-      return (
-        <svg {...props}>
-          <circle cx="7.5" cy="7" r="2.5" />
-          <path d="M3 16a4.5 4.5 0 019 0" strokeLinecap="round" />
-          <circle cx="14" cy="8" r="2" />
-          <path d="M14 12.5a3.5 3.5 0 013.5 3.5" strokeLinecap="round" />
-        </svg>
-      );
+      return <IconUsers {...iconProps} />;
     case 'tag':
-      return (
-        <svg {...props}>
-          <path d="M3.5 10.5V4.5a1 1 0 011-1h6l6 6-6 6-7-5z" strokeLinejoin="round" />
-          <circle cx="7.5" cy="7.5" r="1" fill="currentColor" />
-        </svg>
-      );
+      return <IconTag {...iconProps} />;
     case 'flag':
-      return (
-        <svg {...props}>
-          <path d="M5 3v14M5 4h9l-1.5 3.5L14 11H5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      );
+      return <IconFlag {...iconProps} />;
     default:
-      return (
-        <svg {...props}>
-          <circle cx="10" cy="10" r="6" />
-        </svg>
-      );
+      return <IconLayoutDashboard {...iconProps} />;
   }
 }
 
 export function getSidebarMenu(role) {
   if (role === 'admin') {
     return [
-      { key: 'dashboard', label: 'Dashboard', href: '/dashboard/admin', icon: 'grid' },
-      { key: 'curators', label: 'Verifikasi kurator', href: '/dashboard/admin/curators', icon: 'shield' },
-      { key: 'users', label: 'Pengguna', href: '/dashboard/admin/users', icon: 'users' },
-      { key: 'categories', label: 'Kategori', href: '/dashboard/admin/categories', icon: 'tag' },
-      { key: 'reports', label: 'Moderasi laporan', href: '/dashboard/admin/reports', icon: 'flag' },
+      {
+        key: 'dashboard',
+        label: 'Dashboard',
+        href: '/dashboard/admin',
+        icon: 'grid',
+        section: 'Ringkasan',
+      },
+      {
+        key: 'curators',
+        label: 'Verifikasi kurator',
+        href: '/dashboard/admin/curators',
+        icon: 'shield',
+        section: 'Pengelolaan',
+      },
+      {
+        key: 'users',
+        label: 'Pengguna',
+        href: '/dashboard/admin/users',
+        icon: 'users',
+        section: 'Pengelolaan',
+      },
+      {
+        key: 'categories',
+        label: 'Kategori',
+        href: '/dashboard/admin/categories',
+        icon: 'tag',
+        section: 'Pengelolaan',
+      },
+      {
+        key: 'reports',
+        label: 'Moderasi laporan',
+        href: '/dashboard/admin/reports',
+        icon: 'flag',
+        section: 'Pengelolaan',
+      },
     ];
   }
 
   return [];
+}
+
+function SidebarBrandMark({ role, onNavigate }) {
+  const { collapsed } = useSidebar();
+
+  if (collapsed) {
+    return (
+      <div className="flex items-center justify-center">
+        <ArtivaLogo size="sm" showWordmark={false} />
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={`/dashboard/${role}`}
+      onClick={onNavigate}
+      className="flex min-w-0 items-center gap-2.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-brand-700"
+    >
+      <ArtivaLogo size="sm" showWordmark={false} />
+      <div className="min-w-0">
+        <span className="block truncate py-[1px] text-[14px] font-bold uppercase leading-snug tracking-[0.16em] text-ink">
+          ARTIVA
+        </span>
+        <span className="block truncate py-[1px] text-[10px] font-semibold uppercase leading-snug tracking-[0.08em] text-brand-700">
+          {ROLE_SPACE_LABEL[role] || 'RUANG ADMIN'}
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+function SidebarUserFooter({ user, loggingOut, onLogout }) {
+  const { collapsed } = useSidebar();
+  const statusMeta = getStatusMeta('user', user.status);
+  const displayName = user.display_name || user.username;
+
+  return (
+    <div
+      className={`flex w-full items-center ${
+        collapsed ? 'flex-col gap-2.5' : 'justify-between gap-2.5'
+      }`}
+    >
+      <div className="flex min-w-0 items-center gap-2.5">
+        <Avatar name={displayName} avatarUrl={user.avatar_url} size="sm" />
+        {!collapsed ? (
+          <div className="min-w-0 flex-1">
+            <p className="truncate py-[1px] text-[12.5px] font-semibold leading-snug text-ink">
+              {displayName}
+            </p>
+            <p className="truncate py-[1px] text-[11px] leading-snug text-ink-mute">
+              {ROLE_TITLE[user.role] || user.role} · {statusMeta?.label}
+            </p>
+          </div>
+        ) : null}
+      </div>
+
+      <button
+        type="button"
+        disabled={loggingOut}
+        onClick={onLogout}
+        aria-label="Keluar akun"
+        title="Keluar akun"
+        className="inline-flex size-9 shrink-0 items-center justify-center rounded-[var(--primitive-radius-control-sm,0.625rem)] text-ink-mute transition-colors hover:bg-[var(--primitive-surface-hover)] hover:text-crimson focus-visible:ring-2 focus-visible:ring-brand-700 disabled:pointer-events-none disabled:opacity-40"
+      >
+        <IconLogout className="size-[17px]" stroke={1.75} aria-hidden="true" />
+      </button>
+    </div>
+  );
 }
 
 export default function Sidebar({
@@ -137,12 +186,13 @@ export default function Sidebar({
   const { showToast } = useToast();
   const [loggingOut, setLoggingOut] = useState(false);
 
-  const drawerRef = useRef(null);
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
   const currentQuery = searchParams.get('tab') || searchParams.get('view') || '';
 
   const menuItems = getSidebarMenu(user.role);
-  const statusMeta = getStatusMeta('user', user.status);
-  const displayName = user.display_name || user.username;
+  const summaryItems = menuItems.filter((item) => item.section === 'Ringkasan');
+  const managementItems = menuItems.filter((item) => item.section !== 'Ringkasan');
 
   const isItemActive = (item) => {
     if (item.href.includes('?')) {
@@ -164,49 +214,19 @@ export default function Sidebar({
   };
 
   useEffect(() => {
-    if (!mobileOpen) return undefined;
+    const dialog = dialogRef.current;
+    if (!dialog) return undefined;
 
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    if (mobileOpen && !dialog.open) {
+      dialog.showModal();
+      closeButtonRef.current?.focus();
+    } else if (!mobileOpen && dialog.open) {
+      dialog.close();
+      triggerRef?.current?.focus();
+    }
 
-    const focusTimer = setTimeout(() => {
-      const firstFocusable = drawerRef.current?.querySelector(
-        'button, a[href], [tabindex]:not([tabindex="-1"])'
-      );
-      firstFocusable?.focus();
-    }, 10);
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        onCloseMobile?.();
-        triggerRef?.current?.focus();
-        return;
-      }
-      if (e.key === 'Tab' && drawerRef.current) {
-        const focusables = drawerRef.current.querySelectorAll(
-          'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusables.length === 0) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      clearTimeout(focusTimer);
-      document.body.style.overflow = prevOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [mobileOpen, onCloseMobile, triggerRef]);
+    return undefined;
+  }, [mobileOpen, triggerRef]);
 
   const handleLogout = async () => {
     setLoggingOut(true);
@@ -226,190 +246,134 @@ export default function Sidebar({
     }
   };
 
-  const renderSidebarBody = (isMobileDrawer = false) => {
-    const isCompact = !isMobileDrawer && collapsed;
-
-    return (
-      <div className="flex h-full flex-col justify-between gap-6 p-4">
-        <div className="space-y-6">
-          {/* Header Sidebar */}
-          <div className="flex items-start justify-between gap-2 px-1">
-            <Link
-              href={`/dashboard/${user.role}`}
-              onClick={isMobileDrawer ? onCloseMobile : undefined}
-              className="min-w-0"
-              aria-label={isCompact ? `ARTIVA ${ROLE_SPACE_LABEL[user.role]}` : undefined}
-            >
-              <ArtivaLogo size="sm" showWordmark={!isCompact} />
-              {!isCompact ? (
-                <span className="mt-1.5 block text-xs font-semibold tracking-[0.08em] text-brand-700 uppercase">
-                  {ROLE_SPACE_LABEL[user.role]}
-                </span>
-              ) : null}
-            </Link>
-
-            {isMobileDrawer ? (
-              <button
-                type="button"
-                aria-label="Tutup menu ruang"
-                onClick={() => {
-                  onCloseMobile?.();
-                  triggerRef?.current?.focus();
-                }}
-                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-ink hover:bg-brand-50"
-              >
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  aria-hidden="true"
-                >
-                  <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
-                </svg>
-              </button>
-            ) : (
-              <button
-                type="button"
-                aria-expanded={!collapsed}
-                aria-label={collapsed ? 'Perluas sidebar' : 'Ciutkan sidebar'}
-                onClick={onToggleCollapse}
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-surface/85 text-ink-soft shadow-card-sm transition-colors hover:bg-brand-50 hover:text-brand-700"
-              >
-                <svg
-                  className={`h-4 w-4 transition-transform duration-200 ${
-                    collapsed ? 'rotate-180' : ''
-                  }`}
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M12 5l-5 5 5 5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            )}
-          </div>
-
-          {/* Menu Navigasi */}
-          <div className="space-y-2">
-            {!isCompact ? (
-              <p className="px-2 text-xs font-semibold uppercase tracking-[0.08em] text-ink-soft">
-                PENGELOLAAN
-              </p>
-            ) : null}
-
-            <nav aria-label="Menu ruang" className="space-y-1.5">
-              {menuItems.map((item) => {
-                const active = isItemActive(item);
-                return (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    aria-current={active ? 'page' : undefined}
-                    aria-label={isCompact ? item.label : undefined}
-                    title={isCompact ? item.label : undefined}
-                    onClick={isMobileDrawer ? onCloseMobile : undefined}
-                    className={`group relative flex min-h-[44px] items-center gap-3 rounded-[18px] px-3 py-2 text-sm transition-all duration-150 ${
-                      active
-                        ? 'bg-brand-100 font-semibold text-brand-700 shadow-card-sm'
-                        : 'font-medium text-ink-soft hover:bg-brand-50 hover:text-ink motion-safe:hover:translate-x-0.5'
-                    } ${isCompact ? 'justify-center px-2' : ''}`}
-                  >
-                    {active ? (
-                      <span
-                        aria-hidden="true"
-                        className="absolute top-2.5 bottom-2.5 left-1 w-1 rounded-full bg-brand-700"
-                      />
-                    ) : null}
-                    <MenuGlyph name={item.icon} />
-                    {!isCompact ? (
-                      <span className="truncate">{item.label}</span>
-                    ) : (
-                      <span className="sr-only">{item.label}</span>
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
-        </div>
-
-        {/* Footer Identitas Sidebar */}
-        <div className="space-y-3 border-t border-line pt-4">
-          <div
-            className={`flex items-center gap-3 rounded-[18px] bg-surface/80 p-2.5 ${
-              isCompact ? 'justify-center p-1.5' : ''
-            }`}
-          >
-            <Avatar name={displayName} avatarUrl={user.avatar_url} size="sm" />
-            {!isCompact ? (
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-ink">
-                  {displayName}
-                </p>
-                <p className="truncate text-xs text-ink-soft">
-                  {ROLE_TITLE[user.role] || user.role} · {statusMeta?.label}
-                </p>
-              </div>
-            ) : null}
-          </div>
-
-          <Button
-            variant="secondary"
-            size="sm"
-            loading={loggingOut}
-            onClick={handleLogout}
-            className="w-full"
-            aria-label={isCompact ? 'Keluar akun' : undefined}
-            title={isCompact ? 'Keluar akun' : undefined}
-          >
-            {isCompact ? 'Keluar' : 'Keluar akun'}
-          </Button>
-        </div>
-      </div>
-    );
+  const handleItemClick = (href, onAfterNavigate) => (e) => {
+    if (
+      !e.metaKey &&
+      !e.ctrlKey &&
+      !e.shiftKey &&
+      !e.altKey &&
+      e.button === 0
+    ) {
+      e.preventDefault();
+      router.push(href);
+      onAfterNavigate?.();
+    }
   };
+
+  const renderNavSections = (onAfterNavigate) => (
+    <SidebarNav className="sidebar-nav">
+      {summaryItems.length > 0 ? (
+        <SidebarSection label="Ringkasan">
+          {summaryItems.map((item) => (
+            <SidebarItem
+              key={item.key}
+              href={item.href}
+              icon={renderMenuIcon(item.icon)}
+              active={isItemActive(item)}
+              onClick={handleItemClick(item.href, onAfterNavigate)}
+            >
+              {item.label}
+            </SidebarItem>
+          ))}
+        </SidebarSection>
+      ) : null}
+
+      {managementItems.length > 0 ? (
+        <SidebarSection label="Pengelolaan">
+          {managementItems.map((item) => (
+            <SidebarItem
+              key={item.key}
+              href={item.href}
+              icon={renderMenuIcon(item.icon)}
+              active={isItemActive(item)}
+              onClick={handleItemClick(item.href, onAfterNavigate)}
+            >
+              {item.label}
+            </SidebarItem>
+          ))}
+        </SidebarSection>
+      ) : null}
+    </SidebarNav>
+  );
 
   return (
     <>
-      {/* Desktop Sticky Sidebar */}
-      <aside
-        className={`glass hidden shrink-0 self-start sticky top-0 h-screen overflow-y-auto border-y-0 border-l-0 border-r border-line transition-[width] duration-200 lg:block ${
-          collapsed ? 'w-[84px]' : 'w-64'
-        }`}
-      >
-        {renderSidebarBody(false)}
-      </aside>
-
-      {/* Mobile Drawer */}
-      {mobileOpen ? (
-        <div
-          className="fixed inset-0 z-50 flex bg-brand-900/40 lg:hidden"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              onCloseMobile?.();
-              triggerRef?.current?.focus();
-            }
-          }}
+      {/* Desktop Sticky Collapsible Sidebar */}
+      <div className="hidden shrink-0 self-start sticky top-0 h-dvh lg:block">
+        <WensitySidebar
+          variant="collapsible"
+          collapsed={collapsed}
+          onCollapsedChange={() => onToggleCollapse?.()}
+          width={260}
+          collapsedWidth={64}
+          aria-label="Navigasi ruang admin"
+          className="backdrop-blur-md"
         >
-          <div
-            ref={drawerRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Navigasi ruang pengguna"
-            className="h-full w-72 max-w-[85vw] overflow-y-auto bg-surface shadow-modal"
-          >
-            {renderSidebarBody(true)}
-          </div>
-        </div>
-      ) : null}
+          <SidebarHeader>
+            <SidebarBrandMark role={user.role} />
+            <SidebarToggle
+              className="ml-auto"
+              aria-label={collapsed ? 'Perluas sidebar' : 'Ciutkan sidebar'}
+            />
+          </SidebarHeader>
+
+          {renderNavSections(undefined)}
+
+          <SidebarFooter className={collapsed ? 'px-2' : undefined}>
+            <SidebarUserFooter
+              user={user}
+              loggingOut={loggingOut}
+              onLogout={handleLogout}
+            />
+          </SidebarFooter>
+        </WensitySidebar>
+      </div>
+
+      {/* Mobile Native Modal Drawer */}
+      <dialog
+        ref={dialogRef}
+        aria-label="Navigasi ruang admin"
+        onCancel={(e) => {
+          e.preventDefault();
+          onCloseMobile?.();
+        }}
+        onClick={(e) => {
+          if (e.target === dialogRef.current) {
+            onCloseMobile?.();
+          }
+        }}
+        className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none border-0 bg-transparent p-0 backdrop:bg-[#060D1C]/70 backdrop:backdrop-blur-xs lg:hidden"
+      >
+        <WensitySidebar
+          variant="default"
+          width={272}
+          aria-label="Menu ruang admin"
+          className="h-dvh shadow-modal"
+        >
+          <SidebarHeader className="justify-between">
+            <SidebarBrandMark role={user.role} onNavigate={onCloseMobile} />
+            <button
+              ref={closeButtonRef}
+              type="button"
+              aria-label="Tutup menu ruang"
+              onClick={() => onCloseMobile?.()}
+              className="inline-flex size-9 shrink-0 items-center justify-center rounded-[var(--primitive-radius-control-sm,0.625rem)] border border-[var(--border)] text-ink-soft transition-colors hover:bg-[var(--primitive-surface-hover)] hover:text-ink"
+            >
+              <IconX className="size-4" stroke={2} aria-hidden="true" />
+            </button>
+          </SidebarHeader>
+
+          {renderNavSections(onCloseMobile)}
+
+          <SidebarFooter>
+            <SidebarUserFooter
+              user={user}
+              loggingOut={loggingOut}
+              onLogout={handleLogout}
+            />
+          </SidebarFooter>
+        </WensitySidebar>
+      </dialog>
     </>
   );
 }

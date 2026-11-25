@@ -14,6 +14,8 @@ export async function getAdminPlatformStats() {
     verificationsRes,
     reportsRes,
     pendingQueueRes,
+    userStatusByRoleRes,
+    recentActivitiesRes,
   ] = await Promise.all([
     query(
       `SELECT
@@ -94,10 +96,90 @@ export async function getAdminPlatformStats() {
        ORDER BY created_at ASC
        LIMIT 10`
     ),
+    query(
+      `SELECT
+         role::text AS role,
+         COUNT(*)::int AS total,
+         COUNT(*) FILTER (WHERE status = 'active')::int AS active,
+         COUNT(*) FILTER (WHERE status = 'suspended')::int AS suspended,
+         COUNT(*) FILTER (WHERE status = 'pending')::int AS pending
+       FROM users
+       GROUP BY role`
+    ),
+    query(
+      `(
+         SELECT
+           'verification' AS type,
+           cv.verification_id AS item_id,
+           COALESCE(p.display_name, u.username) AS title,
+           u.username AS actor_handle,
+           CASE
+             WHEN cv.appeal_note IS NOT NULL THEN 'Banding Kurator'
+             ELSE 'Pengajuan Kurator'
+           END AS category_label,
+           cv.status::text AS status,
+           cv.submitted_at AS created_at
+         FROM curator_verifications cv
+         JOIN users u ON u.user_id = cv.user_id
+         LEFT JOIN profiles p ON p.user_id = u.user_id
+       )
+       UNION ALL
+       (
+         SELECT
+           'report' AS type,
+           r.report_id AS item_id,
+           a.title AS title,
+           COALESCE(rep_p.display_name, rep.username) AS actor_handle,
+           'Laporan Karya (' || r.reason || ')' AS category_label,
+           r.status::text AS status,
+           r.created_at AS created_at
+         FROM reports r
+         JOIN artworks a ON a.artwork_id = r.artwork_id
+         JOIN users rep ON rep.user_id = r.reporter_id
+         LEFT JOIN profiles rep_p ON rep_p.user_id = rep.user_id
+       )
+       ORDER BY created_at DESC
+       LIMIT 20`
+    ),
   ]);
 
+  const roleBreakdown = {
+    member: { total: 0, active: 0, suspended: 0, pending: 0 },
+    curator: { total: 0, active: 0, suspended: 0, pending: 0 },
+    admin: { total: 0, active: 0, suspended: 0, pending: 0 },
+  };
+  for (const row of userStatusByRoleRes.rows) {
+    if (roleBreakdown[row.role]) {
+      roleBreakdown[row.role] = {
+        total: row.total ?? 0,
+        active: row.active ?? 0,
+        suspended: row.suspended ?? 0,
+        pending: row.pending ?? 0,
+      };
+    }
+  }
+
+  const usersRow = usersRes.rows[0] || {
+    total: 0,
+    member: 0,
+    curator: 0,
+    admin: 0,
+    active: 0,
+    pending: 0,
+    suspended: 0,
+  };
+
   return {
-    users: usersRes.rows[0],
+    users: usersRow,
+    user_status_by_role: {
+      all: {
+        total: usersRow.total ?? 0,
+        active: usersRow.active ?? 0,
+        suspended: usersRow.suspended ?? 0,
+        pending: usersRow.pending ?? 0,
+      },
+      ...roleBreakdown,
+    },
     artworks: artworksRes.rows[0],
     challenges: challengesRes.rows[0],
     submissions: submissionsRes.rows[0],
@@ -105,6 +187,7 @@ export async function getAdminPlatformStats() {
     pending_verifications: verificationsRes.rows[0]?.pending_verifications ?? 0,
     pending_reports: reportsRes.rows[0]?.pending_reports ?? 0,
     activity_queue: pendingQueueRes.rows,
+    recent_activities: recentActivitiesRes.rows,
   };
 }
 

@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import Alert from '@/components/ui/Alert';
-import ChipRow from '@/components/ui/Chip';
 import DataTable from '@/components/ui/DataTable';
 import Pagination from '@/components/ui/Pagination';
 import SearchBar from '@/components/ui/SearchBar';
@@ -113,27 +112,6 @@ export default function AdminCurators({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <ChipRow
-          items={tabs}
-          activeValue={status}
-          onSelect={(val) => {
-            setStatus(val);
-            fetchList({ nextFilter: val, nextQ: q, nextPage: 1 });
-          }}
-        />
-        <SearchBar
-          compact
-          value={q}
-          onChange={setQ}
-          placeholder="Cari nama, username, email…"
-          onSubmit={(val) => {
-            setQ(val);
-            fetchList({ nextFilter: status, nextQ: val, nextPage: 1 });
-          }}
-        />
-      </div>
-
       {errorMsg ? (
         <Alert tone="danger" title="Gagal memuat daftar verifikasi">
           {errorMsg}
@@ -141,6 +119,25 @@ export default function AdminCurators({
       ) : null}
 
       <DataTable
+        title="Daftar Pengajuan Kurator"
+        tabs={tabs}
+        activeTab={status}
+        onTabChange={(val) => {
+          setStatus(val);
+          fetchList({ nextFilter: val, nextQ: q, nextPage: 1 });
+        }}
+        headerActions={
+          <SearchBar
+            compact
+            value={q}
+            onChange={setQ}
+            placeholder="Cari nama, username, email…"
+            onSubmit={(val) => {
+              setQ(val);
+              fetchList({ nextFilter: status, nextQ: val, nextPage: 1 });
+            }}
+          />
+        }
         columns={columns}
         rows={items}
         rowKey="verification_id"

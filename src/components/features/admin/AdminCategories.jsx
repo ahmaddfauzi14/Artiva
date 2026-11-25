@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
-import ChipRow from '@/components/ui/Chip';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import DataTable from '@/components/ui/DataTable';
 import FormField from '@/components/ui/FormField';
@@ -180,10 +179,12 @@ export default function AdminCategories({ initialCategories = [] }) {
     {
       key: 'actions',
       label: 'Tindakan',
+      className: 'text-right',
+      cellClassName: 'text-right',
       render: (row) => {
         const inUse = row.artwork_count > 0 || row.challenge_count > 0;
         return (
-          <div className="flex flex-wrap items-center gap-3 whitespace-nowrap">
+          <div className="inline-flex flex-wrap items-center justify-end gap-3 whitespace-nowrap">
             <button
               type="button"
               onClick={() => openEditModal(row)}
@@ -213,23 +214,23 @@ export default function AdminCategories({ initialCategories = [] }) {
     },
   ];
 
+  const tabs = [
+    { label: 'Aktif', value: 'active', count: activeList.length },
+    { label: 'Nonaktif', value: 'inactive', count: inactiveList.length },
+  ];
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <ChipRow
-          items={[
-            { label: 'Aktif', value: 'active', count: activeList.length },
-            { label: 'Nonaktif', value: 'inactive', count: inactiveList.length },
-          ]}
-          activeValue={filter}
-          onSelect={setFilter}
-        />
-        <Button variant="primary" onClick={openCreateModal}>
-          Tambah kategori
-        </Button>
-      </div>
-
       <DataTable
+        title="Daftar Kategori"
+        tabs={tabs}
+        activeTab={filter}
+        onTabChange={setFilter}
+        headerActions={
+          <Button variant="primary" size="sm" onClick={openCreateModal}>
+            Tambah kategori
+          </Button>
+        }
         columns={columns}
         rows={visibleRows}
         rowKey="category_id"

@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import Alert from '@/components/ui/Alert';
-import ChipRow from '@/components/ui/Chip';
 import DataTable from '@/components/ui/DataTable';
 import Pagination from '@/components/ui/Pagination';
 import SearchBar from '@/components/ui/SearchBar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { useAdminList } from '@/components/features/admin/useAdminList';
+import { formatDateId } from '@/lib/shared/format';
 
 const ROLE_LABELS = {
   member: 'Member',
@@ -50,21 +50,37 @@ export default function AdminUsers({
 
   const columns = [
     {
+      key: 'id',
+      label: 'ID',
+      render: (row) => (
+        <span className="font-semibold text-ink tabular-nums whitespace-nowrap">
+          #{row.user_id}
+        </span>
+      ),
+    },
+    {
       key: 'user',
       label: 'Pengguna',
-      colWidth: 'minmax(160px, 1fr)',
       render: (row) => (
-        <p className="font-semibold text-ink truncate">{row.display_name}</p>
+        <div className="min-w-0">
+          <p className="font-semibold text-ink truncate">{row.display_name}</p>
+          <p className="text-xs text-ink-mute truncate">
+            @{row.username} · {row.email}
+          </p>
+        </div>
       ),
+    },
+    {
+      key: 'created_at',
+      label: 'Terdaftar',
+      cellClassName: 'tabular-nums whitespace-nowrap',
+      render: (row) => formatDateId(row.created_at),
     },
     {
       key: 'role',
       label: 'Jenis akun',
-      colWidth: '108px',
-      className: 'text-right',
-      cellClassName: 'flex justify-end',
       render: (row) => (
-        <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700 whitespace-nowrap">
+        <span className="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700 whitespace-nowrap">
           {ROLE_LABELS[row.role] || row.role}
         </span>
       ),
@@ -72,17 +88,13 @@ export default function AdminUsers({
     {
       key: 'status',
       label: 'Status',
-      colWidth: '124px',
-      className: 'text-right',
-      cellClassName: 'flex justify-end',
       render: (row) => <StatusBadge domain="user" status={row.status} />,
     },
     {
       key: 'actions',
       label: 'Tindakan',
-      colWidth: '128px',
       className: 'text-right',
-      cellClassName: 'flex justify-end',
+      cellClassName: 'text-right',
       render: (row) => (
         <Link
           href={`/dashboard/admin/users/${row.user_id}`}
@@ -96,27 +108,6 @@ export default function AdminUsers({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <ChipRow
-          items={tabs}
-          activeValue={role}
-          onSelect={(val) => {
-            setRole(val);
-            fetchUsers({ nextFilter: val, nextQ: q, nextPage: 1 });
-          }}
-        />
-        <SearchBar
-          compact
-          value={q}
-          onChange={setQ}
-          placeholder="Cari username atau email…"
-          onSubmit={(val) => {
-            setQ(val);
-            fetchUsers({ nextFilter: role, nextQ: val, nextPage: 1 });
-          }}
-        />
-      </div>
-
       {errorMsg ? (
         <Alert tone="danger" title="Gagal memuat daftar pengguna">
           {errorMsg}
@@ -124,6 +115,25 @@ export default function AdminUsers({
       ) : null}
 
       <DataTable
+        title="Daftar Pengguna"
+        tabs={tabs}
+        activeTab={role}
+        onTabChange={(val) => {
+          setRole(val);
+          fetchUsers({ nextFilter: val, nextQ: q, nextPage: 1 });
+        }}
+        headerActions={
+          <SearchBar
+            compact
+            value={q}
+            onChange={setQ}
+            placeholder="Cari username atau email…"
+            onSubmit={(val) => {
+              setQ(val);
+              fetchUsers({ nextFilter: role, nextQ: val, nextPage: 1 });
+            }}
+          />
+        }
         columns={columns}
         rows={users}
         rowKey="user_id"
