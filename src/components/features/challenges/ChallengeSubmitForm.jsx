@@ -94,7 +94,7 @@ export default function ChallengeSubmitForm({
               : 'Semua Kategori'}
           </span>
         </div>
-        <h1 className="text-[28px] font-semibold leading-tight text-ink sm:text-[34px]">
+        <h1 className="text-[1.75rem] font-semibold leading-tight text-ink sm:text-[2.125rem]">
           Ikut tantangan: {challenge.title}
         </h1>
         <p className="text-sm text-ink-soft">
@@ -274,7 +274,7 @@ export default function ChallengeSubmitForm({
                               Dipilih untuk kompetisi
                             </span>
                           ) : (
-                            <span className="absolute left-3 top-3 rounded-full bg-canvas/80 px-2.5 py-1 text-[11px] font-semibold text-ink-soft backdrop-blur-sm">
+                            <span className="absolute left-3 top-3 rounded-full bg-canvas/80 px-2.5 py-1 text-[0.6875rem] font-semibold text-ink-soft backdrop-blur-sm">
                               {art.category.name}
                             </span>
                           )}
@@ -361,7 +361,7 @@ export default function ChallengeSubmitForm({
                           />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-brand-700">
+                          <p className="text-[0.6875rem] font-bold uppercase tracking-[0.08em] text-brand-700">
                             Karya Terpilih untuk Kompetisi
                           </p>
                           <p className="truncate text-base font-semibold text-ink">

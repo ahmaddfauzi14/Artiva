@@ -140,7 +140,7 @@ function useResizableWidth(initial, min, max) {
 
 const itemBaseClasses = cn(
   "group/sidebar-item relative flex w-full items-center gap-2.5 rounded-[var(--primitive-radius-item,0.625rem)] px-3 py-2",
-  "text-[13.5px] font-medium leading-[1.45] outline-none select-none whitespace-nowrap",
+  "text-[0.84375rem] font-medium leading-[1.45] outline-none select-none whitespace-nowrap",
   "transition-colors duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]",
   "focus-visible:ring-2 focus-visible:ring-[color:var(--primitive-ring,color-mix(in_srgb,var(--foreground)_45%,transparent))] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]",
   "disabled:pointer-events-none disabled:opacity-40",
@@ -420,7 +420,7 @@ export const SidebarSection = React.forwardRef(
             <FadingLabel
               show={!collapsed}
               className={cn(
-                "text-[10.5px] font-medium uppercase leading-snug tracking-[0.08em]",
+                "text-[0.65625rem] font-medium uppercase leading-snug tracking-[0.08em]",
                 "text-[var(--muted-foreground)] whitespace-nowrap",
               )}
             >

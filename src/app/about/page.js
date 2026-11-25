@@ -74,7 +74,7 @@ export default async function AboutPage() {
     <div className="flex min-h-screen flex-col">
       <Navbar user={user} />
 
-      <main className="mx-auto w-full max-w-6xl flex-1 space-y-14 px-5 py-10 md:px-8 lg:py-12">
+      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-14 px-4 py-10 sm:px-6 md:px-8 lg:py-12">
         <PageHeader
           eyebrow="TENTANG ARTIVA"
           title="Satu karya, tiga ruang untuk bertumbuh."
@@ -90,7 +90,7 @@ export default async function AboutPage() {
             </p>
             <h2
               id="pilar-heading"
-              className="text-[24px] font-semibold leading-tight text-ink sm:text-[30px]"
+              className="text-[1.5rem] font-semibold leading-tight text-ink sm:text-[1.875rem]"
             >
               Dirancang untuk kreator dan penyelenggara.
             </h2>
@@ -127,7 +127,7 @@ export default async function AboutPage() {
             </p>
             <h2
               id="peran-heading"
-              className="text-[24px] font-semibold leading-tight text-ink sm:text-[30px]"
+              className="text-[1.5rem] font-semibold leading-tight text-ink sm:text-[1.875rem]"
             >
               Peran pengguna di ARTIVA.
             </h2>
@@ -159,7 +159,7 @@ export default async function AboutPage() {
             </p>
             <h2
               id="alur-heading"
-              className="text-[24px] font-semibold leading-tight text-ink sm:text-[30px]"
+              className="text-[1.5rem] font-semibold leading-tight text-ink sm:text-[1.875rem]"
             >
               Alur berkarya dan berkompetisi.
             </h2>

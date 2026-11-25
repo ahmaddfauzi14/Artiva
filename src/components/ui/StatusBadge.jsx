@@ -18,7 +18,7 @@ export default function StatusBadge({
 
   return (
     <span
-      className={`inline-flex min-h-[26px] items-center gap-1.5 rounded-full px-3 py-0.5 text-[13px] font-semibold leading-tight ${style.bg} ${style.text} ${className}`}
+      className={`inline-flex min-h-[26px] items-center gap-1.5 rounded-full px-3 py-0.5 text-[0.8125rem] font-semibold leading-tight ${style.bg} ${style.text} ${className}`}
     >
       <span
         aria-hidden="true"

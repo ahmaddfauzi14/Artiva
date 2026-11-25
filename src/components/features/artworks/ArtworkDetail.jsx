@@ -348,7 +348,7 @@ export default function ArtworkDetail({
                 Dipublikasikan {formatDateId(initialArtwork.created_at)}
               </span>
             </div>
-            <h1 className="text-[28px] font-semibold leading-tight text-ink sm:text-[32px]">
+            <h1 className="text-[1.75rem] font-semibold leading-tight text-ink sm:text-[2rem]">
               {initialArtwork.title}
             </h1>
           </div>

@@ -15,7 +15,7 @@ export default async function ActiveCuratorPagesLayout({ children }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar user={user} />
-      <main className="mx-auto w-full max-w-6xl flex-1 space-y-8 px-5 py-8 md:px-8 lg:py-10">
+      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-8 px-4 py-8 sm:px-6 md:px-8 lg:py-10">
         <CuratorNavBar />
         {children}
       </main>

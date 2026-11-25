@@ -6,8 +6,8 @@ const BADGE_SIZES = {
 };
 
 const TEXT_SIZES = {
-  sm: 'text-[18px] md:text-[20px]',
-  md: 'text-[20px]',
+  sm: 'text-[1.125rem] md:text-[1.25rem]',
+  md: 'text-[1.25rem]',
 };
 
 /**

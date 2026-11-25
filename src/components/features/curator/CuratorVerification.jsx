@@ -232,7 +232,7 @@ export default function CuratorVerification({ verification: initialVerification 
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
             VERIFIKASI KURATOR
           </p>
-          <h1 className="text-[28px] font-semibold leading-tight text-ink sm:text-[32px]">
+          <h1 className="text-[1.75rem] font-semibold leading-tight text-ink sm:text-[2rem]">
             Verifikasi membantu membangun ruang yang aman.
           </h1>
           <p className="text-base text-ink-soft">

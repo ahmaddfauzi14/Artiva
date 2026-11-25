@@ -37,7 +37,7 @@ export default async function SubmitChallengePage({ params }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar user={user} />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 md:px-8">
+      <main className="mx-auto w-full max-w-[90rem] flex-1 px-4 py-10 sm:px-6 md:px-8">
         <ChallengeSubmitForm
           challenge={data.challenge}
           artworks={data.artworks}

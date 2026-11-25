@@ -86,7 +86,7 @@ export default function ConfirmModal({
       <div className="modal-in rounded-[28px] bg-surface p-6 shadow-modal sm:p-8">
         <h2
           id={titleId}
-          className="text-[22px] font-semibold leading-snug text-ink"
+          className="text-[1.375rem] font-semibold leading-snug text-ink"
         >
           {title}
         </h2>

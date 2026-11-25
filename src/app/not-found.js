@@ -9,7 +9,7 @@ export default async function NotFoundPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar user={user} />
-      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-5 py-20 text-center">
+      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 py-20 text-center sm:px-6 md:px-8">
         <span className="rounded-full bg-tint-lavender px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
           404 · HALAMAN TIDAK DITEMUKAN
         </span>

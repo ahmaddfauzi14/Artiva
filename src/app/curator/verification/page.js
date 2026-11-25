@@ -17,7 +17,7 @@ export default async function CuratorVerificationPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar user={user} />
-      <main className="mx-auto flex w-full max-w-6xl flex-1 items-center px-5 py-10 md:px-8 lg:py-14">
+      <main className="mx-auto flex w-full max-w-[90rem] flex-1 items-center px-4 py-10 sm:px-6 md:px-8 lg:py-14">
         <CuratorVerification verification={verification} />
       </main>
       <Footer />

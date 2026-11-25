@@ -64,7 +64,7 @@ export default function AdminCurators({
               {row.display_name || row.username}
             </p>
             {row.appeal_number > 0 ? (
-              <span className="inline-flex items-center rounded-full border border-[#264E91] bg-[#142B52] px-2 py-0.5 text-[11px] font-semibold text-[#9BC4FF] whitespace-nowrap">
+              <span className="inline-flex items-center rounded-full border border-[#264E91] bg-[#142B52] px-2 py-0.5 text-[0.6875rem] font-semibold text-[#9BC4FF] whitespace-nowrap">
                 Banding ke-{row.appeal_number}
               </span>
             ) : null}

@@ -180,7 +180,7 @@ export default function ChallengeCard({
               href={`/challenges/${challenge.challenge_id}`}
               className="block hover:underline underline-offset-4"
             >
-              <h3 className="text-[26px] font-semibold leading-tight text-white sm:text-[30px]">
+              <h3 className="text-[1.625rem] font-semibold leading-tight text-white sm:text-[1.875rem]">
                 {challenge.title}
               </h3>
             </Link>

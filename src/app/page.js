@@ -43,7 +43,7 @@ export default async function HomePage() {
     <div className="flex min-h-screen flex-col">
       <Navbar user={user} />
 
-      <main className="mx-auto w-full max-w-6xl flex-1 space-y-14 px-5 py-10 md:space-y-16 md:px-8 lg:py-12">
+      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-14 px-4 py-10 sm:px-6 md:space-y-16 md:px-8 lg:py-12">
         {/* 1. Hero Editorial Seimbang */}
         <section className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10">
           <div className="space-y-5 lg:col-span-7">
@@ -107,7 +107,7 @@ export default async function HomePage() {
                       className="h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-300 group-hover:scale-[1.03]"
                     />
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-900/95 via-brand-900/60 to-transparent p-4 pt-10">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-700">
+                      <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-brand-700">
                         {heroArtwork.category?.name || 'GALERI KURASI'}
                       </p>
                       <p className="mt-0.5 truncate text-base font-semibold text-ink">
@@ -127,7 +127,7 @@ export default async function HomePage() {
                   className="group flex aspect-[4/3] w-full flex-col justify-between overflow-hidden rounded-[18px] border border-line bg-surface p-5 shadow-card-sm"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="rounded-full bg-brand-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-700">
+                    <span className="rounded-full bg-brand-50 px-3 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-brand-700">
                       ETALASE KOMUNITAS
                     </span>
                     <span className="text-xs font-semibold text-brand-700 group-hover:translate-x-0.5 motion-safe:transition-transform">
@@ -170,7 +170,7 @@ export default async function HomePage() {
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
                 TEMUKAN PERSPEKTIF BARU
               </p>
-              <h2 className="mt-1 text-[24px] font-semibold leading-tight text-ink sm:text-[30px]">
+              <h2 className="mt-1 text-[1.5rem] font-semibold leading-tight text-ink sm:text-[1.875rem]">
                 Inspirasi tanpa batas.
               </h2>
             </div>
@@ -234,7 +234,7 @@ export default async function HomePage() {
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
                 KOMPETISI TERKURASI
               </p>
-              <h2 className="mt-1 text-[24px] font-semibold leading-tight text-ink sm:text-[30px]">
+              <h2 className="mt-1 text-[1.5rem] font-semibold leading-tight text-ink sm:text-[1.875rem]">
                 Ubah ide jadi tantangan.
               </h2>
             </div>
@@ -277,7 +277,7 @@ export default async function HomePage() {
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
                 APRESIASI UNTUK KREATIVITAS
               </p>
-              <h2 className="mt-1 text-[24px] font-semibold leading-tight text-ink sm:text-[30px]">
+              <h2 className="mt-1 text-[1.5rem] font-semibold leading-tight text-ink sm:text-[1.875rem]">
                 Karya yang mencuri perhatian.
               </h2>
             </div>
@@ -316,7 +316,7 @@ export default async function HomePage() {
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
               ALUR BERKARYA DI ARTIVA
             </p>
-            <h2 className="mt-1 text-[24px] font-semibold leading-tight text-ink sm:text-[30px]">
+            <h2 className="mt-1 text-[1.5rem] font-semibold leading-tight text-ink sm:text-[1.875rem]">
               Mulai perjalanan kreatifmu.
             </h2>
           </div>
@@ -401,7 +401,7 @@ export default async function HomePage() {
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
                   SIAP BERKARYA HARI INI
                 </p>
-                <h2 className="text-[28px] font-semibold leading-tight text-ink sm:text-[34px]">
+                <h2 className="text-[1.75rem] font-semibold leading-tight text-ink sm:text-[2.125rem]">
                   {user.role === 'member'
                     ? 'Lanjutkan kreativitasmu di ARTIVA.'
                     : 'Lanjutkan kurasi tantangan di ARTIVA.'}
@@ -442,7 +442,7 @@ export default async function HomePage() {
                   <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
                     BERGABUNG SEKARANG
                   </p>
-                  <h2 className="text-[28px] font-semibold leading-tight text-ink sm:text-[34px]">
+                  <h2 className="text-[1.75rem] font-semibold leading-tight text-ink sm:text-[2.125rem]">
                     Setiap peran membuka kemungkinan baru.
                   </h2>
                   <p className="text-base text-ink-soft">

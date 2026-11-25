@@ -32,9 +32,9 @@
 
   --color-crimson: #B8334D;
 
-  --radius-card: 28px;
-  --radius-card-sm: 18px;
-  --radius-media: 14px;
+  --radius-card: 1.75rem;
+  --radius-card-sm: 1.125rem;
+  --radius-media: 0.875rem;
 
   --shadow-card: 0 6px 0 -1px #1D3566, 0 22px 40px -16px rgb(4 10 24 / 0.65);
   --shadow-lift: 0 9px 0 -1px #29498A, 0 30px 48px -16px rgb(4 10 24 / 0.78);
@@ -73,6 +73,7 @@
 }
 
 html {
+  font-size: 90%;
   scroll-behavior: smooth;
   overflow-x: clip;
   scrollbar-width: none;
@@ -83,7 +84,7 @@ body {
   background: var(--color-canvas);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
   overflow-x: clip;
   scrollbar-width: none;
@@ -135,19 +136,19 @@ body::-webkit-scrollbar,
 
 /* Tipografi & Grid Responsif (modern-web-guidance: responsive-design & css-layout) */
 .text-display-fluid {
-  font-size: clamp(2.125rem, 1.4rem + 2.6vw, 3.375rem);
+  font-size: clamp(2.125rem, 1.4rem + 2.34vw, 3.375rem);
   line-height: 1.09;
   letter-spacing: -0.025em;
 }
 
 .auto-grid-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 235px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14.6875rem), 1fr));
 }
 
 .auto-grid-wide {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr));
 }
 
 @utility wrap-balance {

@@ -37,14 +37,14 @@ export default async function ChallengesPage({ searchParams }) {
     <div className="flex min-h-screen flex-col">
       <Navbar user={user} />
 
-      <main className="mx-auto w-full max-w-6xl flex-1 space-y-12 px-5 py-10 md:space-y-14 md:px-8">
+      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-12 px-4 py-10 sm:px-6 md:space-y-14 md:px-8">
         {/* Hero Seimbang */}
         <section className="edge-glow grid grid-cols-1 items-center gap-6 rounded-[28px] bg-grad-hero p-6 shadow-glass sm:p-8 lg:grid-cols-12 lg:p-10">
           <div className="space-y-3 lg:col-span-8">
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
               TANTANGAN TERKURASI
             </p>
-            <h1 className="text-[32px] font-semibold leading-tight text-ink sm:text-[40px]">
+            <h1 className="text-[2rem] font-semibold leading-tight text-ink sm:text-[2.5rem]">
               Tunjukkan karyamu dalam tantangan komunitas.
             </h1>
             <p className="max-w-2xl text-base text-ink-soft">
@@ -106,7 +106,7 @@ export default async function ChallengesPage({ searchParams }) {
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
               ALUR PARTISIPASI
             </p>
-            <h2 className="mt-1 text-[24px] font-semibold text-ink sm:text-[30px]">
+            <h2 className="mt-1 text-[1.5rem] font-semibold text-ink sm:text-[1.875rem]">
               Giliran idemu mengambil tempat.
             </h2>
           </div>
@@ -146,7 +146,7 @@ export default async function ChallengesPage({ searchParams }) {
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
                 APRESIASI UNTUK KREATIVITAS
               </p>
-              <h2 className="mt-1 text-[24px] font-semibold text-ink sm:text-[30px]">
+              <h2 className="mt-1 text-[1.5rem] font-semibold text-ink sm:text-[1.875rem]">
                 Karya yang mencuri perhatian.
               </h2>
             </div>
@@ -160,7 +160,7 @@ export default async function ChallengesPage({ searchParams }) {
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
               PERTANYAAN UMUM
             </p>
-            <h2 className="mt-1 text-[24px] font-semibold text-ink sm:text-[30px]">
+            <h2 className="mt-1 text-[1.5rem] font-semibold text-ink sm:text-[1.875rem]">
               Ruang mencoba, bukan ruang ragu.
             </h2>
           </div>

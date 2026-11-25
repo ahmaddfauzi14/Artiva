@@ -56,7 +56,7 @@ export default function GlassPanel({
             </div>
           ) : null}
 
-          <h1 className="text-[28px] font-semibold leading-tight text-ink sm:text-[36px]">
+          <h1 className="text-[1.75rem] font-semibold leading-tight text-ink sm:text-[2.25rem]">
             {title}
           </h1>
 

@@ -39,7 +39,7 @@ function DashboardTopbar({ user, triggerRef, mobileOpen, onOpenMobile }) {
 
   return (
     <header className="glass sticky top-0 z-30 border-x-0 border-t-0 border-b border-line">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-3 md:px-8">
+      <div className="mx-auto flex max-w-[90rem] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 md:px-8">
         <div className="flex items-center gap-3">
           <button
             ref={triggerRef}
@@ -106,7 +106,7 @@ function DashboardShellInner({ user, children }) {
           mobileOpen={mobileOpen}
           onOpenMobile={() => setMobileOpen(true)}
         />
-        <main className="mx-auto w-full max-w-5xl flex-1 px-5 py-8 md:px-8 lg:py-10">
+        <main className="mx-auto w-full max-w-[90rem] flex-1 px-4 py-8 sm:px-6 md:px-8 lg:py-10">
           {children}
         </main>
       </div>
@@ -118,7 +118,7 @@ export default function DashboardShell({ user, children }) {
   return (
     <Suspense
       fallback={
-        <div className="mx-auto max-w-5xl px-5 py-10 md:px-8">{children}</div>
+        <div className="mx-auto max-w-[90rem] px-4 py-10 sm:px-6 md:px-8">{children}</div>
       }
     >
       <DashboardShellInner user={user}>{children}</DashboardShellInner>

@@ -122,10 +122,10 @@ function SidebarBrandMark({ role, onNavigate }) {
     >
       <ArtivaLogo size="sm" showWordmark={false} />
       <div className="min-w-0">
-        <span className="block truncate py-[1px] text-[14px] font-bold uppercase leading-snug tracking-[0.16em] text-ink">
+        <span className="block truncate py-[1px] text-[0.875rem] font-bold uppercase leading-snug tracking-[0.16em] text-ink">
           ARTIVA
         </span>
-        <span className="block truncate py-[1px] text-[10px] font-semibold uppercase leading-snug tracking-[0.08em] text-brand-700">
+        <span className="block truncate py-[1px] text-[0.625rem] font-semibold uppercase leading-snug tracking-[0.08em] text-brand-700">
           {ROLE_SPACE_LABEL[role] || 'RUANG ADMIN'}
         </span>
       </div>
@@ -148,10 +148,10 @@ function SidebarUserFooter({ user, loggingOut, onLogout }) {
         <Avatar name={displayName} avatarUrl={user.avatar_url} size="sm" />
         {!collapsed ? (
           <div className="min-w-0 flex-1">
-            <p className="truncate py-[1px] text-[12.5px] font-semibold leading-snug text-ink">
+            <p className="truncate py-[1px] text-[0.78125rem] font-semibold leading-snug text-ink">
               {displayName}
             </p>
-            <p className="truncate py-[1px] text-[11px] leading-snug text-ink-mute">
+            <p className="truncate py-[1px] text-[0.6875rem] leading-snug text-ink-mute">
               {ROLE_TITLE[user.role] || user.role} · {statusMeta?.label}
             </p>
           </div>
@@ -304,8 +304,8 @@ export default function Sidebar({
           variant="collapsible"
           collapsed={collapsed}
           onCollapsedChange={() => onToggleCollapse?.()}
-          width={260}
-          collapsedWidth={64}
+          width={234}
+          collapsedWidth={58}
           aria-label="Navigasi ruang admin"
           className="backdrop-blur-md"
         >
@@ -346,7 +346,7 @@ export default function Sidebar({
       >
         <WensitySidebar
           variant="default"
-          width={272}
+          width={245}
           aria-label="Menu ruang admin"
           className="h-dvh shadow-modal"
         >

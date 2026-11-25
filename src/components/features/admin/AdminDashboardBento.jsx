@@ -124,7 +124,7 @@ function OverviewCard({ stats, canAnimate }) {
                 <p className="tabular-nums mt-0.5 text-2xl font-bold leading-tight text-ink">
                   {item.value}
                 </p>
-                <p className="truncate text-[11px] text-ink-mute group-hover:text-ink-soft">
+                <p className="truncate text-[0.6875rem] text-ink-mute group-hover:text-ink-soft">
                   {item.note}
                 </p>
               </div>

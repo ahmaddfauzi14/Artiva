@@ -229,7 +229,7 @@ export default function Navbar({ user = null }) {
 
   return (
     <header className="glass sticky top-0 z-40 border-x-0 border-t-0 border-b border-line">
-      <div className="relative z-20 mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 md:px-8">
+      <div className="relative z-20 mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6 md:px-8">
         {/* Brand Wordmark */}
         <Link
           href="/"
@@ -399,7 +399,7 @@ export default function Navbar({ user = null }) {
 
       {/* Mobile GooeyNav */}
       {!isAuthPage ? (
-        <div className="relative z-10 flex justify-center border-t border-line/60 px-4 py-2 md:hidden">
+        <div className="relative z-10 flex justify-center border-t border-line/60 px-3 py-2 sm:px-4 md:hidden">
           <GooeyNav
             {...sharedGooeyProps}
             size="sm"

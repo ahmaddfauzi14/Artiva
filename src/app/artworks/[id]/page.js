@@ -49,7 +49,7 @@ export default async function ArtworkDetailPage({ params }) {
     <div className="flex min-h-screen flex-col">
       <Navbar user={viewer} />
 
-      <main className="mx-auto w-full max-w-6xl flex-1 space-y-8 px-5 py-10 md:px-8">
+      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-8 px-4 py-10 sm:px-6 md:px-8">
         <div>
           <Link
             href="/artworks"

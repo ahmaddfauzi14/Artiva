@@ -50,7 +50,7 @@ const LEGAL_LINKS = [
 export default function Footer() {
   return (
     <footer className="mt-auto border-t border-line bg-brand-900">
-      <div className="mx-auto max-w-6xl px-5 pb-10 pt-14 md:px-8 lg:pt-16">
+      <div className="mx-auto max-w-[90rem] px-4 pb-10 pt-14 sm:px-6 md:px-8 lg:pt-16">
         {/* Zona Atas: Ringkasan Ekosistem + 2 Kolom Navigasi */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,2.35fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-12">
           <div className="min-w-0 sm:col-span-2 lg:col-span-1">
@@ -67,7 +67,7 @@ export default function Footer() {
             >
               {CAPABILITIES.map((item) => (
                 <li key={item.title} className="min-w-0">
-                  <h3 className="text-[15px] font-semibold text-ink">
+                  <h3 className="text-[0.9375rem] font-semibold text-ink">
                     {item.title}
                   </h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-ink-mute">
@@ -90,7 +90,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="inline-flex min-h-[44px] items-center text-[15px] font-medium text-ink transition-colors hover:text-brand-700 hover:underline underline-offset-4"
+                    className="inline-flex min-h-[44px] items-center text-[0.9375rem] font-medium text-ink transition-colors hover:text-brand-700 hover:underline underline-offset-4"
                   >
                     {link.label}
                   </Link>
@@ -111,7 +111,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="inline-flex min-h-[44px] items-center text-[15px] font-medium text-ink transition-colors hover:text-brand-700 hover:underline underline-offset-4"
+                    className="inline-flex min-h-[44px] items-center text-[0.9375rem] font-medium text-ink transition-colors hover:text-brand-700 hover:underline underline-offset-4"
                   >
                     {link.label}
                   </Link>

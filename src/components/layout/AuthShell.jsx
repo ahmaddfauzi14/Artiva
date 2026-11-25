@@ -10,7 +10,7 @@ export default function AuthShell({
     <div className="flex min-h-screen flex-col">
       <Navbar />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 items-center px-5 py-10 md:px-8 lg:py-14">
+      <main className="mx-auto flex w-full max-w-[90rem] flex-1 items-center px-4 py-10 sm:px-6 md:px-8 lg:py-14">
         <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
           {/* Panel Kiri: Tipografi Editorial Besar + Pilar Ringkas agar seimbang dengan tinggi form */}
           <div className="hidden lg:col-span-6 lg:flex lg:flex-col lg:justify-center lg:space-y-7 lg:pr-4">
@@ -18,7 +18,7 @@ export default function AuthShell({
               <p className="text-sm font-semibold uppercase tracking-[0.12em] text-brand-700">
                 {eyebrow}
               </p>
-              <h1 className="text-[44px] font-semibold leading-[1.08] tracking-[-0.025em] text-ink xl:text-[54px]">
+              <h1 className="text-[2.75rem] font-semibold leading-[1.08] tracking-[-0.025em] text-ink xl:text-[3.375rem]">
                 {title}
               </h1>
               <p className="max-w-xl text-lg leading-relaxed text-ink-soft xl:text-xl">
@@ -52,7 +52,7 @@ export default function AuthShell({
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
                   {eyebrow}
                 </p>
-                <h1 className="text-[32px] font-semibold leading-tight text-ink">
+                <h1 className="text-[2rem] font-semibold leading-tight text-ink">
                   {title}
                 </h1>
                 <p className="text-base text-ink-soft">{subtitle}</p>
@@ -64,7 +64,7 @@ export default function AuthShell({
       </main>
 
       <footer className="border-t border-line bg-surface/70">
-        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-2 px-5 py-5 text-sm text-ink-mute sm:flex-row sm:items-center md:px-8">
+        <div className="mx-auto flex max-w-[90rem] flex-col justify-between gap-2 px-4 py-5 text-sm text-ink-mute sm:flex-row sm:items-center sm:px-6 md:px-8">
           <p>© 2026 ARTIVA</p>
           <p>Satu ide kecil. Kemungkinan tak terbatas.</p>
         </div>

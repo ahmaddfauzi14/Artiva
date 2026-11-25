@@ -180,7 +180,7 @@ export default function DataTable({
                       <span>{tab.label}</span>
                       {typeof tab.count === 'number' ? (
                         <span
-                          className={`tabular-nums rounded-full px-1.5 py-0.5 text-[11px] leading-none ${
+                          className={`tabular-nums rounded-full px-1.5 py-0.5 text-[0.6875rem] leading-none ${
                             selected
                               ? 'bg-brand-700/15 text-brand-700'
                               : 'bg-brand-50 text-ink-mute'

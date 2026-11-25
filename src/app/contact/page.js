@@ -21,7 +21,7 @@ export default async function ContactPage() {
     <div className="flex min-h-screen flex-col">
       <Navbar user={user} />
 
-      <main className="mx-auto w-full max-w-5xl flex-1 space-y-10 px-5 py-10 md:px-8 lg:py-12">
+      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-10 px-4 py-10 sm:px-6 md:px-8 lg:py-12">
         <PageHeader
           eyebrow="DUKUNGAN PLATFORM"
           title="Kontak & Dukungan"

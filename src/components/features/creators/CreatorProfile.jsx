@@ -78,7 +78,7 @@ export default function CreatorProfile({ creator, artworks = [], meta }) {
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#F2C94C]">
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-[#F2C94C]">
               BIODATA &amp; KONTAK
             </p>
             <h2 className="mt-1 truncate text-xl font-semibold text-ink">
@@ -154,7 +154,7 @@ export default function CreatorProfile({ creator, artworks = [], meta }) {
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
             PORTOFOLIO KARYA
           </p>
-          <h1 className="mt-1 text-[26px] font-semibold leading-tight text-ink sm:text-[32px]">
+          <h1 className="mt-1 text-[1.625rem] font-semibold leading-tight text-ink sm:text-[2rem]">
             Karya oleh {creator.display_name}
           </h1>
         </div>
@@ -167,7 +167,7 @@ export default function CreatorProfile({ creator, artworks = [], meta }) {
       <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-stretch lg:gap-8">
         {/* Kiri: ProfileCard (depan) & Biodata/Kontak (belakang) dengan rasio terjaga */}
         <aside className="flex w-full shrink-0 justify-center lg:w-[390px]">
-          <div className="h-[485px] w-[340px] max-w-full sm:h-[540px] sm:w-[390px]">
+          <div className="h-[30.3125rem] w-[21.25rem] max-w-full sm:h-[33.75rem] sm:w-[24.375rem]">
             <TiltedCard
               altText={`Kartu profil ${creator.display_name}`}
               captionText={
@@ -216,14 +216,14 @@ export default function CreatorProfile({ creator, artworks = [], meta }) {
         {/* Kanan: Galeri Karya CircularGallery setinggi sama dengan ProfileCard */}
         <section className="flex min-w-0 w-full flex-1 flex-col">
           {visibleArtworks.length === 0 ? (
-            <div className="flex h-[420px] items-center justify-center rounded-[28px] border border-line bg-surface/75 p-6 sm:h-[540px]">
+            <div className="flex h-[26.25rem] items-center justify-center rounded-[28px] border border-line bg-surface/75 p-6 sm:h-[33.75rem]">
               <EmptyState
                 title="Belum ada karya dipublikasikan"
                 description="Kreator ini belum menampilkan karya publik di galeri ARTIVA."
               />
             </div>
           ) : (
-            <div className="edge-glow flex h-[420px] w-full flex-col overflow-hidden rounded-[28px] border border-line bg-brand-900/65 shadow-glass sm:h-[540px]">
+            <div className="edge-glow flex h-[26.25rem] w-full flex-col overflow-hidden rounded-[28px] border border-line bg-brand-900/65 shadow-glass sm:h-[33.75rem]">
               <div className="min-h-0 w-full flex-1">
                 <CircularGallery
                   items={galleryItems}
@@ -276,7 +276,7 @@ export default function CreatorProfile({ creator, artworks = [], meta }) {
               </span>
             </div>
 
-            <h2 className="text-2xl font-semibold text-ink sm:text-[28px]">
+            <h2 className="text-2xl font-semibold text-ink sm:text-[1.75rem]">
               {activeArtwork.title}
             </h2>
 

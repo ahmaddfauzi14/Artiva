@@ -112,12 +112,12 @@ export default function FormField({
       )}
 
       {error ? (
-        <p id={errorId} role="alert" className="text-[13px] font-medium text-[#FCA5A5]">
+        <p id={errorId} role="alert" className="text-[0.8125rem] font-medium text-[#FCA5A5]">
           {error}
         </p>
       ) : null}
       {helperText ? (
-        <p id={helperId} className="text-[13px] text-ink-mute">
+        <p id={helperId} className="text-[0.8125rem] text-ink-mute">
           {helperText}
         </p>
       ) : null}

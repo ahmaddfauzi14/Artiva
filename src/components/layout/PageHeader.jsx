@@ -17,7 +17,7 @@ export default function PageHeader({
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="text-[30px] font-semibold leading-tight text-ink sm:text-[40px]">
+        <h1 className="text-[1.875rem] font-semibold leading-tight text-ink sm:text-[2.5rem]">
           {title}
         </h1>
         {subtitle ? (

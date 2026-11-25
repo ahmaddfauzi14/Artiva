@@ -125,13 +125,13 @@ export default function ImageUploader({
             <p className="text-base font-semibold text-ink">
               Seret gambar ke sini atau pilih file
             </p>
-            <p className="text-[13px] text-ink-mute">{helperText}</p>
+            <p className="text-[0.8125rem] text-ink-mute">{helperText}</p>
           </div>
         </button>
       )}
 
       {error ? (
-        <p role="alert" className="text-[13px] font-medium text-[#FCA5A5]">
+        <p role="alert" className="text-[0.8125rem] font-medium text-[#FCA5A5]">
           {error}
         </p>
       ) : null}

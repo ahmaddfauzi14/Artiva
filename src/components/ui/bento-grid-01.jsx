@@ -325,7 +325,7 @@ function BentoCardShell({ item, index, canAnimate }) {
         }
       >
         {item.eyebrow ? (
-          <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-700">
+          <p className="mb-1 text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-brand-700">
             {item.eyebrow}
           </p>
         ) : null}

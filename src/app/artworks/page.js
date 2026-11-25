@@ -28,13 +28,13 @@ export default async function ArtworksPage({ searchParams }) {
     <div className="flex min-h-screen flex-col">
       <Navbar user={user} />
 
-      <main className="mx-auto w-full max-w-6xl flex-1 space-y-10 px-5 py-10 md:px-8">
+      <main className="mx-auto w-full max-w-[90rem] flex-1 space-y-10 px-4 py-10 sm:px-6 md:px-8">
         <section className="grid grid-cols-1 gap-6 md:grid-cols-12 md:items-end">
           <div className="space-y-2 md:col-span-7">
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
               GALERI KOMUNITAS
             </p>
-            <h1 className="text-[32px] font-semibold leading-tight text-ink sm:text-[40px]">
+            <h1 className="text-[2rem] font-semibold leading-tight text-ink sm:text-[2.5rem]">
               Jelajahi karya dari kreator bertalenta.
             </h1>
           </div>

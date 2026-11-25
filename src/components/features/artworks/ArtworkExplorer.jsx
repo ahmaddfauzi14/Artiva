@@ -186,7 +186,7 @@ export default function ArtworkExplorer({
                 </div>
 
                 <div className="space-y-1">
-                  <h2 className="text-2xl font-semibold text-ink sm:text-[28px]">
+                  <h2 className="text-2xl font-semibold text-ink sm:text-[1.75rem]">
                     {activeArtwork.title}
                   </h2>
                   <p className="text-sm text-ink-soft">

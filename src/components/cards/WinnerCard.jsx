@@ -18,7 +18,7 @@ export default function WinnerCard({ winner }) {
     >
       <div className="h-[88px] w-[88px] shrink-0 overflow-hidden rounded-[14px] bg-surface shadow-card-sm">
         {winner.is_moderated || !winner.artwork?.image_url ? (
-          <div className="flex h-full w-full items-center justify-center bg-[#1B2945] p-2 text-center text-[11px] font-semibold text-ink-soft">
+          <div className="flex h-full w-full items-center justify-center bg-[#1B2945] p-2 text-center text-[0.6875rem] font-semibold text-ink-soft">
             Dimoderasi
           </div>
         ) : (
