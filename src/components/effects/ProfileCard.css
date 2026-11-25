@@ -20,6 +20,29 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.profile-card.profile-card--fill {
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .profile-card.profile-card--fill {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .profile-card.profile-card--fill .profile-card__body {
+    flex: 1 1 0%;
+    height: 100%;
+  }
+
+  .profile-card.profile-card--fill .profile-card__tile {
+    flex: 1 1 0%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+}
+
 .profile-card__body {
   position: relative;
   display: flex;

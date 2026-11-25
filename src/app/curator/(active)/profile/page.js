@@ -1,5 +1,5 @@
 import PageHeader from '@/components/layout/PageHeader';
-import ProfileSettings from '@/components/features/member/ProfileSettings';
+import ProfileOverview from '@/components/features/member/ProfileOverview';
 import { requirePageRole } from '@/lib/auth/page-guards';
 
 export const dynamic = 'force-dynamic';
@@ -14,11 +14,11 @@ export default async function CuratorProfilePage() {
   return (
     <div className="space-y-5">
       <PageHeader
-        eyebrow="PENGATURAN AKUN"
+        eyebrow="PROFIL KURATOR"
         title="Profil"
-        subtitle="Perbarui identitas kurator, bio organisasi, serta keamanan email dan kata sandimu."
+        subtitle="Tinjau kartu profil dan informasi data dirimu sebagai kurator ARTIVA."
       />
-      <ProfileSettings user={user} />
+      <ProfileOverview user={user} editHref="/curator/profile/edit" />
     </div>
   );
 }
