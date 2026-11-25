@@ -198,7 +198,10 @@ export async function listAllAdminCategories() {
        (SELECT COUNT(*)::int FROM artworks a WHERE a.category_id = c.category_id) AS artwork_count,
        (SELECT COUNT(*)::int FROM challenges ch WHERE ch.category_id = c.category_id) AS challenge_count
      FROM categories c
-     ORDER BY c.is_active DESC, c.category_id ASC`
+     ORDER BY
+       c.is_active DESC,
+       CASE WHEN LOWER(c.slug) = 'lainnya' OR LOWER(c.name) = 'lainnya' THEN 1 ELSE 0 END ASC,
+       c.category_id ASC`
   );
   return rows;
 }

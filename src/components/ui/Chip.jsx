@@ -1,14 +1,11 @@
 'use client';
 
-import PillScrollRow from '@/components/ui/PillScrollRow';
-
 export default function ChipRow({ items = [], activeValue, onSelect, className = '' }) {
   return (
-    <PillScrollRow
+    <div
       role="tablist"
       aria-label="Filter daftar"
-      activeKey={activeValue}
-      className={`gap-2.5 ${className}`}
+      className={`flex flex-wrap items-center gap-x-1.5 gap-y-2.5 lg:gap-2.5 ${className}`}
     >
       {items.map((item) => {
         const isActive = item.value === activeValue;
@@ -19,7 +16,7 @@ export default function ChipRow({ items = [], activeValue, onSelect, className =
             role="tab"
             aria-selected={isActive}
             onClick={() => onSelect?.(item.value)}
-            className={`min-h-[44px] shrink-0 rounded-full px-5 py-2 text-sm font-semibold motion-safe:transition-all motion-safe:duration-200 ease-[var(--ease-spring)] ${
+            className={`min-h-[44px] whitespace-nowrap rounded-full px-3 py-2 text-[0.8125rem] font-semibold motion-safe:transition-all motion-safe:duration-200 ease-[var(--ease-spring)] lg:px-4 lg:text-sm ${
               isActive
                 ? 'bg-grad-primary text-white shadow-btn'
                 : 'border border-line bg-surface text-ink shadow-card-sm hover:border-brand-200 hover:bg-brand-50 motion-safe:hover:-translate-y-0.5'
@@ -40,6 +37,6 @@ export default function ChipRow({ items = [], activeValue, onSelect, className =
           </button>
         );
       })}
-    </PillScrollRow>
+    </div>
   );
 }

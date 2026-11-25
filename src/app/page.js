@@ -8,7 +8,6 @@ import PublicShell from '@/components/layout/PublicShell';
 import SectionHeader from '@/components/layout/SectionHeader';
 import Button from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
-import PillScrollRow from '@/components/ui/PillScrollRow';
 import { getPublicViewer } from '@/lib/auth/page-guards';
 import { listPublicArtworks } from '@/lib/repositories/artworks';
 import { listActiveCategories } from '@/lib/repositories/categories';
@@ -258,15 +257,14 @@ export default async function HomePage() {
           }
         />
 
-        <PillScrollRow
-          as="nav"
+        <nav
           aria-label="Filter kategori karya"
-          className="gap-2 sm:gap-2.5"
+          className="flex flex-wrap items-center gap-x-1.5 gap-y-2.5 lg:gap-2.5"
         >
           <Link
             href="/artworks"
             aria-current="page"
-            className="min-h-[44px] inline-flex shrink-0 items-center rounded-full bg-grad-primary px-4 text-sm font-semibold text-white shadow-btn"
+            className="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full bg-grad-primary px-3 text-[0.8125rem] font-semibold text-white shadow-btn lg:px-4 lg:text-sm"
           >
             Semua karya
           </Link>
@@ -274,12 +272,12 @@ export default async function HomePage() {
             <Link
               key={cat.category_id}
               href={`/artworks?category=${cat.slug}`}
-              className="min-h-[44px] inline-flex shrink-0 items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink shadow-card-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50"
+              className="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full border border-line bg-surface px-3 text-[0.8125rem] font-semibold text-ink shadow-card-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 lg:px-4 lg:text-sm"
             >
               {cat.name}
             </Link>
           ))}
-        </PillScrollRow>
+        </nav>
 
         {latestArtworks.length === 0 ? (
           <EmptyState

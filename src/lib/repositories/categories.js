@@ -5,7 +5,9 @@ export async function listActiveCategories(client = null) {
     `SELECT category_id, name, slug, description, is_active
      FROM categories
      WHERE is_active = TRUE
-     ORDER BY category_id ASC`,
+     ORDER BY
+       CASE WHEN LOWER(slug) = 'lainnya' OR LOWER(name) = 'lainnya' THEN 1 ELSE 0 END ASC,
+       category_id ASC`,
     [],
     client
   );
