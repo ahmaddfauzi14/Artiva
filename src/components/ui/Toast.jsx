@@ -1,6 +1,8 @@
 'use client';
 
 import { createContext, useCallback, useContext, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Cancel01Icon } from '@hugeicons/core-free-icons';
 
 const ToastContext = createContext({
   showToast: () => {},
@@ -85,16 +87,12 @@ export function ToastProvider({ children }) {
                 aria-label="Tutup pemberitahuan"
                 className="inline-flex h-8 w-8 items-center justify-center rounded-full text-ink-mute hover:bg-brand-50 hover:text-ink"
               >
-                <svg
-                  className="h-4 w-4"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
+                <HugeiconsIcon
+                  icon={Cancel01Icon}
+                  size={16}
+                  strokeWidth={1.8}
                   aria-hidden="true"
-                >
-                  <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
-                </svg>
+                />
               </button>
             </div>
           );

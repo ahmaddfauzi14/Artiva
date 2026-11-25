@@ -55,7 +55,7 @@ export default function AccountNavPills({ role, items, ariaLabel }) {
               aria-hidden="true"
               className="relative z-10 inline-flex h-4 w-4 shrink-0 items-center justify-center"
             >
-              <HugeiconsIcon icon={item.icon} size={16} strokeWidth={1.9} />
+              <HugeiconsIcon icon={item.icon} size={16} strokeWidth={1.8} />
             </span>
             <span className="relative z-10 whitespace-nowrap">{item.label}</span>
           </Link>

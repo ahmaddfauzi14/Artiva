@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import './CircularGallery.css';
 
 const DEFAULT_FONT = 'bold 30px Figtree';
@@ -1289,20 +1291,12 @@ const CircularGallery = ({
         aria-label="Close"
         onClick={() => engineRef.current?.close()}
       >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 18 18"
-          fill="none"
+        <HugeiconsIcon
+          icon={Cancel01Icon}
+          size={18}
+          strokeWidth={1.8}
           aria-hidden="true"
-        >
-          <path
-            d="M4 4l10 10M14 4L4 14"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
-        </svg>
+        />
       </button>
       <ul className={CLASSES.hidden} data-gallery-list="">
         {list.map((item, index) => (

@@ -1,9 +1,14 @@
-import { getInitials } from '@/lib/shared/format';
+'use client';
 
-const SIZE_CLASSES = {
-  sm: 'h-9 w-9 text-xs',
-  md: 'h-12 w-12 text-sm',
-  lg: 'h-24 w-24 text-2xl',
+import { useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { UserIcon } from '@hugeicons/core-free-icons';
+
+const SIZE_CONFIG = {
+  sm: { box: 'h-9 w-9', icon: 18 },
+  md: { box: 'h-12 w-12', icon: 22 },
+  lg: { box: 'h-16 w-16', icon: 28 },
+  xl: { box: 'h-24 w-24', icon: 42 },
 };
 
 export default function Avatar({
@@ -12,21 +17,28 @@ export default function Avatar({
   size = 'sm',
   className = '',
 }) {
-  const sizeClass = SIZE_CLASSES[size] || SIZE_CLASSES.sm;
-  const initials = getInitials(name);
+  const [failedUrl, setFailedUrl] = useState('');
+  const { box, icon } = SIZE_CONFIG[size] || SIZE_CONFIG.sm;
+  const hasImage = Boolean(avatarUrl) && failedUrl !== avatarUrl;
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-100 font-semibold text-brand-700 ${sizeClass} ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-100 text-brand-700 ${box} ${className}`}
     >
-      {avatarUrl ? (
+      {hasImage ? (
         <img
           src={avatarUrl}
           alt={name || 'Avatar pengguna'}
+          onError={() => setFailedUrl(avatarUrl)}
           className="h-full w-full object-cover"
         />
       ) : (
-        <span aria-hidden="true">{initials}</span>
+        <HugeiconsIcon
+          icon={UserIcon}
+          size={icon}
+          strokeWidth={1.8}
+          aria-hidden="true"
+        />
       )}
     </span>
   );

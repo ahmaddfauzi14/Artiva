@@ -1,10 +1,15 @@
 import {
   Award01Icon,
   Bookmark01Icon,
+  DashboardSquare01Icon,
+  Flag01Icon,
   Image02Icon,
+  SecurityCheckIcon,
   SentIcon,
   Shield01Icon,
+  Tag01Icon,
   UserIcon,
+  UserMultipleIcon,
 } from '@hugeicons/core-free-icons';
 
 /**
@@ -114,35 +119,35 @@ export const ADMIN_SIDEBAR_ITEMS = [
     key: 'dashboard',
     label: 'Dashboard',
     href: '/dashboard/admin',
-    icon: 'grid',
+    icon: DashboardSquare01Icon,
     section: 'Ringkasan',
   },
   {
     key: 'curators',
     label: 'Verifikasi kurator',
     href: '/dashboard/admin/curators',
-    icon: 'shield',
+    icon: SecurityCheckIcon,
     section: 'Pengelolaan',
   },
   {
     key: 'users',
     label: 'Pengguna',
     href: '/dashboard/admin/users',
-    icon: 'users',
+    icon: UserMultipleIcon,
     section: 'Pengelolaan',
   },
   {
     key: 'categories',
     label: 'Kategori',
     href: '/dashboard/admin/categories',
-    icon: 'tag',
+    icon: Tag01Icon,
     section: 'Pengelolaan',
   },
   {
     key: 'reports',
     label: 'Moderasi laporan',
     href: '/dashboard/admin/reports',
-    icon: 'flag',
+    icon: Flag01Icon,
     section: 'Pengelolaan',
   },
 ];

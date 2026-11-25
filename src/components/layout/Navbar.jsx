@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useId, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Logout01Icon } from '@hugeicons/core-free-icons';
+import { ArrowDown01Icon, Logout01Icon } from '@hugeicons/core-free-icons';
 import ArtivaLogo from '@/components/layout/ArtivaLogo';
 import Avatar from '@/components/ui/Avatar';
 import Button from '@/components/ui/Button';
@@ -265,22 +265,15 @@ export default function Navbar({ user = null }) {
                   avatarUrl={user.avatar_url}
                   size="sm"
                 />
-                <svg
-                  className={`h-4 w-4 text-ink-soft transition-transform duration-150 ${
+                <HugeiconsIcon
+                  icon={ArrowDown01Icon}
+                  size={16}
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                  className={`text-ink-soft transition-transform duration-150 ${
                     accountMenuOpen ? 'rotate-180' : ''
                   }`}
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M6 8l4 4 4-4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                />
               </button>
 
               {accountMenuOpen ? (
@@ -327,7 +320,7 @@ export default function Navbar({ user = null }) {
                             <HugeiconsIcon
                               icon={item.icon}
                               size={17}
-                              strokeWidth={1.85}
+                              strokeWidth={1.8}
                             />
                           </span>
                           <span className="truncate">{item.label}</span>
@@ -351,7 +344,7 @@ export default function Navbar({ user = null }) {
                         <HugeiconsIcon
                           icon={Logout01Icon}
                           size={17}
-                          strokeWidth={1.85}
+                          strokeWidth={1.8}
                         />
                       </span>
                       <span>{loggingOut ? 'Memproses…' : 'Keluar akun'}</span>

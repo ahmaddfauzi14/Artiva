@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Mail01Icon } from '@hugeicons/core-free-icons';
+import { Mail01Icon, UserIcon } from '@hugeicons/core-free-icons';
 import { useMotion } from '@/components/effects/MotionContext';
 import './ProfileCard.css';
 
@@ -59,14 +59,6 @@ const GRAIN = `url("data:image/svg+xml,${encodeURIComponent(
 )}")`;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-
-const getInitials = (name) =>
-  String(name || 'A')
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() || '')
-    .join('') || 'A';
 
 const isDark = (color) => {
   const match = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(color).trim());
@@ -397,7 +389,14 @@ const ProfileCard = ({
             />
           ) : (
             <div className="profile-card__fallback" aria-hidden="true">
-              <span className="profile-card__monogram">{getInitials(name)}</span>
+              <span className="profile-card__monogram">
+                <HugeiconsIcon
+                  icon={UserIcon}
+                  size={52}
+                  strokeWidth={1.65}
+                  aria-hidden="true"
+                />
+              </span>
             </div>
           )}
           {(name || title) && (
@@ -414,9 +413,9 @@ const ProfileCard = ({
 
         {showUserInfo && (
           <div className="profile-card__footer">
-            {hasMiniPhoto && (
-              <span className="profile-card__avatar">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+            <span className="profile-card__avatar">
+              {hasMiniPhoto ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={miniAvatarUrl}
                   alt=""
@@ -424,8 +423,15 @@ const ProfileCard = ({
                   draggable={false}
                   onError={() => setFailedMiniUrl(miniAvatarUrl)}
                 />
-              </span>
-            )}
+              ) : (
+                <HugeiconsIcon
+                  icon={UserIcon}
+                  size={18}
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                />
+              )}
+            </span>
             <div className="profile-card__meta">
               {handle && <span className="profile-card__handle">@{handle}</span>}
               {status && <span className="profile-card__status">{status}</span>}

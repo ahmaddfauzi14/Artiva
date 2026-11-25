@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Alert02Icon, FavouriteIcon } from '@hugeicons/core-free-icons';
 import Button from '@/components/ui/Button';
 import StatusBadge from '@/components/ui/StatusBadge';
 import {
@@ -143,20 +145,13 @@ export default function ArtworkCard({
     >
       {isModerated || !artwork.image_url ? (
         <div className="flex h-full w-full flex-col items-center justify-center bg-[#1B2945] p-4 text-center text-ink-soft">
-          <svg
-            className="mb-2 h-8 w-8 text-ink-mute"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
+          <HugeiconsIcon
+            icon={Alert02Icon}
+            size={32}
+            strokeWidth={1.8}
+            className="mb-2 text-ink-mute"
             aria-hidden="true"
-          >
-            <path
-              d="M12 9v4m0 4h.01M10.29 3.86l-7.4 12.82A2 2 0 004.62 20h14.76a2 2 0 001.73-3.32l-7.4-12.82a2 2 0 00-3.42 0z"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          />
           <p className="text-sm font-semibold">Karya telah dihapus oleh moderasi</p>
         </div>
       ) : (
@@ -190,14 +185,14 @@ export default function ArtworkCard({
         mode === 'public' &&
         !isModerated ? (
           <span className="tabular-nums inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-ink-soft">
-            <svg
-              className="h-3.5 w-3.5 text-brand-700"
-              viewBox="0 0 20 20"
+            <HugeiconsIcon
+              icon={FavouriteIcon}
+              size={14}
+              strokeWidth={1.8}
               fill="currentColor"
+              className="text-brand-700"
               aria-hidden="true"
-            >
-              <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
-            </svg>
+            />
             {artwork.like_count}
           </span>
         ) : null}

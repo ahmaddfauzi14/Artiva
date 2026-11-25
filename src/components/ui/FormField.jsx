@@ -1,6 +1,8 @@
 'use client';
 
 import { useId } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowDown01Icon } from '@hugeicons/core-free-icons';
 
 export default function FormField({
   label,
@@ -83,16 +85,13 @@ export default function FormField({
           >
             {children}
           </select>
-          <svg
+          <HugeiconsIcon
+            icon={ArrowDown01Icon}
+            size={16}
+            strokeWidth={1.8}
             aria-hidden="true"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="pointer-events-none absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-ink-soft"
-          >
-            <path d="M5 7.5l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+            className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-ink-soft"
+          />
         </div>
       ) : (
         <input

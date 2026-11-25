@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { StarIcon, Tick02Icon } from '@hugeicons/core-free-icons';
 import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
@@ -256,21 +258,12 @@ export default function ChallengeSubmitForm({
                           {/* Badge Kiri Atas: Penanda Jelas Karya Terpilih */}
                           {isSelected ? (
                             <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-brand-700 px-3 py-1 text-xs font-bold tracking-wide text-[#091326] shadow-md">
-                              <svg
-                                width="14"
-                                height="14"
-                                viewBox="0 0 16 16"
-                                fill="none"
+                              <HugeiconsIcon
+                                icon={Tick02Icon}
+                                size={14}
+                                strokeWidth={2.2}
                                 aria-hidden="true"
-                              >
-                                <path
-                                  d="M3.5 8.5L6.5 11.5L12.5 4.5"
-                                  stroke="currentColor"
-                                  strokeWidth="2.4"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
+                              />
                               Dipilih untuk kompetisi
                             </span>
                           ) : (
@@ -288,20 +281,12 @@ export default function ChallengeSubmitForm({
                                 : 'border-ink/50 bg-canvas/65 text-transparent group-hover:border-brand-700/80'
                             }`}
                           >
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                            >
-                              <path
-                                d="M3.5 8.5L6.5 11.5L12.5 4.5"
-                                stroke="currentColor"
-                                strokeWidth="2.4"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
+                            <HugeiconsIcon
+                              icon={Tick02Icon}
+                              size={16}
+                              strokeWidth={2.2}
+                              aria-hidden="true"
+                            />
                           </span>
                         </div>
 
@@ -323,8 +308,15 @@ export default function ChallengeSubmitForm({
 
                           <div className="flex items-center justify-between gap-2 border-t border-line/60 pt-2.5 text-xs">
                             {isSelected ? (
-                              <span className="font-semibold text-brand-700">
-                                ★ Siap diajukan ke tantangan
+                              <span className="inline-flex items-center gap-1.5 font-semibold text-brand-700">
+                                <HugeiconsIcon
+                                  icon={StarIcon}
+                                  size={14}
+                                  strokeWidth={1.8}
+                                  fill="currentColor"
+                                  aria-hidden="true"
+                                />
+                                Siap diajukan ke tantangan
                               </span>
                             ) : art.previously_withdrawn ? (
                               <span className="font-medium text-brand-400">

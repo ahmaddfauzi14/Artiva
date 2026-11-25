@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useId, useRef, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Upload04Icon } from '@hugeicons/core-free-icons';
 import Button from '@/components/ui/Button';
 
 export default function ImageUploader({
@@ -106,20 +108,12 @@ export default function ImageUploader({
               isDragging ? '-translate-y-1 scale-110' : ''
             }`}
           >
-            <svg
-              className="h-6 w-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
+            <HugeiconsIcon
+              icon={Upload04Icon}
+              size={24}
+              strokeWidth={1.8}
               aria-hidden="true"
-            >
-              <path
-                d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            />
           </span>
           <div className="space-y-1">
             <p className="text-base font-semibold text-ink">

@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useId, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowDown01Icon } from '@hugeicons/core-free-icons';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { formatDateTimeId } from '@/lib/shared/format';
 
@@ -37,18 +39,15 @@ export default function VerificationHistoryList({
           className="inline-flex min-h-[44px] -my-2 cursor-pointer items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-brand-700 hover:bg-brand-50/50 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60"
         >
           <span>{showHistory ? 'Sembunyikan' : 'Lihat semua'}</span>
-          <svg
+          <HugeiconsIcon
+            icon={ArrowDown01Icon}
+            size={16}
+            strokeWidth={1.8}
             aria-hidden="true"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className={`h-4 w-4 motion-safe:transition-transform ${
+            className={`motion-safe:transition-transform ${
               showHistory ? 'rotate-180' : ''
             }`}
-          >
-            <path d="M5 7.5l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          />
         </button>
       </div>
 

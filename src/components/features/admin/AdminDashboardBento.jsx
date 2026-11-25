@@ -4,7 +4,15 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Select } from '@base-ui/react/select';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Check, ChevronDown, Flag, ShieldCheck, Tag, Users } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import {
+  ArrowDown01Icon,
+  Flag01Icon,
+  SecurityCheckIcon,
+  Tag01Icon,
+  Tick02Icon,
+  UserMultipleIcon,
+} from '@hugeicons/core-free-icons';
 import { useMotion } from '@/components/effects/MotionContext';
 import { formatNumberId } from '@/lib/shared/format';
 
@@ -34,7 +42,7 @@ function OverviewCard({ stats, canAnimate }) {
           ? 'pengajuan menunggu'
           : 'antrean terkendali',
       href: '/dashboard/admin/curators',
-      icon: ShieldCheck,
+      icon: SecurityCheckIcon,
       toneClass:
         (stats.pending_verifications || 0) > 0
           ? 'border-[#614A1B] bg-[#332811] text-[#F2C94C]'
@@ -46,7 +54,7 @@ function OverviewCard({ stats, canAnimate }) {
       value: formatNumberId(stats.users.total),
       note: `${formatNumberId(stats.users.member)} member · ${formatNumberId(stats.users.curator)} kurator`,
       href: '/dashboard/admin/users',
-      icon: Users,
+      icon: UserMultipleIcon,
       toneClass: 'border-[#264E91] bg-[#142C4A] text-[#699EE8]',
     },
     {
@@ -55,7 +63,7 @@ function OverviewCard({ stats, canAnimate }) {
       value: formatNumberId(stats.categories.active),
       note: `dari ${formatNumberId(stats.categories.total)} kategori`,
       href: '/dashboard/admin/categories',
-      icon: Tag,
+      icon: Tag01Icon,
       toneClass: 'border-[#335AA3] bg-[#162950] text-[#F2C94C]',
     },
     {
@@ -67,7 +75,7 @@ function OverviewCard({ stats, canAnimate }) {
           ? 'laporan menunggu'
           : 'tidak ada laporan baru',
       href: '/dashboard/admin/reports',
-      icon: Flag,
+      icon: Flag01Icon,
       toneClass:
         (stats.pending_reports || 0) > 0
           ? 'border-[#6E2734] bg-[#38171E] text-[#FCA5A5]'
@@ -97,7 +105,6 @@ function OverviewCard({ stats, canAnimate }) {
 
       <div className="grid grid-cols-1 divide-y divide-line/70 sm:grid-cols-2 sm:gap-4 sm:divide-y-0 lg:grid-cols-4 lg:gap-0 lg:divide-x">
         {items.map((item, idx) => {
-          const Icon = item.icon;
           const padClass =
             idx === 0
               ? 'lg:pr-5'
@@ -114,7 +121,12 @@ function OverviewCard({ stats, canAnimate }) {
               <span
                 className={`flex size-11 shrink-0 items-center justify-center rounded-full border ${item.toneClass}`}
               >
-                <Icon className="h-5 w-5" aria-hidden="true" />
+                <HugeiconsIcon
+                  icon={item.icon}
+                  size={20}
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                />
               </span>
 
               <div className="min-w-0">
@@ -258,7 +270,12 @@ function AccountStatusDonutCard({ stats, canAnimate }) {
             >
               <Select.Value />
               <Select.Icon className="text-ink-soft transition-transform duration-150 [[data-popup-open]_&]:rotate-180">
-                <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                <HugeiconsIcon
+                  icon={ArrowDown01Icon}
+                  size={16}
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                />
               </Select.Icon>
             </Select.Trigger>
 
@@ -279,7 +296,12 @@ function AccountStatusDonutCard({ stats, canAnimate }) {
                       >
                         <Select.ItemText>{opt.label}</Select.ItemText>
                         <Select.ItemIndicator className="text-brand-700">
-                          <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                          <HugeiconsIcon
+                            icon={Tick02Icon}
+                            size={14}
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          />
                         </Select.ItemIndicator>
                       </Select.Item>
                     ))}

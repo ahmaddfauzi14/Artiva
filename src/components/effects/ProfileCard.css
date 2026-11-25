@@ -293,11 +293,15 @@
 
 .profile-card__avatar {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: none;
   width: 36px;
   height: 36px;
   border-radius: 50%;
   background: var(--pc-tile);
+  color: var(--pc-ink);
   overflow: hidden;
 }
 

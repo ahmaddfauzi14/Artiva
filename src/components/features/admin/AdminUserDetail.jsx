@@ -4,12 +4,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Alert from '@/components/ui/Alert';
+import Avatar from '@/components/ui/Avatar';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/shared/api-client';
-import { formatDateId, getInitials } from '@/lib/shared/format';
+import { formatDateId } from '@/lib/shared/format';
 
 export default function AdminUserDetail({
   initialUser,
@@ -91,17 +92,11 @@ export default function AdminUserDetail({
         <div className="space-y-6 rounded-[28px] border border-line bg-surface p-6 shadow-card sm:p-8 lg:col-span-7">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-200 text-lg font-bold text-brand-700">
-                {target.avatar_url ? (
-                  <img
-                    src={target.avatar_url}
-                    alt={target.display_name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  getInitials(target.display_name)
-                )}
-              </div>
+              <Avatar
+                name={target.display_name}
+                avatarUrl={target.avatar_url}
+                size="lg"
+              />
               <div>
                 <h2 className="text-2xl font-semibold text-ink">
                   {target.display_name}

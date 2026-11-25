@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Alert from '@/components/ui/Alert';
+import Avatar from '@/components/ui/Avatar';
 import Button from '@/components/ui/Button';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import FormField from '@/components/ui/FormField';
@@ -11,7 +12,7 @@ import StatusBadge from '@/components/ui/StatusBadge';
 import { useToast } from '@/components/ui/Toast';
 import VerificationHistoryList from '@/components/features/curator/VerificationHistoryList';
 import { apiFetch } from '@/lib/shared/api-client';
-import { formatDateTimeId, getInitials } from '@/lib/shared/format';
+import { formatDateTimeId } from '@/lib/shared/format';
 
 export default function AdminCuratorDetail({ initialVerification }) {
   const router = useRouter();
@@ -127,19 +128,11 @@ export default function AdminCuratorDetail({ initialVerification }) {
           </div>
 
           <div className="flex items-center gap-4 rounded-[18px] bg-brand-50/70 p-4">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-200 text-lg font-bold text-brand-700">
-              {verification.avatar_url ? (
-                <img
-                  src={verification.avatar_url}
-                  alt={verification.display_name}
-                  width={64}
-                  height={64}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                getInitials(verification.display_name || verification.username)
-              )}
-            </div>
+            <Avatar
+              name={verification.display_name || verification.username}
+              avatarUrl={verification.avatar_url}
+              size="lg"
+            />
             <div className="min-w-0">
               <p className="text-lg font-semibold text-ink">
                 {verification.display_name || verification.username}

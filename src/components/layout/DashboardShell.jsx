@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Suspense, useRef, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Menu01Icon } from '@hugeicons/core-free-icons';
 import Sidebar from '@/components/layout/Sidebar';
 import { ROLE_LABELS } from '@/lib/shared/navigation';
 
@@ -52,16 +54,12 @@ function DashboardTopbar({ user, triggerRef, mobileOpen, onOpenMobile }) {
             onClick={onOpenMobile}
             className="inline-flex h-11 items-center gap-2 rounded-full border border-line bg-surface px-3.5 text-sm font-semibold text-ink lg:hidden"
           >
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
+            <HugeiconsIcon
+              icon={Menu01Icon}
+              size={20}
+              strokeWidth={1.8}
               aria-hidden="true"
-            >
-              <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
-            </svg>
+            />
             <span>Menu</span>
           </button>
 

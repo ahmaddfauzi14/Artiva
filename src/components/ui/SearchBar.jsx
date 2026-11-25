@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Search01Icon } from '@hugeicons/core-free-icons';
 
 export default function SearchBar({
   defaultValue = '',
@@ -36,17 +38,13 @@ export default function SearchBar({
         compact ? 'max-w-sm' : ''
       } ${className}`}
     >
-      <svg
+      <HugeiconsIcon
+        icon={Search01Icon}
+        size={18}
+        strokeWidth={1.8}
         aria-hidden="true"
-        viewBox="0 0 20 20"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        className="h-5 w-5 shrink-0 text-ink-mute"
-      >
-        <circle cx="9" cy="9" r="6" />
-        <path d="M13.5 13.5L17 17" strokeLinecap="round" />
-      </svg>
+        className="shrink-0 text-ink-mute"
+      />
       <input
         type="search"
         value={currentValue}

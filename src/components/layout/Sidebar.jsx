@@ -3,15 +3,12 @@
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
 import {
-  IconFlag,
-  IconLayoutDashboard,
-  IconLogout,
-  IconShieldCheck,
-  IconTag,
-  IconUsers,
-  IconX,
-} from '@tabler/icons-react';
+  Cancel01Icon,
+  DashboardSquare01Icon,
+  Logout01Icon,
+} from '@hugeicons/core-free-icons';
 import ArtivaLogo from '@/components/layout/ArtivaLogo';
 import Avatar from '@/components/ui/Avatar';
 import {
@@ -33,27 +30,15 @@ const ROLE_SPACE_LABEL = {
   admin: 'RUANG ADMIN',
 };
 
-function renderMenuIcon(name) {
-  const iconProps = {
-    className: 'size-[18px]',
-    stroke: 1.75,
-    'aria-hidden': true,
-  };
-
-  switch (name) {
-    case 'grid':
-      return <IconLayoutDashboard {...iconProps} />;
-    case 'shield':
-      return <IconShieldCheck {...iconProps} />;
-    case 'users':
-      return <IconUsers {...iconProps} />;
-    case 'tag':
-      return <IconTag {...iconProps} />;
-    case 'flag':
-      return <IconFlag {...iconProps} />;
-    default:
-      return <IconLayoutDashboard {...iconProps} />;
-  }
+function renderMenuIcon(icon) {
+  return (
+    <HugeiconsIcon
+      icon={icon || DashboardSquare01Icon}
+      size={18}
+      strokeWidth={1.8}
+      aria-hidden="true"
+    />
+  );
 }
 
 export function getSidebarMenu(role) {
@@ -123,7 +108,12 @@ function SidebarUserFooter({ user, loggingOut, onLogout }) {
         title="Keluar akun"
         className="inline-flex size-9 shrink-0 items-center justify-center rounded-[var(--primitive-radius-control-sm,0.625rem)] text-ink-mute transition-colors hover:bg-[var(--primitive-surface-hover)] hover:text-crimson focus-visible:ring-2 focus-visible:ring-brand-700 disabled:pointer-events-none disabled:opacity-40"
       >
-        <IconLogout className="size-[17px]" stroke={1.75} aria-hidden="true" />
+        <HugeiconsIcon
+          icon={Logout01Icon}
+          size={17}
+          strokeWidth={1.8}
+          aria-hidden="true"
+        />
       </button>
     </div>
   );
@@ -316,7 +306,12 @@ export default function Sidebar({
               onClick={() => onCloseMobile?.()}
               className="inline-flex size-9 shrink-0 items-center justify-center rounded-[var(--primitive-radius-control-sm,0.625rem)] border border-[var(--border)] text-ink-soft transition-colors hover:bg-[var(--primitive-surface-hover)] hover:text-ink"
             >
-              <IconX className="size-4" stroke={2} aria-hidden="true" />
+              <HugeiconsIcon
+                icon={Cancel01Icon}
+                size={16}
+                strokeWidth={1.8}
+                aria-hidden="true"
+              />
             </button>
           </SidebarHeader>
 

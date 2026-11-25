@@ -11,11 +11,12 @@
 import * as React from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useRender } from "@base-ui/react/use-render";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  IconChevronRight,
-  IconLayoutSidebarLeftCollapse,
-  IconLayoutSidebarLeftExpand,
-} from "@tabler/icons-react";
+  ArrowRight01Icon,
+  PanelLeftCloseIcon,
+  PanelLeftOpenIcon,
+} from "@hugeicons/core-free-icons";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -651,7 +652,12 @@ export const SidebarNested = React.forwardRef(
               }}
               className="flex items-center justify-center text-[var(--muted-foreground)]"
             >
-              <IconChevronRight className="size-3.5" stroke={2} />
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
+                size={14}
+                strokeWidth={1.8}
+                aria-hidden="true"
+              />
             </motion.span>
           </FadingLabel>
         </button>
@@ -759,14 +765,18 @@ export const SidebarToggle = React.forwardRef(
         ) : (
           children ??
           (collapsed ? (
-            <IconLayoutSidebarLeftExpand
-              className="size-[17px]"
-              stroke={1.75}
+            <HugeiconsIcon
+              icon={PanelLeftOpenIcon}
+              size={17}
+              strokeWidth={1.8}
+              aria-hidden="true"
             />
           ) : (
-            <IconLayoutSidebarLeftCollapse
-              className="size-[17px]"
-              stroke={1.75}
+            <HugeiconsIcon
+              icon={PanelLeftCloseIcon}
+              size={17}
+              strokeWidth={1.8}
+              aria-hidden="true"
             />
           ))
         )}

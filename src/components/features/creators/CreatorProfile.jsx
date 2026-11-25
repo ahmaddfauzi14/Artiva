@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowTurnBackwardIcon } from '@hugeicons/core-free-icons';
 import {
   ArtworkShowcaseFrame,
   ArtworkSpotlightCard,
@@ -38,9 +40,15 @@ function CreatorBackFace({
           <button
             type="button"
             onClick={onFlipBack}
-            className="shrink-0 rounded-full border border-line bg-surface/80 px-3 py-1.5 text-xs font-semibold text-ink-soft transition-colors hover:border-[#F2C94C]/60 hover:text-ink"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-surface/80 px-3 py-1.5 text-xs font-semibold text-ink-soft transition-colors hover:border-[#F2C94C]/60 hover:text-ink"
           >
-            ↺ Profil
+            <HugeiconsIcon
+              icon={ArrowTurnBackwardIcon}
+              size={14}
+              strokeWidth={1.8}
+              aria-hidden="true"
+            />
+            <span>Profil</span>
           </button>
         </div>
 
