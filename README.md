@@ -154,15 +154,18 @@ Klik setiap modul di bawah ini untuk menjelajahi fungsionalitas ARTIVA secara in
 
 ### 🏠 Beranda — Hero Editorial & Galeri Inspirasi
 
-<img src="docs/screenshots/01-home-hero.jpg" alt="ARTIVA Home — Hero editorial dengan sorotan karya terbaru, pilar ekosistem, dan galeri inspirasi" width="100%" />
+<img width="893" height="558" alt="Pi7_GIF_CMP (1)" src="https://github.com/user-attachments/assets/768e7d3c-04e3-4a56-8c11-f0a45f709f2a" />
+
+
 
 ### 🖼️ Galeri Karya — CircularGallery & Filter Kategori
 
-<img src="docs/screenshots/02-artwork-gallery.jpg" alt="ARTIVA Galeri — Eksplorasi karya dengan CircularGallery 3D, pencarian judul, dan filter kategori" width="100%" />
+<img width="662" height="414" alt="Pi7_GIF_CMP" src="https://github.com/user-attachments/assets/9716b785-e058-4998-8869-452d8eda6fd1" />
 
 ### 🏆 Tantangan Kreatif — Kompetisi Terkurasi
 
-<img src="docs/screenshots/03-challenges.jpg" alt="ARTIVA Tantangan — Daftar tantangan terkurasi dengan banner, detail kurator, dan periode kompetisi" width="100%" />
+<img width="1066" height="666" alt="Pi7_GIF_CMP (2)" src="https://github.com/user-attachments/assets/e8cce001-656b-4052-bd52-6d2f5d8797ea" />
+
 
 </div>
 
